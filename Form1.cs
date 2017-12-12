@@ -90,7 +90,7 @@ namespace AGV_V1._0
             TaskSendThread.Instance.End();
             TaskReceiveThread.Instance.End();
 
-            
+
         }
         void InitServer()
         {
@@ -100,8 +100,6 @@ namespace AGV_V1._0
             gm.DataMessage += TransmitToTask;
             gm.StartServer(Convert.ToInt32(txtPort.Text));
 
-
-            
             tm = TaskServerManager.Instance;
             tm.ShowMessage += ShowMsg;
             tm.DataMessage += ReceveTask;
@@ -119,6 +117,7 @@ namespace AGV_V1._0
             gm.ReLoad -= ReInitialSystem;
             gm.DataMessage -= TransmitToTask;
             gm.Dispose();
+
 
             am.ShowMessage -= ShowMsg;
             am.ReLoad -= ReInitialSystem;
@@ -143,7 +142,7 @@ namespace AGV_V1._0
             SearchRouteQueue.Instance.ClearData();
             Thread.Sleep(100);
 
-            int res = InitialAgv();            
+            int res = InitialAgv();
             timer1.Start();
 
 
@@ -304,7 +303,7 @@ namespace AGV_V1._0
                     if (i == 0 || i == Elc.HeightNum - 1)
                     {
                         DrawUtil.FillRectangle(g, Color.FromArgb(180, 0, 0, 0), Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
-                        DrawUtil.DrawString(g, j, ConstDefine.g_NodeLength / 2,Color.Yellow, Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1);
+                        DrawUtil.DrawString(g, j, ConstDefine.g_NodeLength / 2, Color.Yellow, Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1);
                     }
                     if (j == 0 || j == Elc.WidthNum - 1)
                     {
@@ -405,7 +404,7 @@ namespace AGV_V1._0
             //}
 
             //绘制小车
-            Vehicle []v=VehicleManager.Instance.GetVehicles();
+            Vehicle[] v = VehicleManager.Instance.GetVehicles();
             if (v != null)
             {
                 for (int i = 0; i < v.Length; i++)
