@@ -11,6 +11,7 @@ using System.Xml;
 using AGV_V1._0.Algorithm;
 using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
+using System.IO;
 
 namespace AGV_V1._0
 {
@@ -115,15 +116,25 @@ namespace AGV_V1._0
             }
             return false;
         }
-        int LoadMapFile()
+        void LoadMapFile()
         {
-            int res = FileUtil.LoadMapXml(); //初始化XML配置文件
-            if (res <= 0)
+            try
             {
-                MessageBox.Show("地图文件加载失败");
-                Logs.Warn("地图文件加载失败");
+                FileUtil.LoadMapXml(); //初始化XML配置文件
             }
-            return res;
+            catch (FileNotFoundException ex)
+            {
+                Logs.Error("文件未找到:" + ex);
+            }
+            catch (FileLoadException ex)
+            {
+                Logs.Error("文件加载异常：" + ex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("地图文件加载失败"+ex);
+                Logs.Warn("地图文件加载失败"+ex);
+            }
         }
         //}
         /// <summary>

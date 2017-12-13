@@ -81,7 +81,7 @@ namespace AGV_V1._0
                     //    Thread.Sleep(500); 
                     //    SearchRoute(temp, false);  
                     //});  
-                     
+
                     vehicles[vnum].Arrive = true;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route = null;
@@ -276,62 +276,42 @@ namespace AGV_V1._0
         /// <summary>
         /// 初始化小车
         /// </summary>
-        public int InitialVehicle()
+        public void InitialVehicle()
         {
+            vehicleInited = false;
+            //初始化小车位置
 
-            try
+            if (null == FileUtil.sendData||FileUtil.sendData.Length<1)
             {
-                //初始化小车位置
-                if (null != FileUtil.sendData)
-                {
-                    vehicleInited = false;
-                    int vehicleCount = FileUtil.sendData.Length;
-                    vehicles = new Vehicle[vehicleCount];
-                    int m = 0;
-                    for (int i = 0; i < vehicleCount; i++)
-                    {
-                        vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
-                        MyPoint endPoint = RouteUtil.randPoint(ElecMap.Instance);
-                        //vehicle[i].endX = (int)endPoint.col;
-                        //vehicle[i].endY = (int)endPoint.row;
-                        m++;
-                        ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
-
-                        vehicles[i].Speed = 0;
-                        vehicles[i].MaxSpeed = 4;
-                        vehicles[i].Acceleration = 1;
-
-                        int R = rand.Next(20, 225);
-                        int G = rand.Next(20, 225);
-                        int B = rand.Next(20, 225);
-                        vehicles[i].pathColor = Color.FromArgb(80, R, G, B);
-                        vehicles[i].showColor = Color.FromArgb(255, R, G, B);
-                    }
-                }
-                vehicleInited = true;
-                ////把小车所在的节点设为占用状态
-                RouteUtil.VehicleOcuppyNode(ElecMap.Instance, vehicles);
-                return 1;
+                throw new ArgumentNullException();
             }
-            catch (IndexOutOfRangeException e)
+            int vehicleCount = FileUtil.sendData.Length;
+            vehicles = new Vehicle[vehicleCount];
+            int m = 0;
+            for (int i = 0; i < vehicleCount; i++)
             {
-                vehicleInited = false;
-                MessageBox.Show("小车位置超出了地图范围，初始化小车失败");
-                Logs.Error("小车初始化失败" + e);
-                // vehicleInited = false;
-                return 0;
+                vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
+                MyPoint endPoint = RouteUtil.randPoint(ElecMap.Instance);
+                //vehicle[i].endX = (int)endPoint.col;
+                //vehicle[i].endY = (int)endPoint.row;
+                m++;
+                ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
+
+                vehicles[i].Speed = 0;
+                vehicles[i].MaxSpeed = 4;
+                vehicles[i].Acceleration = 1;
+
+                int R = rand.Next(20, 225);
+                int G = rand.Next(20, 225);
+                int B = rand.Next(20, 225);
+                vehicles[i].pathColor = Color.FromArgb(80, R, G, B);
+                vehicles[i].showColor = Color.FromArgb(255, R, G, B);
             }
-            // MapText();
 
-            ////搜索路径 
-            //for (int i = 0; i < vehicle.Length; i++)
-            //{
-            //    searchRoute(vehicle[i]);
-            //}
+            vehicleInited = true;
+            ////把小车所在的节点设为占用状态
+            RouteUtil.VehicleOcuppyNode(ElecMap.Instance, vehicles);
 
-
-            ////检测冲突的节点，重新规划路线
-            //CheckeConflictNode();
         }
 
         public void RandomMove(int count)
@@ -386,7 +366,7 @@ namespace AGV_V1._0
             //    }
             //}
             //return v;
-             return vehicles;
+            return vehicles;
         }
 
 

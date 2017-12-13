@@ -142,36 +142,57 @@ namespace AGV_V1._0
             SearchRouteQueue.Instance.ClearData();
             Thread.Sleep(100);
 
-            int res = InitialAgv();
+             InitialAgv();
             timer1.Start();
 
 
         }
-        int InitialAgv()
+        void InitialAgv()
         {
+            try
+            {
 
-            int res = FileUtil.LoadAgvXml(); //初始化agv配置文件
-            if (-1 == res)
+               FileUtil.LoadAgvXml(); //初始化agv配置文件
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logs.Fatal("agvFile未找到"+ex);
+            }
+            catch (FileLoadException ex)
+            {
+                Logs.Fatal("agvFile 加载异常：" + ex);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("小车文件加载失败");
                 Logs.Fatal("小车文件加载失败");
             }
-            else if (0 == res)
+
+            try
             {
-                MessageBox.Show("小车文件中小车数量为0");
-                Logs.Warn("小车文件中小车数量为0");
-            }
-            else
-            {
+
                 VehicleManager.Instance.InitialVehicle();
                 VehicleManager.Instance.Start();
                 VehicleManager.Instance.ShowMessage += ShowMsg;
 
-            }
-            label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
-            label2.Text = "开始运行时间：" + DateTime.Now.ToString();
+                label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
+                label2.Text = "开始运行时间：" + DateTime.Now.ToString();
 
-            return res;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Logs.Error("小车初始化失败" + ex);
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                MessageBox.Show("小车位置超出了地图范围，初始化小车失败");
+                Logs.Error("小车初始化失败" + ex);
+            }
+            catch (Exception ex)
+            {
+                Logs.Error("小车初始化失败" + ex);
+            }
+
         }
         //private void ReInitialAgv()
         //{
