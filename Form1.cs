@@ -151,7 +151,6 @@ namespace AGV_V1._0
         {
             try
             {
-
                FileUtil.LoadAgvXml(); //初始化agv配置文件
             }
             catch (FileNotFoundException ex)
@@ -170,7 +169,6 @@ namespace AGV_V1._0
 
             try
             {
-
                 VehicleManager.Instance.InitialVehicle();
                 VehicleManager.Instance.Start();
                 VehicleManager.Instance.ShowMessage += ShowMsg;
