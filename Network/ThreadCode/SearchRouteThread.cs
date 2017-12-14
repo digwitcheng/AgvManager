@@ -55,7 +55,7 @@ namespace AGV_V1._0.ThreadCode
             if (searchData == null)
             {
                 Logs.Warn("要搜索的任务为空");
-                HandlerMessage(this, new MessageEventArgs("要搜索的任务为空"));
+                OnShowMessage(this, new MessageEventArgs("要搜索的任务为空"));
                 return;
             }
             Vehicle[] vehicle = VehicleManager.Instance.GetVehicles();
@@ -63,7 +63,7 @@ namespace AGV_V1._0.ThreadCode
             if (vehicle == null)
             {
                 Logs.Warn("小车还未初始化");
-                HandlerMessage(this, new MessageEventArgs("小车还未初始化"));
+                OnShowMessage(this, new MessageEventArgs("小车还未初始化"));
                 return;
             }
             int num = searchData.Data.Num;
@@ -71,7 +71,7 @@ namespace AGV_V1._0.ThreadCode
             if (num < 0 || num > vehicle.Length - 1)
             {
                 Logs.Error("任务中小车编号超出小车实际数量");
-                HandlerMessage(this, new MessageEventArgs("任务中小车编号超出小车实际数量"));
+                OnShowMessage(this, new MessageEventArgs("任务中小车编号超出小车实际数量"));
                 return;
             }
             vehicle[num].BeginX = searchData.Data.BeginX;

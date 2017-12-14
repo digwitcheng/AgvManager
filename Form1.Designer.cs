@@ -50,6 +50,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.picShow = new System.Windows.Forms.PictureBox();
+            this.finishCountLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -247,6 +249,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer1.Panel1.Controls.Add(this.label4);
+            this.splitContainer1.Panel1.Controls.Add(this.finishCountLabel);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             // 
@@ -293,6 +297,24 @@
             this.picShow.Size = new System.Drawing.Size(147, 281);
             this.picShow.TabIndex = 0;
             this.picShow.TabStop = false;
+            // 
+            // finishCountLabel
+            // 
+            this.finishCountLabel.AutoSize = true;
+            this.finishCountLabel.Location = new System.Drawing.Point(83, 123);
+            this.finishCountLabel.Name = "finishCountLabel";
+            this.finishCountLabel.Size = new System.Drawing.Size(11, 12);
+            this.finishCountLabel.TabIndex = 2;
+            this.finishCountLabel.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "完成任务：";
             // 
             // Form1
             // 
@@ -346,6 +368,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label finishCountLabel;
     }
 }
 

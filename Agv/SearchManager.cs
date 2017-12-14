@@ -76,8 +76,6 @@ namespace AGV_V1._0
         }
         public void SearchRoute(Vehicle v)
         {
-
-
             v.RouteIndex = 0;
             v.cost = 0;
             v.TPtr = 0;// tFram = 0;

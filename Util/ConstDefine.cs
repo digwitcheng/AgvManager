@@ -27,7 +27,7 @@ namespace AGV_V1._0.Util
         public const int FONT_SISE = 10; //消息显示面板字体大小
         public const int ROW_BOARD = 4;  //消息显示上下行空白大小
         public const int STOP_TIME = 6; //设置等待时间片段
-        public const int STEP_TIME = 500;//小车每走一格的间隔
+        public const int STEP_TIME = 750;//小车每走一格的间隔
         public const int GUI_TIME = 100;//发送给界面的间隔
         public const int SEARCH_TIME = 3;//搜索路径的间隔
         public const int TASK_TIME = 5;  //处理任务的间隔

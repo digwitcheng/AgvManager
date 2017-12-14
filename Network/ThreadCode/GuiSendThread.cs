@@ -40,7 +40,7 @@ namespace AGV_V1._0.Network.ThreadCode
             }
             catch (Exception ex)
             {
-                HandlerMessage(this, new MessageEventArgs(ex.Message));
+                OnShowMessage(this, new MessageEventArgs(ex.Message));
             }
         }
          void SendDataToGui()

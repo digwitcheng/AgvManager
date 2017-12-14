@@ -26,8 +26,8 @@ namespace AGV_V1._0.Network.ThreadCode
          }
           void StartThread()
          {
-             Logs.Info(ThreadName()+"线程开始");
-             HandlerMessage(ThreadName()+"线程开始");
+            // Logs.Info(ThreadName()+"线程开始");
+             OnShowMessage(ThreadName()+"线程开始");
              while (!isStoped)
              {
                  try
@@ -37,13 +37,13 @@ namespace AGV_V1._0.Network.ThreadCode
                  catch (Exception ex)
                  {
                      Logs.Error(ThreadName() + "线程执行出错:" + ex);
-                     HandlerMessage(ThreadName() + "线程执行出错:" + ex);
+                     OnShowMessage(ThreadName() + "线程执行出错:" + ex);
                  }
              }
              isRunning = false;
              isStoped = true;
-             Logs.Info(ThreadName()+"线程结束");
-             HandlerMessage(ThreadName()+"线程结束");
+            // Logs.Info(ThreadName()+"线程结束");
+             OnShowMessage(ThreadName()+"线程结束");
          }
          protected abstract void Run();
 
@@ -56,11 +56,11 @@ namespace AGV_V1._0.Network.ThreadCode
          {
              isStoped = true;
          }
-         protected void HandlerMessage(string str)
+         protected void OnShowMessage(string str)
          {
-             HandlerMessage(this, new MessageEventArgs(str));
+             OnShowMessage(this, new MessageEventArgs(str));
          }
-         protected void HandlerMessage(object sender, MessageEventArgs e)
+         protected void OnShowMessage(object sender, MessageEventArgs e)
          {
              if (null != ShowMessage)
              {

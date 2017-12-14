@@ -45,13 +45,13 @@ namespace AGV_V1._0.Network.ThreadCode
                     if (json == null)
                     {
                         Logs.Warn("没取到任务");
-                        HandlerMessage(this, new MessageEventArgs("没取到任务"));
+                        OnShowMessage(this, new MessageEventArgs("没取到任务"));
                         return;
                     }
                     if (json.Trim() == "")
                     {
                         Logs.Warn("收到空任务");
-                        HandlerMessage(this, new MessageEventArgs("收到空任务"));
+                        OnShowMessage(this, new MessageEventArgs("收到空任务"));
                         return;
                     }
                     try
@@ -65,7 +65,7 @@ namespace AGV_V1._0.Network.ThreadCode
                     catch (Exception ex)
                     {
                         Logs.Error("把任务加到搜索队列出错:" + ex.ToString());
-                        HandlerMessage(this, new MessageEventArgs("把任务加到搜索队列出错:" + ex.ToString()));
+                        OnShowMessage(this, new MessageEventArgs("把任务加到搜索队列出错:" + ex.ToString()));
                     }
                 }
                 Thread.Sleep(ConstDefine.TASK_TIME);

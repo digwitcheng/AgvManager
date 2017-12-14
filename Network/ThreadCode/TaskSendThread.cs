@@ -1,5 +1,6 @@
 ﻿using AGV_V1._0.Agv;
 using AGV_V1._0.Event;
+using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
 using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
@@ -14,6 +15,10 @@ namespace AGV_V1._0.Network.ThreadCode
 {
     class TaskSendThread:BaseThread
     {
+        private int finishCount = 0;
+        private int perCount = 0;//一定时间内的数量
+
+
          private static TaskSendThread instance;
         public static TaskSendThread Instance
         {
@@ -33,6 +38,7 @@ namespace AGV_V1._0.Network.ThreadCode
         {
             return "TaskSend";
         }
+        DateTime startTime = DateTime.Now.AddMinutes(10);
         protected override void Run()
         {
             try
@@ -42,6 +48,16 @@ namespace AGV_V1._0.Network.ThreadCode
                     Vehicle v = FinishedQueue.Instance.GetMyQueueList();
                     if (v.CurState == State.unloading)
                     {
+                        DateTime nowTime = DateTime.Now;
+                        if (nowTime > startTime)
+                        {
+                            Logs.Info(nowTime.ToString() + " :" + perCount);
+                            startTime = DateTime.Now.AddMinutes(10);
+                            perCount = 0;
+                        }
+                        perCount++;
+                        finishCount++;
+                        OnShowMessage(finishCount + "");
                         Unloading(v);
 
                     }

@@ -66,7 +66,7 @@ namespace AGV_V1._0
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)
                 {
 
-                    SearchRoute(vnum, false);
+                   // SearchRoute(vnum, false);
 
                     //vehicle[vnum].LockNode.Clear();
                     //vehicle[vnum].Arrive = false;
@@ -86,7 +86,7 @@ namespace AGV_V1._0
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route = null;
                     string str = string.Format("小车" + vnum + ":({0}，{1})->({2}，{3})没有搜索到路径，", vehicles[vnum].BeginX, vehicles[vnum].BeginY, vehicles[vnum].EndX, vehicles[vnum].EndY);
-                    HandlerMessage(this, new MessageEventArgs(str));
+                    OnShowMessage(this, new MessageEventArgs(str));
                     continue;
                 }
                 if (vehicles[vnum].Route == null || vehicles[vnum].Route.Count <= 1)
@@ -117,8 +117,7 @@ namespace AGV_V1._0
                     //vehicle[vnum].BeginY = vehicle[vnum].EndY;
                     vehicles[vnum].CurState = State.unloading;
                     vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route = null;
-
+                    vehicles[vnum].Route = null;                 
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }

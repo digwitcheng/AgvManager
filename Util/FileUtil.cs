@@ -49,7 +49,7 @@ namespace AGV_V1._0.Algorithm
         {
 
             //XML1.0:获取xml文件路径
-            string pathAGV = ConstString.AGV_PATH;
+            string pathAGV = ConstString.AGV_PATH ;
             if (!File.Exists(pathAGV))
             {
                 throw new FileNotFoundException("agvxml");
@@ -66,7 +66,7 @@ namespace AGV_V1._0.Algorithm
                 throw new XmlException("agvxml");
             }
             XmlNodeList agvList = xmlNode.ChildNodes;
-            if (agvList == null)
+            if (agvList == null||agvList.Count<1)
             {
                 Logs.Error("agvfile hasn't Info/AGV_infor node");
                 throw new XmlException();

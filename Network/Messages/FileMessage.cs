@@ -45,7 +45,6 @@ namespace AGV_V1._0.Network.Messages
 
         void ReciveFile(string path, string msg)
         {
-
             try
             {
                 using (FileStream fswrite = new FileStream(path, FileMode.Create, FileAccess.Write))

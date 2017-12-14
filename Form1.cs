@@ -69,20 +69,20 @@ namespace AGV_V1._0
 
 
 
-            TaskSendThread.Instance.ShowMessage += ShowMsg;
-            TaskReceiveThread.Instance.ShowMessage += ShowMsg;
-            SearchRouteThread.Instance.ShowMessage += ShowMsg;
-            GuiSendThread.Instance.ShowMessage += ShowMsg;
+            TaskSendThread.Instance.ShowMessage += OnShowMessageFinishCount;
+            TaskReceiveThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+            SearchRouteThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+            GuiSendThread.Instance.ShowMessage += OnShowMessageWithPicBox;
 
         }
         void EndThread()
         {
-            TaskSendThread.Instance.ShowMessage -= ShowMsg;
-            TaskReceiveThread.Instance.ShowMessage -= ShowMsg;
-            SearchRouteThread.Instance.ShowMessage -= ShowMsg;
-            GuiSendThread.Instance.ShowMessage -= ShowMsg;
+            TaskSendThread.Instance.ShowMessage -= OnShowMessageFinishCount;
+            TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
 
-            VehicleManager.Instance.ShowMessage -= ShowMsg;
+            VehicleManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
             VehicleManager.Instance.End();
 
             GuiSendThread.Instance.End();
@@ -95,37 +95,37 @@ namespace AGV_V1._0
         void InitServer()
         {
             gm = GuiServerManager.Instance;
-            gm.ShowMessage += ShowMsg;
+            gm.ShowMessage += OnShowMessageWithPicBox;
             gm.ReLoad += ReInitialSystem;
-            gm.DataMessage += TransmitToTask;
+            gm.DataMessage += OnTransmitToTask;
             gm.StartServer(Convert.ToInt32(txtPort.Text));
 
             tm = TaskServerManager.Instance;
-            tm.ShowMessage += ShowMsg;
+            tm.ShowMessage += OnShowMessageWithPicBox;
             tm.DataMessage += ReceveTask;
             tm.StartServer(Convert.ToInt32(txtPort.Text) + 1);
 
             am = AGVServerManager.Instance;
-            am.ShowMessage += ShowMsg;
+            am.ShowMessage += OnShowMessageWithPicBox;
             am.ReLoad += ReInitialSystem;
-            am.DataMessage += TransmitToTask;
+            am.DataMessage += OnTransmitToTask;
             am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
         }
         void DisposeServer()
         {
-            gm.ShowMessage -= ShowMsg;
+            gm.ShowMessage -= OnShowMessageWithPicBox;
             gm.ReLoad -= ReInitialSystem;
-            gm.DataMessage -= TransmitToTask;
+            gm.DataMessage -= OnTransmitToTask;
             gm.Dispose();
 
 
-            am.ShowMessage -= ShowMsg;
+            am.ShowMessage -= OnShowMessageWithPicBox;
             am.ReLoad -= ReInitialSystem;
-            am.DataMessage -= TransmitToTask;
+            am.DataMessage -= OnTransmitToTask;
             am.Dispose();
 
 
-            tm.ShowMessage -= ShowMsg;
+            tm.ShowMessage -= OnShowMessageWithPicBox;
             tm.DataMessage -= ReceveTask;
             tm.Dispose();
         }
@@ -142,7 +142,7 @@ namespace AGV_V1._0
             SearchRouteQueue.Instance.ClearData();
             Thread.Sleep(100);
 
-             InitialAgv();
+            InitialAgv();
             timer1.Start();
 
 
@@ -151,31 +151,27 @@ namespace AGV_V1._0
         {
             try
             {
-               FileUtil.LoadAgvXml(); //初始化agv配置文件
-            }
-            catch (FileNotFoundException ex)
-            {
-                Logs.Fatal("agvFile未找到"+ex);
-            }
-            catch (FileLoadException ex)
-            {
-                Logs.Fatal("agvFile 加载异常：" + ex);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("小车文件加载失败");
-                Logs.Fatal("小车文件加载失败");
-            }
+                FileUtil.LoadAgvXml(); //初始化agv配置文件
 
-            try
-            {
                 VehicleManager.Instance.InitialVehicle();
                 VehicleManager.Instance.Start();
-                VehicleManager.Instance.ShowMessage += ShowMsg;
+                VehicleManager.Instance.ShowMessage += OnShowMessageWithPicBox;
+
 
                 label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
                 label2.Text = "开始运行时间：" + DateTime.Now.ToString();
 
+                Logs.Info("当前工作小车" + ConstDefine.g_VehicleCount + "辆");
+                Logs.Info("开始运行时间：" + DateTime.Now.ToString());
+
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logs.Fatal("agvFile未找到" + ex);
+            }
+            catch (FileLoadException ex)
+            {
+                Logs.Fatal("agvFile 加载异常：" + ex);
             }
             catch (ArgumentNullException ex)
             {
@@ -188,7 +184,8 @@ namespace AGV_V1._0
             }
             catch (Exception ex)
             {
-                Logs.Error("小车初始化失败" + ex);
+                MessageBox.Show("小车文件加载失败");
+                Logs.Fatal("小车文件加载失败");
             }
 
         }
@@ -437,10 +434,10 @@ namespace AGV_V1._0
             //    int index = 2;
             //    if (vehicle[index].Route != null)
             //    {
-            //        ShowMsg(this, new MessageEventArgs("第"+index + "辆小车:(" + vehicle[index].BeginX+ ","+vehicle[index].BeginY+")->("+ vehicle[index].EndX+ ","+vehicle[index].EndY+")"));
+            //        OnShowMessageWithPicBox(this, new MessageEventArgs("第"+index + "辆小车:(" + vehicle[index].BeginX+ ","+vehicle[index].BeginY+")->("+ vehicle[index].EndX+ ","+vehicle[index].EndY+")"));
             //        for (int i = 0; i < vehicle[index].Route.Count; i++)
             //        {
-            //            ShowMsg(this, new MessageEventArgs(i + ":" + vehicle[index].Route[i].Dir + ""));
+            //            OnShowMessageWithPicBox(this, new MessageEventArgs(i + ":" + vehicle[index].Route[i].Dir + ""));
             //        }
             //    }
             //    first = false;
@@ -512,10 +509,10 @@ namespace AGV_V1._0
         }
         long time = 0;
         long oldTime = 0;
-        public void TransmitToTask(object sender, MessageEventArgs e)
+        public void OnTransmitToTask(object sender, MessageEventArgs e)
         {
-            //ShowMsg(sender,e);
-            // ShowMsg(sender, new MessageEventArgs("归位"));
+            //OnShowMessageWithPicBox(sender,e);
+            // OnShowMessageWithPicBox(sender, new MessageEventArgs("归位"));
             try
             {
                 tm.Send(e.Type, e.Message);
@@ -523,16 +520,39 @@ namespace AGV_V1._0
             catch (Exception ex)
             {
                 Logs.Error("转发异常:" + ex.Message);
-                ShowMsg(this, new MessageEventArgs("转发异常:" + ex.Message));
+                OnShowMessageWithPicBox(this, new MessageEventArgs("转发异常:" + ex.Message));
             }
         }
-        public void ShowMsg(object sender, MessageEventArgs e)
+        public void OnShowMessageFinishCount(object sender, MessageEventArgs e)
+        {
+            if (finishCountLabel.InvokeRequired)
+            {
+                // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
+                Action actionDelegate = () => { ShowFinishCount(e.Message); };
+
+                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
+
+                // 或者 
+                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
+                this.finishCountLabel.Invoke(actionDelegate, null);
+            }
+            else
+            {
+                ShowFinishCount(e.Message);
+                // update(e.ShowMessage);
+            }
+        }
+        void ShowFinishCount(string str)
+        {
+            finishCountLabel.Text = str;
+        }
+        public void OnShowMessageWithPicBox(object sender, MessageEventArgs e)
         {
 
             if (pic.InvokeRequired)
             {
                 // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
-                Action actionDelegate = () => { DrawPicShow(e.Message); };
+                Action actionDelegate = () => { DrawMsgOnPic(e.Message); };
 
                 //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
 
@@ -542,7 +562,7 @@ namespace AGV_V1._0
             }
             else
             {
-                DrawPicShow(e.Message);
+                DrawMsgOnPic(e.Message);
                 // update(e.ShowMessage);
             }
 
@@ -551,7 +571,7 @@ namespace AGV_V1._0
         private Graphics picg = null;
         private int rowCount = 0;
         private static readonly object picgLock = new object();
-        void DrawPicShow(string msg)
+        void DrawMsgOnPic(string msg)
         {
             lock (picgLock)
             {
@@ -593,8 +613,8 @@ namespace AGV_V1._0
             ////监听端口
             //sl = new GuiLisenter(Convert.ToInt32(txtPort.Text));
             //sl._del = UpdateUI;
-            //sl.Transmit += TransmitToTask;
-            //sl.ShowMessage += ShowMsg;
+            //sl.Transmit += OnTransmitToTask;
+            //sl.ShowMessage += OnShowMessageWithPicBox;
 
             //tl = new TaskLisenter();
             //tl.ShowMessage += ShowMessage;

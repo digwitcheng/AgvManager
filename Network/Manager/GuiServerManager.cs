@@ -68,19 +68,8 @@ namespace CowboyTest.Server.APM
         }
         public void Broadcast(MessageType type, string json)
         {
-
-             try
-             {
-                 //if (false == isSendFile)
-                 //{
-                     SendTo("", type, json, true);
-                 //}
-             }
-             catch
-             {
-                 //throw;
-             }
-
+           SendTo("", type, json, true);
+            
         }
 
     }
