@@ -17,6 +17,7 @@ namespace AGV_V1._0.Network.ThreadCode
     {
         private int finishCount = 0;
         private int perCount = 0;//一定时间内的数量
+        private int per = 0;//时间间隔计数器
 
 
          private static TaskSendThread instance;
@@ -51,9 +52,11 @@ namespace AGV_V1._0.Network.ThreadCode
                         DateTime nowTime = DateTime.Now;
                         if (nowTime > startTime)
                         {
-                            Logs.Info(nowTime.ToString() + " :" + perCount);
+                            per++;
+                            Logs.Info(nowTime.ToString()+" "+per + ":" + perCount);
                             startTime = DateTime.Now.AddMinutes(10);
                             perCount = 0;
+                            
                         }
                         perCount++;
                         finishCount++;
