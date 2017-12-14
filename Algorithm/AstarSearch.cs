@@ -31,13 +31,13 @@ namespace Astar
         public const int Infinity = 0xfffffff;
 
         public const int Right = (1 << 0);
-     //   public const int South_East = (1 << 1);
+        //   public const int South_East = (1 << 1);
         public const int Down = (1 << 1);
-      //  public const int South_West = (1 << 3);
+        //  public const int South_West = (1 << 3);
         public const int Left = (1 << 2);
-      //  public const int North_West = (1 << 5);
+        //  public const int North_West = (1 << 5);
         public const int Up = (1 << 3);
-      //  public const int North_East = (1 << 7);
+        //  public const int North_East = (1 << 7);
 
         static MyPoint[] dir = new MyPoint[4]{	
         new MyPoint( 0, 1),   //,Direction.Right // East 0
@@ -66,7 +66,7 @@ namespace Astar
         Node[,] graph = null;
 
         int srcX, srcY, dstX, dstY;    //起始点、终点
-        Close[,] close =null;
+        Close[,] close = null;
 
         Direction searchDir; //当前搜索方向
 
@@ -82,8 +82,8 @@ namespace Astar
             Close t;
             int i, mintag;
             cls[x, y].G = g;    //所添加节点的坐标
-            cls[x, y].F = cls[x, y].G + cls[x, y].H;           
-           
+            cls[x, y].F = cls[x, y].G + cls[x, y].H;
+
             q.Array[q.length++] = (cls[x, y]);
             mintag = q.length - 1;
             for (i = 0; i < q.length - 1; i++)
@@ -97,27 +97,27 @@ namespace Astar
             q.Array[q.length - 1] = q.Array[mintag];
             q.Array[mintag] = t;    //将评价函数值最小节点置于队头
         }
-        public Direction getDirection(Close from,Close curPoint)
+        public Direction getDirection(Close from, Close curPoint)
         {
-            
-                if (from.node.x-curPoint.node.x==1)
-                {
-                   return Direction.Up;// 3 North;
-                }
-            if (from.node.x-curPoint.node.x==-1)
-                {
-                    return Direction.Down;// 1;//South;
-                }
-            if (from.node.y-curPoint.node.y==1)
-                {
-                   return Direction.Left;// 2;//West;
-                }
-            if (from.node.y-curPoint.node.y==-1)
-                {
-                    return Direction.Right;// 0;// East;
-                }
+
+            if (from.node.x - curPoint.node.x == 1)
+            {
+                return Direction.Up;// 3 North;
+            }
+            if (from.node.x - curPoint.node.x == -1)
+            {
+                return Direction.Down;// 1;//South;
+            }
+            if (from.node.y - curPoint.node.y == 1)
+            {
+                return Direction.Left;// 2;//West;
+            }
+            if (from.node.y - curPoint.node.y == -1)
+            {
+                return Direction.Right;// 0;// East;
+            }
             return from.node.direction;
-               
+
 
 
         }
@@ -148,17 +148,18 @@ namespace Astar
             cls[dx, dy].G = Infinity;
         }
 
-       public void initGraph(ElecMap elc, List<MyPoint> scanner, List<MyPoint> lockNode, int v_num, int sx, int sy, int dx, int dy, Direction direction)
-      //  public void initGraph(ElecMap elc, List<MyPoint> scanner,ConcurrentQueue<MyPoint> lockNode, int v_num, int sx, int sy, int dx, int dy, Direction direction)
-        {  
-            
+
+        void initGraph(ElecMap elc, List<MyPoint> scanner, List<MyPoint> lockNode, int v_num, int sx, int sy, int dx, int dy, Direction direction)
+        //  public void initGraph(ElecMap elc, List<MyPoint> scanner,ConcurrentQueue<MyPoint> lockNode, int v_num, int sx, int sy, int dx, int dy, Direction direction)
+        {
+
             //地图发生变化时重新构造地
             int i, j;
             srcX = sx;    //起点X坐标
             srcY = sy;    //起点Y坐标
             dstX = dx;    //终点X坐标
             dstY = dy;    //终点Y坐标
-            this.searchDir=direction;
+            this.searchDir = direction;
             //switch (direction)
             //{
             //    case Direction.East:
@@ -175,13 +176,13 @@ namespace Astar
             //        break;
             //}
 
-             //电子地图的长、宽被分割的个数
+            //电子地图的长、宽被分割的个数
             Height = elc.HeightNum;
             Width = elc.WidthNum;
             //Width = width;
             //Height = height;
 
-           graph=new Node[Height, Width];
+            graph = new Node[Height, Width];
 
             for (i = 0; i < Height; i++)
             {
@@ -189,8 +190,9 @@ namespace Astar
                 {
                     graph[i, j] = new Node { };
                     int value = 1;
-                    if(elc.mapnode[i, j].IsAbleCross == true){//&&elc.mapnode[i, j].LockNode != v_num){
-                        value=0;
+                    if (elc.mapnode[i, j].IsAbleCross == true)
+                    {//&&elc.mapnode[i, j].LockNode != v_num){
+                        value = 0;
                     }
                     graph[i, j].value = value;//&&elc.mapnode[i,j].NodeCanUsed==-1
                     graph[i, j].x = i; //地图坐标X
@@ -206,6 +208,10 @@ namespace Astar
 
                 }
             }
+            if (NodeDirCount(sx, sy) <= lockNode.Count)
+            {
+                lockNode.Clear();
+            }
             for (int index = 0; index < lockNode.Count; index++)
             {
                 graph[lockNode[index].X, lockNode[index].Y].node_Type = false;
@@ -217,12 +223,12 @@ namespace Astar
             //        graph[point.X, point.Y].node_Type = false;
             //    }
             //});
-            
-                for (int index = 0; index < scanner.Count; index++)
-                {
-                    graph[scanner[index].X, scanner[index].Y].node_Type = false;
-                }
-           
+
+            for (int index = 0; index < scanner.Count; index++)
+            {
+                graph[scanner[index].X, scanner[index].Y].node_Type = false;
+            }
+
             for (i = 0; i < Height; i++)
             {
                 for (j = 0; j < Width; j++)
@@ -307,41 +313,62 @@ namespace Astar
                 }
             }
         }
+        int NodeDirCount(int x, int y)
+        {
+            int count = 0;
+            if (graph[x, y].Up)
+            {
+                count++;
+            }
+            if (graph[x, y].Down)
+            {
+                count++;
+            }
+            if (graph[x, y].Left)
+            {
+                count++;
+            }
+            if (graph[x, y].Right)
+            {
+                count++;
+            }
 
+            return count;
+        }
 
-        public int astar()
+        int astar()
         {    // A*算法遍历
             //int times = 0; 
             int i, curX, curY, surX, surY;
             float surG;
             Open open = new Open(); //Open表
             Close curPoint = new Close();
-           // curPoint.node = new MapNode();
+            // curPoint.node = new MapNode();
             //curPoint.node.direction = this.searchDir;
             //curPoint.node.stopTime = 1;
-            
+
 
             close = new Close[Height, Width];
             initOpen(open);
             initClose(close, srcX, srcY, dstX, dstY);
             close[srcX, srcY].vis = true;
             push(open, close, srcX, srcY, 0);
-           
+
 
             while (open.length > 0)
             {    //times++;
                 curPoint = shift(open);
                 curX = curPoint.node.x;
                 curY = curPoint.node.y;
-                
+
                 if (curPoint.from == null)
                 {
                     curPoint.node.direction = this.searchDir;
-                     
+
                 }
                 else
                 {
-                    curPoint.node.direction= getDirection(curPoint.from, curPoint);//0525
+                    curPoint.node.direction = getDirection(curPoint.from, curPoint);//0525
                 }
                 for (i = 0; i < 4; i++)
                 {
@@ -359,7 +386,7 @@ namespace Astar
                     if (!close[surX, surY].vis)
                     {
                         close[surX, surY].vis = true;
-                        close[surX, surY].from = curPoint;                        
+                        close[surX, surY].from = curPoint;
                         Direction tempDir = new Direction();
                         switch (i)
                         {
@@ -376,11 +403,11 @@ namespace Astar
                                 tempDir = Direction.Up;
                                 break;
                         }
-                        int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;                       
-                      //  curPoint.node.stopTime = 1+directionCost * 2; 
-                        
+                        int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;
+                        //  curPoint.node.stopTime = 1+directionCost * 2; 
+
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY))+3*directionCost;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + 3 * directionCost;
                         push(open, close, surX, surY, surG);
                     }
                 }
@@ -397,7 +424,7 @@ namespace Astar
 
         string[] Symbol = new string[5] { "□", "▓", "▽", "☆", "◎" };
 
-       
+
         public Close getShortest()
         {    // 获取最短路径
 
@@ -426,7 +453,7 @@ namespace Astar
         Close start;
         int m = 0;
         //int shortestep;
-       // public int printShortest(List<MyPoint> route)
+        // public int printShortest(List<MyPoint> route)
         public int SearchRoute(List<MyPoint> route)
         {
             Close p;
@@ -443,13 +470,13 @@ namespace Astar
                 while (p.from != null)
                 {
                     graph[p.node.x, p.node.y].value = Pass;
-                   // System.Console.WriteLine("({0}，{1}）→", p.node.col, p.node.row);
+                    // System.Console.WriteLine("({0}，{1}）→", p.node.col, p.node.row);
                     route.Add(new MyPoint(p.node.x, p.node.y));
                     m++;
                     p = p.from;
                     step++;
                 }
-               // System.Console.WriteLine("→（{0}，{1}）", p.node.col, p.node.row);
+                // System.Console.WriteLine("→（{0}，{1}）", p.node.col, p.node.row);
                 //route.Add(new MyPoint(p.node.col, p.node.row));
                 route.Add(new MyPoint(p.node.x, p.node.y));
                 m++;
@@ -459,7 +486,7 @@ namespace Astar
             }
         }
 
-     
+
 
         //public void printSur()
         //{
@@ -540,7 +567,7 @@ namespace Astar
         //    }
         //    return times;
         //}
-       // static int[,] map = null;
+        // static int[,] map = null;
         //public void ChangeMap(ElecMap elc, int width, int height)
         //{
         //    //电子地图的长、宽被分割的个数
@@ -565,18 +592,18 @@ namespace Astar
         //        }
         //    }
         //}
-        public  Node[,] GetGraph()
+        public Node[,] GetGraph()
         {
             return graph;
         }
-       // public List< MyPoint> search(ElecMap elc, int width, int height, int firstX, int firstY, int endX, int endY,Direction direction)
-        public List<MyPoint> Search(ElecMap elc, List<MyPoint>scannerNode, List<MyPoint> lockNode, int v_num, int width, int height, int firstX, int firstY, int endX, int endY, Direction direction)
-      //  public List<MyPoint> Search(ElecMap elc, List<MyPoint> scannerNode, ConcurrentQueue<MyPoint> lockNode, int v_num, int width, int height, int firstX, int firstY, int endX, int endY, Direction direction)
+        // public List< MyPoint> search(ElecMap elc, int width, int height, int firstX, int firstY, int endX, int endY,Direction direction)
+        public List<MyPoint> Search(ElecMap elc, List<MyPoint> scannerNode, List<MyPoint> lockNode, int v_num, int width, int height, int firstX, int firstY, int endX, int endY, Direction direction)
+        //  public List<MyPoint> Search(ElecMap elc, List<MyPoint> scannerNode, ConcurrentQueue<MyPoint> lockNode, int v_num, int width, int height, int firstX, int firstY, int endX, int endY, Direction direction)
         {
 
-           // ChangeMap(elc, width, height);  // 转换寻找路径的可达还是不可达
+            // ChangeMap(elc, width, height);  // 转换寻找路径的可达还是不可达
             initGraph(elc, scannerNode, lockNode, v_num, firstX, firstY, endX, endY, direction);
-          //  List<MyPoint> route = new List<MyPoint>();
+            //  List<MyPoint> route = new List<MyPoint>();
             List<MyPoint> route = new List<MyPoint>();
             SearchRoute(route);
             if (route.Count < 1)
@@ -625,6 +652,6 @@ namespace Astar
         }
 
 
-    
+
     }
 }
