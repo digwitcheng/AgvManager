@@ -15,9 +15,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
 using System.IO;
-using GMap.NET.WindowsForms;
-using GMap.NET;
-using GMap.NET.MapProviders;
 using System.Threading;
 using AGV_V1._0.Algorithm;
 using Newtonsoft.Json;
@@ -161,6 +158,7 @@ namespace AGV_V1._0
                 label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
                 label2.Text = "开始运行时间：" + DateTime.Now.ToString();
 
+                Logs.Info("*--------------------------------------------------------------*");
                 Logs.Info("当前工作小车" + ConstDefine.g_VehicleCount + "辆");
                 Logs.Info("开始运行时间：" + DateTime.Now.ToString());
 
