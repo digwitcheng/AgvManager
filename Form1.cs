@@ -451,7 +451,7 @@ namespace AGV_V1._0
 
             pic.Image = newSurface;
         }
-
+        int aaa = 0;
         void drawArrow(int y, int x)
         {
             int dir = 0;
