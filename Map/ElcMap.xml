@@ -1068,13 +1068,13 @@
     <td61-88 direction="1111" tip="15上下左右">道路</td61-88>
     <td61-89 direction="1111" tip="15上下左右">道路</td61-89>
     <td61-90 direction="1111" tip="15上下左右">道路</td61-90>
-    <td52-76 direction="1111" tip="15上下左右">排队区</td52-76>
-    <td52-77 direction="1111" tip="15上下左右">排队区</td52-77>
-    <td52-78 direction="1111" tip="15上下左右">排队区</td52-78>
-    <td52-79 direction="1111" tip="15上下左右">排队区</td52-79>
-    <td52-80 direction="1111" tip="15上下左右">排队区</td52-80>
-    <td52-81 direction="1111" tip="15上下左右">排队区</td52-81>
-    <td52-82 direction="1111" tip="15上下左右">排队区</td52-82>
+    <td52-76 direction="0010" tip="15上下左右">排队区</td52-76>
+    <td52-77 direction="0010" tip="15上下左右">排队区</td52-77>
+    <td52-78 direction="0010" tip="15上下左右">排队区</td52-78>
+    <td52-79 direction="0010" tip="15上下左右">排队区</td52-79>
+    <td52-80 direction="0010" tip="15上下左右">排队区</td52-80>
+    <td52-81 direction="0010" tip="15上下左右">排队区</td52-81>
+    <td52-82 direction="0010" tip="15上下左右">排队区</td52-82>
     <td5-82 direction="0010" tip="2左">道路</td5-82>
     <td1-0 direction="0100" tip="4下">休息区</td1-0>
     <td1-1 direction="1111" tip="15上下左右">休息区</td1-1>
@@ -1519,7 +1519,7 @@
     <td5-76 direction="0010" tip="2左">道路</td5-76>
     <td5-77 direction="1010" tip="10上左">道路</td5-77>
     <td5-78 direction="0010" tip="2左">道路</td5-78>
-    <td5-79 direction="1010" tip="10上左">道路</td5-79>
+    <td5-79 direction="1110" tip="10上左">道路</td5-79>
     <td5-80 direction="0110" tip="6下左">道路</td5-80>
     <td5-81 direction="1010" tip="10上左">道路</td5-81>
     <td5-83 direction="1010" tip="10上左">道路</td5-83>
