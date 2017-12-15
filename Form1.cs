@@ -327,45 +327,7 @@ namespace AGV_V1._0
                 }
             }
 
-            ////Bitmap newSurface = new Bitmap(surface);
-            //Graphics gg = Graphics.FromImage(newSurface);
-
-            //for (int i = 0; i < Elc.HeightNum; i++)
-            //{
-            //    for (int j = 0; j < Elc.WidthNum; j++)
-            //    {
-            //        drawArrow(i, j);
-            //    }
-            //}
-            ////绘制标尺
-            //int w = Elc.WidthNum;
-            //int h = Elc.HeightNum;
-            //Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.nodeLength / 2);
-            //Brush brush = Brushes.Yellow;
-            //for (int i = 0; i < h + 1; i++)
-            //{
-            //    PointF pf = new PointF(0, i * ConstDefine.nodeLength);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 255)), new Rectangle(0, i * ConstDefine.nodeLength, ConstDefine.nodeLength, ConstDefine.nodeLength));
-            //    g.DrawString(i + "", font, brush, pf);
-
-            //    PointF pf2 = new PointF(w * ConstDefine.nodeLength, i * ConstDefine.nodeLength);
-            //   g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(w * ConstDefine.nodeLength, i * ConstDefine.nodeLength, ConstDefine.nodeLength , ConstDefine.nodeLength));
-            //    g.DrawString(i + "", font, brush, pf2);
-
-            //}
-            //for (int i = 1; i < w; i++)
-            //{
-            //    PointF pf = new PointF(i * ConstDefine.nodeLength, 0);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(i * ConstDefine.nodeLength, 0, ConstDefine.nodeLength - 2, ConstDefine.nodeLength - 2));
-            //    g.DrawString(i + "", font, brush, pf);
-
-            //    PointF pf2 = new PointF(i * ConstDefine.nodeLength, h * ConstDefine.nodeLength);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(i * ConstDefine.nodeLength, h * ConstDefine.nodeLength, ConstDefine.nodeLength - 2, ConstDefine.nodeLength - 2));
-            //    g.DrawString(i + "", font, brush, pf2);
-
-            //}
-
-
+           
 
         }
 
@@ -451,7 +413,6 @@ namespace AGV_V1._0
 
             pic.Image = newSurface;
         }
-        int aaa = 0;
         void drawArrow(int y, int x)
         {
             int dir = 0;

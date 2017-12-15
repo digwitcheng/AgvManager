@@ -42,7 +42,6 @@ namespace AGV_V1._0
         }
         private VehicleManager()
         {
-            Start();
         }
         protected override string ThreadName()
         {
