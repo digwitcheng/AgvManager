@@ -98,11 +98,10 @@ namespace AGV_V1._0
             //this.Speed = 0;
             Elc.mapnode[v.BeginX, v.BeginY].NodeCanUsed = v.Id;
             // Elc.mapnode[startX, startY].NodeCanUsed = false;//搜索完,小车自己所在的地方被小车占用           
-            if (routeList == null)
+            if (routeList.Count<1)
             {
                 // MessageBox.Show("没有搜索到路线:"+v_num);
                 v.CurState = State.cannotToDestination;
-                v.Route = null;
                 //v.LockNode.cl;
             }
             else

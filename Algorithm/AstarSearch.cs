@@ -603,50 +603,8 @@ namespace Astar
 
             // ChangeMap(elc, width, height);  // 转换寻找路径的可达还是不可达
             initGraph(elc, scannerNode, lockNode, v_num, firstX, firstY, endX, endY, direction);
-            //  List<MyPoint> route = new List<MyPoint>();
             List<MyPoint> route = new List<MyPoint>();
             SearchRoute(route);
-            if (route.Count < 1)
-            {
-                route = null;
-            }
-
-
-            //printMap();
-
-            //while (true)
-            //{
-            //    Console.WriteLine("请输入起始地点坐标和目标地点坐标，中间以空格隔开 如1 1 3 4");
-            //    string[] values = Console.ReadLine().Split(' ');
-            //    srcX = int.Parse(values[0]);
-            //    srcY = int.Parse(values[1]);
-            //    dstX = int.Parse(values[2]);
-            //    dstY = int.Parse(values[3]);
-            //    if (within(srcX, srcY) && within(dstX, dstY))
-            //    {
-            //        if ((shortestep = printShortest()) > 0)
-            //        {
-            //            Console.WriteLine("从（{0}，{1}）到（{2}，{3}）的最短步数是: {4}",
-            //                srcX, srcY, dstX, dstY, shortestep);
-            //            printMap();
-            //            clearMap();
-            //          // int times= bfs();
-            //            //printDepth();
-            //          //  Console.WriteLine("shortestep={0}, close[dstX, dstY].G={1}",times,close[dstX, dstY].G);
-            //          //  Console.WriteLine((shortestep == close[dstX, dstY].G) ? "正确" : "错误");
-            //          //  clearMap();
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("从（{0}，{1}）不可到达（{2}，{3}",
-            //                srcX, srcY, dstX, dstY);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.Write("输入错误！");
-            //    }
-            //
             return route;
             //  }
         }

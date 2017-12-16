@@ -310,7 +310,7 @@ namespace AGV_V1._0
                 //    Arrive = true;
                 //    return;
                 //}
-                if (route == null || route.Count < 2)
+                if (route == null || route.Count < 1)
                 {
                     return;
                 }
@@ -341,11 +341,8 @@ namespace AGV_V1._0
                     StopTime = ConstDefine.STOP_TIME;
                     tPtr++;
 
-                    BeginX = route[tPtr].X;
-                    BeginY = route[tPtr].Y;
-
                 }
-                if (tPtr > 0)
+                else  if (tPtr > 0)
                 {
 
                     if (tPtr >= route.Count - 1)
@@ -391,9 +388,9 @@ namespace AGV_V1._0
 
                     //tPtr++;
 
-                    BeginX = route[tPtr].X;
-                    BeginY = route[tPtr].Y;
                 }
+                BeginX = route[tPtr].X;
+                BeginY = route[tPtr].Y;
             }
         }
 
