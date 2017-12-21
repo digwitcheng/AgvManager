@@ -300,7 +300,12 @@ namespace AGV_V1._0
         {
             return ElecMap.Instance.mapnode[BeginX, BeginY].Type;
         }
-        public void Move(ElecMap Elc)
+        /// <summary>
+        /// 移动
+        /// </summary>
+        /// <param name="Elc"></param>
+        /// <returns>是否移动了</returns>
+        public bool Move(ElecMap Elc)
         {
             lock (RouteLock)
             {
@@ -312,7 +317,7 @@ namespace AGV_V1._0
                 //}
                 if (route == null || route.Count < 1)
                 {
-                    return;
+                    return false;
                 }
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
@@ -329,7 +334,7 @@ namespace AGV_V1._0
                             {
                                 Stoped = temp;
                                 StopTime--;
-                                return;
+                                return false;
                             }
                             else
                             {
@@ -349,7 +354,7 @@ namespace AGV_V1._0
                     {
                         Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
                         Arrive = true;
-                        return;
+                        return false;
                     }
 
                     if (VirtualTPtr <= route.Count - 1)
@@ -362,7 +367,7 @@ namespace AGV_V1._0
                         {
                             Stoped = temp;
                             StopTime--;
-                            return;
+                            return false;
                         }
                         else
                         {
@@ -391,6 +396,7 @@ namespace AGV_V1._0
                 }
                 BeginX = route[tPtr].X;
                 BeginY = route[tPtr].Y;
+                return true;
             }
         }
 

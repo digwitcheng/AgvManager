@@ -79,7 +79,7 @@ namespace AGV_V1._0
             SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
             GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
 
-            VehicleManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
             VehicleManager.Instance.End();
 
             GuiSendThread.Instance.End();
@@ -152,7 +152,7 @@ namespace AGV_V1._0
 
                 VehicleManager.Instance.InitialVehicle();
                 VehicleManager.Instance.Start();
-                VehicleManager.Instance.ShowMessage += OnShowMessageWithPicBox;
+                VehicleManager.Instance.ShowMessage += OnShowMessageDistanceCount;
 
 
                 label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
@@ -544,6 +544,29 @@ namespace AGV_V1._0
         {
             finishCountLabel.Text = str;
         }
+        public void OnShowMessageDistanceCount(object sender, MessageEventArgs e)
+        {
+            if (finishCountLabel.InvokeRequired)
+            {
+                // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
+                Action actionDelegate = () => { ShowDistanceCount(e.Message); };
+
+                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
+
+                // 或者 
+                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
+                this.finishCountLabel.Invoke(actionDelegate, null);
+            }
+            else
+            {
+                ShowDistanceCount(e.Message);
+                // update(e.ShowMessage);
+            }
+        }
+        void ShowDistanceCount(string str)
+        {
+            distanceTotal.Text = str;
+        }
         public void OnShowMessageWithPicBox(object sender, MessageEventArgs e)
         {
 
@@ -646,6 +669,7 @@ namespace AGV_V1._0
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisposeServer();
+            Logs.Info("总任务数："+finishCountLabel.Text+" "+distanceTotal.Text);
             EndThread();
             //Environment.Exit(0); 
 

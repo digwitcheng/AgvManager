@@ -24,6 +24,7 @@ namespace AGV_V1._0
         private static Vehicle[] vehicles;
         List<Vehicle> vFinished = new List<Vehicle>();
         private bool vehicleInited = false;
+        private double  moveCount = 0;//统计移动的格数，当前地图一格1.5米
 
         private static Random rand = new Random(1);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
@@ -51,12 +52,7 @@ namespace AGV_V1._0
         protected override void Run()
         {
             Thread.Sleep(ConstDefine.STEP_TIME);
-            double totalTime = 0;
-
-            int nullCount = 0;
-            int researchCount = 0;
-            int moveCount = 0;
-
+            
             if (vehicles == null)
             {
                 return;
@@ -91,7 +87,6 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Route == null || vehicles[vnum].Route.Count <= 1)
                 {
-                    nullCount++;
                     continue;
                 }
                 //if (vehicle[vnum].Arrive == true && vehicle[vnum].CurNodeTypy() == NodeType.queueEntra)
@@ -163,7 +158,6 @@ namespace AGV_V1._0
                 {
                     if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
                     {
-                        researchCount++;
                         if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
                         {
                             vehicles[vehicles[vnum].Stoped].StopTime = 2;
@@ -178,12 +172,13 @@ namespace AGV_V1._0
                 }
                 else
                 {
-                    vehicles[vnum].Move(ElecMap.Instance);
-                    moveCount++;
+                   bool isMove=  vehicles[vnum].Move(ElecMap.Instance);
+                   if (isMove)
+                   {                      
+                     moveCount++;
+                     OnShowMessage(string.Format("{0:N} 公里",(moveCount*1.5)/1000.0));                     
+                   }
                 }
-
-                sw.Stop();
-                totalTime += sw.Elapsed.TotalMilliseconds;
             }
 
 
