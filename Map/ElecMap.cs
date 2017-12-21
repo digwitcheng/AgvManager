@@ -12,6 +12,7 @@ using AGV_V1._0.Algorithm;
 using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace AGV_V1._0
 {
@@ -56,6 +57,8 @@ namespace AGV_V1._0
         private List<MyPoint> queueEntra = new List<MyPoint>();
         private List<MyPoint> queuingArea = new List<MyPoint>();
         private List<MyPoint> restArea = new List<MyPoint>();
+
+        
 
 
         public List<MyPoint> GetRestArea()

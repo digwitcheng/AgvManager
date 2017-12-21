@@ -1,4 +1,5 @@
 ﻿using AGV_V1._0.Agv;
+using AGV_V1._0.Map;
 using AGV_V1._0.Util;
 using Astar;
 using System;
@@ -67,7 +68,7 @@ namespace AGV_V1._0
             //Elc.mapnode[Route[8].X, Route[8].Y].LockNode = v_num;
             v.BeginX = v.Route[v.TPtr].X;
             v.BeginY = v.Route[v.TPtr].Y;
-            //Task.Factory.StartNew(() => SearchRoute(Elc), TaskCreationOptions.None);
+            //Task.Factory.StartNew(() => PrintRoute(Elc), TaskCreationOptions.None);
 
             SearchRoute(v);
 
@@ -106,6 +107,7 @@ namespace AGV_V1._0
             }
             else
             {
+               
                 v.Route = routeList;
                 if (Elc.IsQueueEntra(v.EndX, v.EndY))
                 {
@@ -123,6 +125,7 @@ namespace AGV_V1._0
                         v.EndLoc = "ScanArea";
                     }
                 }
+                NodeMethod.AddRoute2CrossCount(Elc,v.Route);
                 // this.vehical_state = State.carried;
 
                 //Route = new ConcurrentDictionary<int, MyLocation>();
@@ -141,6 +144,8 @@ namespace AGV_V1._0
 
             }
         }
+
+       
         
         bool checkXY(Vehicle v)
         {

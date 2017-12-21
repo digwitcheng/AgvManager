@@ -144,6 +144,13 @@ namespace AGV_V1._0
 
 
         }
+
+        void SetPanelSize()
+        {
+            this.tableLayoutPanel1.ColumnStyles[0] = new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, ConstDefine.LEFT_PANEL_RADIO);
+            this.tableLayoutPanel1.ColumnStyles[1] = new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, ConstDefine.MID_PANEL_RADIO);
+            this.tableLayoutPanel1.ColumnStyles[2] = new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, ConstDefine.RIGHT_PANEL_RADIO);
+        }
         void InitialAgv()
         {
             try
@@ -223,10 +230,11 @@ namespace AGV_V1._0
         private int MIN_NODE_LENGTH;
         void InitUiView()
         {
+            SetPanelSize();
             Elc.InitialElc();
 
             this.WindowState = FormWindowState.Maximized;
-            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
+            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.MID_PANEL_RADIO) / ConstDefine.g_WidthNum;
             MAX_NODE_LENGTH = ConstDefine.g_NodeLength * 2;
             MIN_NODE_LENGTH = ConstDefine.g_NodeLength / 2;
 
@@ -716,7 +724,7 @@ namespace AGV_V1._0
         /// <param name="e"></param>
         private void button5_Click_1(object sender, EventArgs e)
         {
-            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
+            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.MID_PANEL_RADIO) / ConstDefine.g_WidthNum;
             //Elc.InitialElc(); //初始化电子地图
             SetMapView();
             this.Invalidate();

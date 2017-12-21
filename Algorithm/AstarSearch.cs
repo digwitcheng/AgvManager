@@ -15,6 +15,8 @@ namespace Astar
 
     class AstarSearch
     {
+        public const int DIR_COST = 2;
+        public const int CROSS_COST = 2;
 
         public const int MaxLength = 6000;   //用于优先队列（Open表）的数组
         public int Height = 15;       //地图高度
@@ -336,7 +338,7 @@ namespace Astar
             return count;
         }
 
-        int astar()
+        int astar(ElecMap elc)
         {    // A*算法遍历
             //int times = 0; 
             int i, curX, curY, surX, surY;
@@ -406,8 +408,10 @@ namespace Astar
                         int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;
                         //  curPoint.node.stopTime = 1+directionCost * 2; 
 
+                        int crossCost = (elc.mapnode[curX, curY].CrossCount.Count > 0 )? elc.mapnode[curX, curY].CrossCount.Count : 0;
+
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + 3 * directionCost;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + DIR_COST * directionCost+CROSS_COST*crossCost;
                         push(open, close, surX, surY, surG);
                     }
                 }
@@ -425,11 +429,11 @@ namespace Astar
         string[] Symbol = new string[5] { "□", "▓", "▽", "☆", "◎" };
 
 
-        public Close getShortest()
+        public Close getShortest(ElecMap elc)
         {    // 获取最短路径
 
 
-            int result = astar();
+            int result = astar(elc);
             Close p, t, q = null;
             switch (result)
             {
@@ -454,12 +458,12 @@ namespace Astar
         int m = 0;
         //int shortestep;
         // public int printShortest(List<MyPoint> route)
-        public int SearchRoute(List<MyPoint> route)
+        public int PrintRoute(ElecMap elc, List<MyPoint> route)
         {
             Close p;
             int step = 0;
 
-            p = getShortest();
+            p = getShortest(elc);
             start = p;
             if (p == null)
             {
@@ -604,7 +608,7 @@ namespace Astar
             // ChangeMap(elc, width, height);  // 转换寻找路径的可达还是不可达
             initGraph(elc, scannerNode, lockNode, v_num, firstX, firstY, endX, endY, direction);
             List<MyPoint> route = new List<MyPoint>();
-            SearchRoute(route);
+            PrintRoute(elc,route);
             return route;
             //  }
         }

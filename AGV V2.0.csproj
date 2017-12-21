@@ -66,6 +66,7 @@
     <Compile Include="Agv\State.cs" />
     <Compile Include="Algorithm\AstarSearch.cs" />
     <Compile Include="Algorithm\Close.cs" />
+    <Compile Include="Map\NodeMethod.cs" />
     <Compile Include="Network\Messages\FileMessage.cs" />
     <Compile Include="Network\Messages\MapFileMessage.cs" />
     <Compile Include="Network\Messages\BaseMessage.cs" />

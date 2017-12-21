@@ -1,6 +1,7 @@
 ﻿using AGV_V1._0.Agv;
 using AGV_V1._0.Algorithm;
 using AGV_V1._0.Event;
+using AGV_V1._0.Map;
 using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
@@ -66,20 +67,20 @@ namespace AGV_V1._0
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)
                 {
 
-                   // SearchRoute(vnum, false);
+                   // PrintRoute(vnum, false);
 
                     //vehicle[vnum].LockNode.Clear();
                     //vehicle[vnum].Arrive = false;
                     //int temp = vnum;
                     //vehicle[vnum].vehical_state = State.carried;
-                    //SearchRoute(temp, false);
+                    //PrintRoute(temp, false);
 
                     ////搜索路径
                     //int temp = vnum;
                     //Task.Factory.StartNew(() =>
                     //{
                     //    Thread.Sleep(500); 
-                    //    SearchRoute(temp, false);  
+                    //    PrintRoute(temp, false);  
                     //});  
 
                     vehicles[vnum].Arrive = true;
@@ -108,7 +109,7 @@ namespace AGV_V1._0
                 //    vehicle[vnum].SetRoute(null);
                 //    vehicle[vnum].GetLockNode().Clear();
                 //    vehicle[vnum].EndLoc = "ScanArea";
-                //    SearchRoute(vnum, false);
+                //    PrintRoute(vnum, false);
                 //    continue;
                 //}
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
@@ -144,7 +145,7 @@ namespace AGV_V1._0
                 //        if (nextVnumStopedBy == vnum)//相向冲突
                 //        {
                 //            //重新搜索路径
-                //            SearchRoute(vnum, true);
+                //            PrintRoute(vnum, true);
                 //        }
                 //        else//交叉冲突
                 //        {
@@ -170,22 +171,21 @@ namespace AGV_V1._0
                         }
                         //重新搜索路径
                         SearchRoute(vnum, true);
-                        // Task.Factory.StartNew(() => SearchRoute(vnum), TaskCreationOptions.LongRunning);
-                        //  vehicle[vnum].SearchRoute(ElecMap.Instance);
+                        // Task.Factory.StartNew(() => PrintRoute(vnum), TaskCreationOptions.LongRunning);
+                        //  vehicle[vnum].PrintRoute(ElecMap.Instance);
                         //路径搜索完 节点开锁 ElecMap.Instance.mapnode[vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.X, vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.Y].LockNode = -1;
                     }
                     vehicles[vnum].StopTime = 3;
                 }
                 else
                 {
-                    vehicles[vnum].Move(ElecMap.Instance);
+                    vehicles[vnum].Move(ElecMap.Instance);                    
                     moveCount++;
                 }
 
                 sw.Stop();
                 totalTime += sw.Elapsed.TotalMilliseconds;
             }
-
 
             //sl.SendVehicleData(vehicle);
             // QueueData.Instance.AddMyQueueList(data);
@@ -322,7 +322,7 @@ namespace AGV_V1._0
                 //SendData sd = new SendData(i, mp.X, mp.Y, mpEnd.X, mpEnd.Y);
                 //sd.Arrive = false;
                 //sd.EndLoc = "rest";
-                //SearchRoute(i, false);
+                //PrintRoute(i, false);
 
             }
         }
@@ -346,7 +346,7 @@ namespace AGV_V1._0
             //}
             SearchRouteQueue.Instance.AddMyQueueList(new SearchData(td, isResarch));
 
-            //Task.Factory.StartNew(() => vehicle[num].SearchRoute(Elc), TaskCreationOptions.LongRunning);
+            //Task.Factory.StartNew(() => vehicle[num].PrintRoute(Elc), TaskCreationOptions.LongRunning);
         }
 
         private static readonly object vehicleLock = new object();

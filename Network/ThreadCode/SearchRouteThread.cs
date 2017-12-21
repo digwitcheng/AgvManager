@@ -84,14 +84,14 @@ namespace AGV_V1._0.ThreadCode
             vehicle[num].CurState = searchData.Data.State;
             if (searchData.IsReSearch)
             {
-              // Task.Factory.StartNew(() => vehicle[num].SearchRoute(), TaskCreationOptions.LongRunning);
+              // Task.Factory.StartNew(() => vehicle[num].PrintRoute(), TaskCreationOptions.LongRunning);
                // vehicle [num].ReSearchRoute();
                 SearchManager.Instance.ReSearchRoute(vehicle[num]);
             }
             else
             {
-               // Task.Factory.StartNew(() => vehicle[num].SearchRoute(), TaskCreationOptions.LongRunning);
-               // vehicle[num].SearchRoute();
+               // Task.Factory.StartNew(() => vehicle[num].PrintRoute(), TaskCreationOptions.LongRunning);
+               // vehicle[num].PrintRoute();
                 SearchManager.Instance.SearchRoute(vehicle[num]);
             }
 

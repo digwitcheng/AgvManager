@@ -5,6 +5,7 @@ using System.Drawing;
 using AGV_V1._0;
 using System.Collections.Generic;
 using Astar;
+using System.Collections.Concurrent;
 
 
 
@@ -23,17 +24,44 @@ namespace AGV_V1
         
 
         private int nodeCanUsed=-1;   //节点是否被占用,值表示被编号为几的小车占用，-1表示没有被占用
+        private static readonly object canUsedLock = new object();
         public int NodeCanUsed
         {
             get
             {
-                return nodeCanUsed;
+                lock (canUsedLock)
+                {
+                    return nodeCanUsed;
+                }
             }
             set
             {
-                nodeCanUsed = value;
+                lock (canUsedLock)
+                {
+                    nodeCanUsed = value;
+                }
             }
         }
+        private static readonly object crossLock = new object();
+        private List<int> crossCount = new List<int>();//各个时间点经过当前点的数量
+        public List<int> CrossCount
+        {
+            get
+            {
+                lock (crossLock)
+                {
+                    return crossCount;
+                }
+            }
+            set
+            {
+                lock (crossLock)
+                {
+                    crossCount = value;
+                }
+            }
+        }
+
        
        // public int LockNode = -1;  //-1节点没有被锁定，大于-1表示被锁定
         public List<int> vehiclePriority{get;set;} //通过节点的小车优先级序列如{1,4,6},数字为小车编号；

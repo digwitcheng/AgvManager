@@ -16,6 +16,7 @@ using AGV_V1._0.Agv;
 using AGV_V1._0.Util;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using AGV_V1._0.Map;
 
 namespace AGV_V1._0
 {
@@ -389,6 +390,7 @@ namespace AGV_V1._0
                     //tPtr++;
 
                 }
+                NodeMethod.RemoveNodeFromCrossCount(Elc,BeginX,BeginY);
                 BeginX = route[tPtr].X;
                 BeginY = route[tPtr].Y;
             }

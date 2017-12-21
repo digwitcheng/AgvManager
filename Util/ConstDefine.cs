@@ -12,7 +12,7 @@ namespace AGV_V1._0.Util
 {
      class ConstDefine
     {
-        public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
+        public static int g_MapWidth = (int)(FORM_WIDTH * MID_PANEL_RADIO);
         public static int g_MapHeight = (int)(FORM_HEIGHT);
         public static int g_WidthNum    = 100;        //地图格子的个数，默认150*150
         public static int g_HeightNum   = 100;       //
@@ -21,11 +21,15 @@ namespace AGV_V1._0.Util
 
 
 
-        public const float PANEL_RADIO = 0.7f;   //界面布局，中间场地占屏比
+        public const float MID_PANEL_RADIO = 0.7f;   //界面布局，中间场地占屏比
+        public const float LEFT_PANEL_RADIO = 0.16f; //左边占屏比
+        public const float RIGHT_PANEL_RADIO = 1 - MID_PANEL_RADIO - LEFT_PANEL_RADIO;
         public const float ENLARGER_RADIO = 1.2f;//每次放大的比率
         public const float NARROW_RADIO = 0.8f; //每次缩小的比率
         public const int FONT_SISE = 10; //消息显示面板字体大小
         public const int ROW_BOARD = 4;  //消息显示上下行空白大小
+
+
         public const int STOP_TIME = 6; //设置等待时间片段
         public const int STEP_TIME = 750;//小车每走一格的间隔
         public const int GUI_TIME = 100;//发送给界面的间隔
@@ -34,6 +38,7 @@ namespace AGV_V1._0.Util
         public const int FORWORD_STEP = 2; 
         public const int RESEARCH_COUNT = 10;
         public const int UNLOADING_TIME = 2000;//在投放口停留的时间
+
         public const int Up = (1 << 3);
         public const int Down = (1 << 2);
         public const int Left = (1 << 1);
