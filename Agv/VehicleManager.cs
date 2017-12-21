@@ -162,8 +162,8 @@ namespace AGV_V1._0
 
                 if (vehicles[vnum].StopTime < 0)
                 {
-                    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
-                    {
+                    //if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
+                    //{
                         researchCount++;
                         if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
                         {
@@ -174,7 +174,7 @@ namespace AGV_V1._0
                         // Task.Factory.StartNew(() => PrintRoute(vnum), TaskCreationOptions.LongRunning);
                         //  vehicle[vnum].PrintRoute(ElecMap.Instance);
                         //路径搜索完 节点开锁 ElecMap.Instance.mapnode[vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.X, vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.Y].LockNode = -1;
-                    }
+                    //}
                     vehicles[vnum].StopTime = 3;
                 }
                 else

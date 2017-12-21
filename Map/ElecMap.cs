@@ -214,10 +214,13 @@ namespace AGV_V1._0
                     {
                         mapnode[tdx, tdy].IsAbleCross = false;
                     }
-                    mapnode[tdx, tdy].Up = (dir[0] == '1' ? true : false);
-                    mapnode[tdx, tdy].Down = (dir[1] == '1' ? true : false);
-                    mapnode[tdx, tdy].Left = (dir[2] == '1' ? true : false);
-                    mapnode[tdx, tdy].Right = (dir[3] == '1' ? true : false);
+                    else
+                    {
+                        mapnode[tdx, tdy].Up = true;//(dir[0] == '1' ? true : false);
+                        mapnode[tdx, tdy].Down = true;//(dir[1] == '1' ? true : false);
+                        mapnode[tdx, tdy].Left = true;//(dir[2] == '1' ? true : false);
+                        mapnode[tdx, tdy].Right = true;//(dir[3] == '1' ? true : false);
+                    }
                 }
                 switch (strType)
                 {
