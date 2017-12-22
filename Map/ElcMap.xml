@@ -6096,7 +6096,7 @@
     <td60-71 direction="0001" tip="1右">道路</td60-71>
     <td60-72 direction="0001" tip="1右">道路</td60-72>
     <td60-73 direction="0001" tip="1右">道路</td60-73>
-    <td60-74 direction="1001" tip="9上右">道路</td60-74>
+    <td60-74 direction="1000" tip="9上右">道路</td60-74>
     <td60-75 direction="0000" tip="0不能走">道路</td60-75>
     <td60-76 direction="0000" tip="0不能走">工位</td60-76>
     <td60-77 direction="0000" tip="0不能走">道路</td60-77>

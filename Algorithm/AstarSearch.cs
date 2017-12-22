@@ -210,7 +210,7 @@ namespace Astar
             }
             if (NodeDirCount(sx, sy) <= lockNode.Count)
             {
-                lockNode.Clear();
+                lockNode.Remove(lockNode[0]);
             }
             for (int index = 0; index < lockNode.Count; index++)
             {
