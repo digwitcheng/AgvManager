@@ -36,14 +36,25 @@ namespace AGV_V1
         }
        
        // public int LockNode = -1;  //-1节点没有被锁定，大于-1表示被锁定
-        public int PassDifficulty { get; set; } //节点通行难度
-        public int TraCongesIntensity { get; set; } //traffic congestion intensity 节点拥堵程度
+
+        private int traCongesIntensity;//traffic congestion intensity 节点拥堵程度
+        public int TraCongesIntensity { get { return traCongesIntensity; } set { traCongesIntensity = value; } }
+       // public int PassDifficulty { get { return passDifficulty; } set { passDifficulty = value; } }
+
+        //节点通行难度,数值越大表示越难通行,默认为2，中等通行难度，不可通行用一个非常大的数表示（100）
+        public const int UNABLE_PASS = 100;
+        public const int MAX_ABLE_PASS = 10;
+        public const int DEFAULT_DIFFICULTY = 2;
+        private int upDifficulty = DEFAULT_DIFFICULTY;
+        private int downDifficulty = DEFAULT_DIFFICULTY;
+        private int leftDifficulty = DEFAULT_DIFFICULTY;
+        private int rightDifficulty = DEFAULT_DIFFICULTY;
 
 
-        public bool Up { get; set; }
-        public bool Down { get; set; }
-        public bool Left { get; set; }
-        public bool Right { get; set; }
+        public int UpDifficulty { get { return upDifficulty; } set { upDifficulty = value; } }
+        public int DownDifficulty { get { return downDifficulty; } set { downDifficulty = value; } }
+        public int LeftDifficulty { get { return leftDifficulty; } set { leftDifficulty = value; } }
+        public int RightDifficulty { get { return rightDifficulty; } set { rightDifficulty = value; } }
 
 
         public bool IsAbleCross    //节点可不可达,true表示可走，false表示不可走 

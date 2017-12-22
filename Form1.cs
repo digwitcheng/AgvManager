@@ -455,19 +455,19 @@ namespace AGV_V1._0
         void drawArrow(int y, int x)
         {
             int dir = 0;
-            if (Elc.mapnode[y, x].Right == true)
+            if (Elc.mapnode[y, x].RightDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir |= ConstDefine.Right;
             }
-            if (Elc.mapnode[y, x].Left == true)
+            if (Elc.mapnode[y, x].LeftDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir |= ConstDefine.Left;
             }
-            if (Elc.mapnode[y, x].Down == true)
+            if (Elc.mapnode[y, x].DownDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir |= ConstDefine.Down;
             }
-            if (Elc.mapnode[y, x].Up == true)
+            if (Elc.mapnode[y, x].UpDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir |= ConstDefine.Up;
             }

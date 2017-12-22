@@ -40,13 +40,13 @@ namespace Astar
         //  public const int North_East = (1 << 7);
 
         static MyPoint[] dir = new MyPoint[4]{	
-        new MyPoint( 0, 1),   //,Direction.Right // East 0
+        new MyPoint( 0, 1),   //,Direction.RightDifficulty // East 0
 	 //   new myPoint( 1, 1, ),   // South_East 1
-	    new MyPoint( 1, 0),  //,Direction.Down // South 2
+	    new MyPoint( 1, 0),  //,Direction.DownDifficulty // South 2
 	  //  new myPoint(1, -1 ),  // South_West 3
-	    new MyPoint( 0, -1 ), //,Direction.Left // West 4
+	    new MyPoint( 0, -1 ), //,Direction.LeftDifficulty // West 4
 	 //   new myPoint( -1, -1 ), // North_West 5
-        new MyPoint( -1, 0), //,Direction.Up  // North 6
+        new MyPoint( -1, 0), //,Direction.UpDifficulty  // North 6
 	 //   new myPoint( -1, 1)   // North_East 7
 };
 
@@ -201,10 +201,10 @@ namespace Astar
                     graph[i, j].node_Type = (graph[i, j].value == Reachable);    // 节点可到达性
                     graph[i, j].adjoinNodeCount = 0; //邻接节点个数
 
-                    graph[i, j].Left = elc.mapnode[i, j].Left;
-                    graph[i, j].Right = elc.mapnode[i, j].Right;
-                    graph[i, j].Up = elc.mapnode[i, j].Up;
-                    graph[i, j].Down = elc.mapnode[i, j].Down;
+                    graph[i, j].leftDifficulty = elc.mapnode[i, j].LeftDifficulty;
+                    graph[i, j].rightDifficulty = elc.mapnode[i, j].RightDifficulty;
+                    graph[i, j].upDifficulty = elc.mapnode[i, j].UpDifficulty;
+                    graph[i, j].downDifficulty = elc.mapnode[i, j].DownDifficulty;
 
                 }
             }
@@ -240,10 +240,10 @@ namespace Astar
                     }
                     if (j > 0)
                     {
-                        if (graph[i, j - 1].node_Type && graph[i, j].Left == true)    // left节点可以到达
+                        if (graph[i, j - 1].node_Type && graph[i, j].leftDifficulty < Node.MAX_ABLE_PASS)    // left节点可以到达
                         {
                             graph[i, j].adjoinNodeCount |= Left;
-                            // graph[i, j - 1].adjoinNodeCount |= Right;
+                            // graph[i, j - 1].adjoinNodeCount |= RightDifficulty;
                         }
                         //if (i > 0)
                         //{
@@ -258,10 +258,10 @@ namespace Astar
                     }
                     if (j < Width - 1)
                     {
-                        if (graph[i, j + 1].node_Type && graph[i, j].Right == true)    // right节点可以到达
+                        if (graph[i, j + 1].node_Type && graph[i, j].rightDifficulty < Node.MAX_ABLE_PASS)    // right节点可以到达
                         {
                             graph[i, j].adjoinNodeCount |= Right;
-                            // graph[i, j - 1].adjoinNodeCount |= Right;
+                            // graph[i, j - 1].adjoinNodeCount |= RightDifficulty;
                         }
                         //if (i > 0)
                         //{
@@ -276,10 +276,10 @@ namespace Astar
                     }
                     if (i > 0)
                     {
-                        if (graph[i - 1, j].node_Type && graph[i, j].Up == true)    // up节点可以到达
+                        if (graph[i - 1, j].node_Type && graph[i, j].upDifficulty<Node.MAX_ABLE_PASS)    // up节点可以到达
                         {
                             graph[i, j].adjoinNodeCount |= Up;
-                            // graph[i - 1, j].adjoinNodeCount |= Down;
+                            // graph[i - 1, j].adjoinNodeCount |= DownDifficulty;
                         }
                         //if (j < Width - 1)
                         //{
@@ -294,10 +294,10 @@ namespace Astar
                     }
                     if (i < Height - 1)
                     {
-                        if (graph[i + 1, j].node_Type && graph[i, j].Down == true)    // down节点可以到达
+                        if (graph[i + 1, j].node_Type && graph[i, j].downDifficulty < Node.MAX_ABLE_PASS)    // down节点可以到达
                         {
                             graph[i, j].adjoinNodeCount |= Down;
-                            // graph[i - 1, j].adjoinNodeCount |= Down;
+                            // graph[i - 1, j].adjoinNodeCount |= DownDifficulty;
                         }
                         //if (j < Width - 1)
                         //{
@@ -316,19 +316,19 @@ namespace Astar
         int NodeDirCount(int x, int y)
         {
             int count = 0;
-            if (graph[x, y].Up)
+            if (graph[x, y].upDifficulty<Node.MAX_ABLE_PASS)
             {
                 count++;
             }
-            if (graph[x, y].Down)
+            if (graph[x, y].downDifficulty < Node.MAX_ABLE_PASS)
             {
                 count++;
             }
-            if (graph[x, y].Left)
+            if (graph[x, y].leftDifficulty < Node.MAX_ABLE_PASS)
             {
                 count++;
             }
-            if (graph[x, y].Right)
+            if (graph[x, y].rightDifficulty < Node.MAX_ABLE_PASS)
             {
                 count++;
             }
@@ -388,26 +388,33 @@ namespace Astar
                         close[surX, surY].vis = true;
                         close[surX, surY].from = curPoint;
                         Direction tempDir = new Direction();
+                        int tempPassDifficulty = 2;
                         switch (i)
                         {
                             case 0:
                                 tempDir = Direction.Right;
+                                tempPassDifficulty = graph[curX, curY].rightDifficulty;
                                 break;
                             case 1:
                                 tempDir = Direction.Down;
+                                tempPassDifficulty = graph[curX, curY].downDifficulty;
                                 break;
                             case 2:
                                 tempDir = Direction.Left;
+                                tempPassDifficulty = graph[curX, curY].leftDifficulty;
                                 break;
                             case 3:
                                 tempDir = Direction.Up;
+                                tempPassDifficulty = graph[curX, curY].upDifficulty;
                                 break;
                         }
                         int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;
                         //  curPoint.node.stopTime = 1+directionCost * 2; 
 
+                        
+
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + 3 * directionCost;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + 3 * directionCost + tempPassDifficulty;
                         push(open, close, surX, surY, surG);
                     }
                 }

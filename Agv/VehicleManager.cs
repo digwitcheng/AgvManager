@@ -250,19 +250,19 @@ namespace AGV_V1._0
         int GetDirCount(int row, int col)
         {
             int dir = 0;
-            if (ElecMap.Instance.mapnode[row, col].Right == true)
+            if (ElecMap.Instance.mapnode[row, col].RightDifficulty <MapNode.MAX_ABLE_PASS)
             {
                 dir++;
             }
-            if (ElecMap.Instance.mapnode[row, col].Left == true)
+            if (ElecMap.Instance.mapnode[row, col].LeftDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir++;
             }
-            if (ElecMap.Instance.mapnode[row, col].Down == true)
+            if (ElecMap.Instance.mapnode[row, col].DownDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir++;
             }
-            if (ElecMap.Instance.mapnode[row, col].Up == true)
+            if (ElecMap.Instance.mapnode[row, col].UpDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir++;
             }

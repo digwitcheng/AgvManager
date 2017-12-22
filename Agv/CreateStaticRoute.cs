@@ -19,7 +19,7 @@ namespace AGV_V1._0
             //    MyPoint start = queueEntra[i];
             //    MyPoint nextEnd = ElecMap.Instance.CalculateScannerPoint(start);
             //    AstarSearch a = new AstarSearch();
-            //    staticRoute.Add(a.search(ElecMap.Instance, new List<MyPoint>(), 0, ElecMap.Instance.WidthNum, ElecMap.Instance.HeightNum, start.X, start.Y, nextEnd.X, nextEnd.Y, Direction.Down));
+            //    staticRoute.Add(a.search(ElecMap.Instance, new List<MyPoint>(), 0, ElecMap.Instance.WidthNum, ElecMap.Instance.HeightNum, start.X, start.Y, nextEnd.X, nextEnd.Y, Direction.DownDifficulty));
             //}
         }
     }

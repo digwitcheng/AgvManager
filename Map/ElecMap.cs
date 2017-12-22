@@ -211,10 +211,40 @@ namespace AGV_V1._0
                     {
                         mapnode[tdx, tdy].IsAbleCross = false;
                     }
-                    mapnode[tdx, tdy].Up = (dir[0] == '1' ? true : false);
-                    mapnode[tdx, tdy].Down = (dir[1] == '1' ? true : false);
-                    mapnode[tdx, tdy].Left = (dir[2] == '1' ? true : false);
-                    mapnode[tdx, tdy].Right = (dir[3] == '1' ? true : false);
+                    mapnode[tdx, tdy].UpDifficulty    = (dir[0] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    mapnode[tdx, tdy].DownDifficulty  = (dir[1] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    mapnode[tdx, tdy].LeftDifficulty  = (dir[2] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    mapnode[tdx, tdy].RightDifficulty = (dir[3] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+
+                    //if ((tdy > 25 && tdy < 29) || (tdy > 44 && tdy < 49) || (tdy > 63 && tdy < 68))
+                    //{
+                    //    mapnode[tdx, tdy].UpDifficulty -= 1;
+                    //    mapnode[tdx, tdy].DownDifficulty -= 1;
+                    //}
+                    //if (tdx > 31 && tdx < 35)
+                    //{
+                    //    mapnode[tdx, tdy].LeftDifficulty -= 2;
+                    //    mapnode[tdx, tdy].RightDifficulty -= 2;
+                    //}
+
+                    if (tdy == 19 || tdy == 20 || tdy == 22 || tdy == 23 || tdy == 25)
+                    {
+                        mapnode[tdx, tdy].UpDifficulty += 1;
+                        mapnode[tdx, tdy].DownDifficulty += 1;
+                    }
+                    if (tdy==68||tdy == 70 ||tdy == 71)
+                    {
+                        mapnode[tdx, tdy].UpDifficulty += 1;
+                        mapnode[tdx, tdy].DownDifficulty += 1;
+                    }
+
+
+                    if (tdy == 16 || tdy == 17 || tdy == 73 || tdy == 74)
+                    {
+                        mapnode[tdx, tdy].UpDifficulty += 2;
+                        mapnode[tdx, tdy].DownDifficulty += 2;
+                    }
+
                 }
                 switch (strType)
                 {
