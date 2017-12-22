@@ -396,25 +396,25 @@ namespace AGV_V1._0
             //    }
             //}
 
-            ////绘制锁住的节点
+            //绘制锁住的节点
             //if (VehicleManager.Instance.vehicleInited)
             //{
-            //    for (int num = 0; num < VehicleManager.vehicle.Length; num++)
-            //    {
-            //        List<MyPoint> listNode = new List<MyPoint>(VehicleManager.vehicle[num].LockNode);
-            //        for (int q = 0; q < listNode.Count; q++)
-            //        {
+                for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
+                {
+                    List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
+                    for (int q = 0; q < listNode.Count; q++)
+                    {
 
-            //            int i = listNode[q].X;
-            //            int j = listNode[q].Y;
-            //            gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-            //            Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-            //            Brush brush = Brushes.DarkMagenta;
-            //            PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-            //            gg.DrawString(VehicleManager.vehicle[num].Id + "", font, brush, pf);
+                        int i = listNode[q].X;
+                        int j = listNode[q].Y;
+                        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+                        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+                        Brush brush = Brushes.DarkMagenta;
+                        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+                        gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
 
-            //        }
-            //    }
+                    }
+                }
             //}
 
             //绘制小车

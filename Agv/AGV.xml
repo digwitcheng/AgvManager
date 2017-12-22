@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Info>
   <NO>1</NO>
-  <SUM>300</SUM>
+  <SUM>400</SUM>
   <watch>0</watch>
   <AGV>
     <AGV Num="0" BeginX="42" BeginY="16" StartLoc="" Direction="Up" State="carried" Battery="100" EndX="6" EndY="17" DestX="6" DestY="18" Use="T" />

@@ -19,7 +19,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace AGV_V1._0
 {
-    [Serializable]
+    
     class Vehicle
     {
 
@@ -398,15 +398,6 @@ namespace AGV_V1._0
                 BeginY = route[tPtr].Y;
                 return true;
             }
-        }
-
-        public Vehicle CloneDeep() //深clone
-        {
-            MemoryStream stream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, this);
-            stream.Position = 0;
-            return formatter.Deserialize(stream) as Vehicle;
-        }     
+        }         
     }
 }

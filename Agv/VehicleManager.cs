@@ -78,6 +78,7 @@ namespace AGV_V1._0
                     //    SearchRoute(temp, false);  
                     //});  
 
+                  //  vehicles[vnum].LockNode.Clear();
                     vehicles[vnum].Arrive = true;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();

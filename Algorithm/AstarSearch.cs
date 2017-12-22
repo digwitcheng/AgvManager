@@ -605,6 +605,13 @@ namespace Astar
             initGraph(elc, scannerNode, lockNode, v_num, firstX, firstY, endX, endY, direction);
             List<MyPoint> route = new List<MyPoint>();
             SearchRoute(route);
+            if (route.Count < 1)
+            {
+                lockNode.Clear();
+                initGraph(elc, scannerNode, lockNode, v_num, firstX, firstY, endX, endY, direction);
+                route = new List<MyPoint>();
+                SearchRoute(route);
+            }
             return route;
             //  }
         }

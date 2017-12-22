@@ -36,7 +36,8 @@ namespace AGV_V1
         }
        
        // public int LockNode = -1;  //-1节点没有被锁定，大于-1表示被锁定
-        public List<int> vehiclePriority{get;set;} //通过节点的小车优先级序列如{1,4,6},数字为小车编号；
+        public int PassDifficulty { get; set; } //节点通行难度
+        public int TraCongesIntensity { get; set; } //traffic congestion intensity 节点拥堵程度
 
 
         public bool Up { get; set; }
@@ -77,8 +78,7 @@ namespace AGV_V1
         public MapNode( int id, bool node_type)
         {
             this.Id = id;
-            this.IsAbleCross = node_type;
-            this.vehiclePriority = new List<int>();
+            this.IsAbleCross = node_type;           
 
         }
         
