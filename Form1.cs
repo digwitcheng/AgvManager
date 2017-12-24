@@ -400,20 +400,36 @@ namespace AGV_V1._0
             //}
 
             //绘制锁住的节点            
-            for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
+            //for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
+            //{
+            //    List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
+            //    for (int q = 0; q < listNode.Count; q++)
+            //    {
+
+            //        int i = listNode[q].X;
+            //        int j = listNode[q].Y;
+            //        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+            //        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+            //        Brush brush = Brushes.DarkMagenta;
+            //        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+            //        gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
+
+            //    }
+            //}
+
+            //绘制拥堵的节点
+            for (int i = 0; i < Elc.mapnode.GetLength(0); i++)
             {
-                List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
-                for (int q = 0; q < listNode.Count; q++)
+                for (int j = 0; j < Elc.mapnode.GetLength(1); j++)
                 {
-
-                    int i = listNode[q].X;
-                    int j = listNode[q].Y;
-                    gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-                    Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-                    Brush brush = Brushes.DarkMagenta;
-                    PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-                    gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
-
+                    if (Elc.mapnode[i, j].TraCongesIntensity > 0)
+                    {
+                        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+                        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+                        Brush brush = Brushes.DarkMagenta;
+                        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+                        gg.DrawString(Elc.mapnode[i, j].TraCongesIntensity + "", font, brush, pf);
+                    }
                 }
             }
 

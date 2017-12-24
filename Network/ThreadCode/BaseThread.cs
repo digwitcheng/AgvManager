@@ -20,8 +20,8 @@ namespace AGV_V1._0.Network.ThreadCode
          {
              if (!isRunning)
              {
-                 Task.Factory.StartNew(() => StartThread());//启动线程
                  isRunning = true;
+                 Task.Factory.StartNew(() => StartThread());//启动线程
              }
          }
           void StartThread()
