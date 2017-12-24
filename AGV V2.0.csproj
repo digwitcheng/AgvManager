@@ -78,6 +78,7 @@
     <Compile Include="Network\Messages\DisConnMessage.cs" />
     <Compile Include="Network\Messages\TextMessage.cs" />
     <Compile Include="Network\ThreadCode\BaseThread.cs" />
+    <Compile Include="Network\ThreadCode\CheckCongestionThread.cs" />
     <Compile Include="Network\ThreadCode\TaskReceiveThread.cs" />
     <Compile Include="Network\ThreadCode\GuiSendThread.cs" />
     <Compile Include="Network\ThreadCode\TaskSendThread.cs" />

@@ -63,6 +63,7 @@ namespace AGV_V1._0
             TaskReceiveThread.Instance.Start();
             GuiSendThread.Instance.Start();
             SearchRouteThread.Instance.Start();
+            CheckCongestionThread.Instance.Start();
 
 
 
@@ -70,6 +71,7 @@ namespace AGV_V1._0
             TaskReceiveThread.Instance.ShowMessage += OnShowMessageWithPicBox;
             SearchRouteThread.Instance.ShowMessage += OnShowMessageWithPicBox;
             GuiSendThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+            CheckCongestionThread.Instance.ShowMessage += OnShowMessageWithPicBox;
 
         }
         void EndThread()
@@ -78,10 +80,11 @@ namespace AGV_V1._0
             TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
             SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
             GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-
             VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
-            VehicleManager.Instance.End();
+            CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
 
+            CheckCongestionThread.Instance.End();
+            VehicleManager.Instance.End();
             GuiSendThread.Instance.End();
             SearchRouteThread.Instance.End();//启动路径搜索线程
             TaskSendThread.Instance.End();
@@ -396,26 +399,23 @@ namespace AGV_V1._0
             //    }
             //}
 
-            //绘制锁住的节点
-            //if (VehicleManager.Instance.vehicleInited)
-            //{
-                for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
+            //绘制锁住的节点            
+            for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
+            {
+                List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
+                for (int q = 0; q < listNode.Count; q++)
                 {
-                    List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
-                    for (int q = 0; q < listNode.Count; q++)
-                    {
 
-                        int i = listNode[q].X;
-                        int j = listNode[q].Y;
-                        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-                        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-                        Brush brush = Brushes.DarkMagenta;
-                        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-                        gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
+                    int i = listNode[q].X;
+                    int j = listNode[q].Y;
+                    gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+                    Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+                    Brush brush = Brushes.DarkMagenta;
+                    PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+                    gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
 
-                    }
                 }
-            //}
+            }
 
             //绘制小车
             Vehicle[] v = VehicleManager.Instance.GetVehicles();
