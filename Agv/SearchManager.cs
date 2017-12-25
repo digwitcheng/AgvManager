@@ -84,7 +84,6 @@ namespace AGV_V1._0
             if (!checkXY(v))
             {
                 v.CurState = State.cannotToDestination;
-                v.Route = null;
                 MessageBox.Show("起点或终点超出地图界限");
                 return;
             }
