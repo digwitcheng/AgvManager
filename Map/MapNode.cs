@@ -58,6 +58,7 @@ namespace AGV_V1
                 {
                     value = 0;
                 }
+                traCongesIntensity = value;
             }
         }
         // public int PassDifficulty { get { return passDifficulty; } set { passDifficulty = value; } }
