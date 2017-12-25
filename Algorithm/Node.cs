@@ -17,6 +17,8 @@ namespace Astar
         public int value;           //节点的值
         public Direction direction; //当前节点的方向
 
+
+        public int traCongesIntensity;//traffic congestion intensity 节点拥堵程度
         //节点通行难度,数值越大表示越难通行,默认为2，中等通行难度，不可通行用一个非常大的数表示（100）
         public const int UNABLE_PASS = 100;
         public const int MAX_ABLE_PASS = 10;

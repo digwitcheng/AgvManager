@@ -11,35 +11,56 @@ using Astar;
 namespace AGV_V1
 {
 
-   
-   
+
+
     class MapNode
     {
-        
-      //  public   enum MapNodeType1 { img_Belt,img_Mid ,img_Road,img_Destination,img_ChargeStation,img_Obstacle,img_Scanner};
+
+        //  public   enum MapNodeType1 { img_Belt,img_Mid ,img_Road,img_Destination,img_ChargeStation,img_Obstacle,img_Scanner};
 
         private int x;               //节点的横坐标    
         private int y;               //节点的纵坐标     
-        
 
-        private int nodeCanUsed=-1;   //节点是否被占用,值表示被编号为几的小车占用，-1表示没有被占用
+
+        private int nodeCanUsed = -1;   //节点是否被占用,值表示被编号为几的小车占用，-1表示没有被占用
+        private static readonly object canUseLock = new object();
         public int NodeCanUsed
         {
             get
             {
-                return nodeCanUsed;
+                lock (canUseLock)
+                {
+                    return nodeCanUsed;
+                }
             }
             set
             {
-                nodeCanUsed = value;
+                lock (canUseLock)
+                {
+                    nodeCanUsed = value;
+                }
             }
         }
-       
-       // public int LockNode = -1;  //-1节点没有被锁定，大于-1表示被锁定
+
+        // public int LockNode = -1;  //-1节点没有被锁定，大于-1表示被锁定
 
         private int traCongesIntensity;//traffic congestion intensity 节点拥堵程度
-        public int TraCongesIntensity { get { return traCongesIntensity; } set { traCongesIntensity = value; } }
-       // public int PassDifficulty { get { return passDifficulty; } set { passDifficulty = value; } }
+
+        public int TraCongesIntensity
+        {
+            get
+            {
+                return traCongesIntensity;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+            }
+        }
+        // public int PassDifficulty { get { return passDifficulty; } set { passDifficulty = value; } }
 
         //节点通行难度,数值越大表示越难通行,默认为2，中等通行难度，不可通行用一个非常大的数表示（100）
         public const int UNABLE_PASS = 100;
@@ -86,13 +107,13 @@ namespace AGV_V1
         /// </summary>
         /// <param name="id"></param>
         /// <param name="reachable"></param>
-        public MapNode( int id, bool node_type)
+        public MapNode(int id, bool node_type)
         {
             this.Id = id;
-            this.IsAbleCross = node_type;           
+            this.IsAbleCross = node_type;
 
         }
-        
+
         /// <summary>
         /// 无参构造函数
         /// </summary>

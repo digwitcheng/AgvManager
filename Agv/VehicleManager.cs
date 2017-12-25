@@ -56,7 +56,7 @@ namespace AGV_V1._0
             if (vehicles == null)
             {
                 return;
-            }
+            }            
             for (int vnum = 0; vnum < vehicles.Length; vnum++)
             {
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)

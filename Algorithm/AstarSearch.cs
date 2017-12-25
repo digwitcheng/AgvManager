@@ -15,6 +15,7 @@ namespace Astar
 
     class AstarSearch
     {
+        public const int SWERVE_COST = 3;
 
         public const int MaxLength = 6000;   //用于优先队列（Open表）的数组
         public int Height = 15;       //地图高度
@@ -48,7 +49,7 @@ namespace Astar
 	 //   new myPoint( -1, -1 ), // North_West 5
         new MyPoint( -1, 0), //,Direction.UpDifficulty  // North 6
 	 //   new myPoint( -1, 1)   // North_East 7
-};
+        };
 
         public bool within(int x, int y)
         {
@@ -201,6 +202,7 @@ namespace Astar
                     graph[i, j].node_Type = (graph[i, j].value == Reachable);    // 节点可到达性
                     graph[i, j].adjoinNodeCount = 0; //邻接节点个数
 
+                    graph[i, j].traCongesIntensity = elc.mapnode[i, j].TraCongesIntensity;
                     graph[i, j].leftDifficulty = elc.mapnode[i, j].LeftDifficulty;
                     graph[i, j].rightDifficulty = elc.mapnode[i, j].RightDifficulty;
                     graph[i, j].upDifficulty = elc.mapnode[i, j].UpDifficulty;
@@ -410,11 +412,11 @@ namespace Astar
                         }
                         int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;
                         //  curPoint.node.stopTime = 1+directionCost * 2; 
-
+                        int tempTraConges = graph[curX, curY].traCongesIntensity;
                         
 
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + 3 * directionCost + tempPassDifficulty;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + SWERVE_COST * (directionCost + tempTraConges) + tempPassDifficulty;
                         push(open, close, surX, surY, surG);
                     }
                 }
