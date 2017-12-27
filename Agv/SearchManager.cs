@@ -56,7 +56,6 @@ namespace AGV_V1._0
             //    return;
             //}
             v.LockNode.Add(v.Route[v.VirtualTPtr]);
-            Elc.mapnode[v.Route[v.VirtualTPtr].X, v.Route[v.VirtualTPtr].Y].TraCongesIntensity++;
             //Elc.mapnode[route[Virtual_tPtr].X, route[Virtual_tPtr].Y].LockNode = v_num;
             for (int i = 1; i < ConstDefine.FORWORD_STEP - 1; i++)
             {
