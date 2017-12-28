@@ -32,6 +32,7 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
 using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
+using System.Collections.Concurrent;
 
 namespace AGV_V1._0
 {
@@ -46,10 +47,14 @@ namespace AGV_V1._0
         public static Random rand = new Random(5);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
         private ElecMap Elc = ElecMap.Instance;
 
-        private System.Threading.Timer timer;
+        private InitForm initForm;
+
 
         public Form1()
         {
+           // initForm = new InitForm();
+          //  initForm.Show();
+
             InitializeComponent();
             InitServer();//初始化服务器
             InitUiView();//绘制界面
@@ -462,10 +467,40 @@ namespace AGV_V1._0
             //vehicle[0].Draw(e.Graphics);
             //vehicle[1].Draw(e.Graphics);
 
-
+            DrawMsgOnPic();
 
 
             pic.Image = newSurface;
+        }
+        private Bitmap picShowSurface = null;
+        private Graphics picg = null;
+        int rowCount = 0;
+        void DrawMsgOnPic()
+        {
+            
+                //int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
+                //int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
+                //// pic.Size = new Size(w, h);
+                ////picShowSurface = new Bitmap(w2, h2);
+                ////picShow.Size = new Size(w2, h2);
+                //picShowSurface = new Bitmap(w2, h2);
+                //picg = Graphics.FromImage(picShowSurface);
+
+                if (!onShowMessageList.IsEmpty)
+                {
+                    string tmp = "";
+                    bool success= onShowMessageList.TryDequeue(out tmp);
+                    if(success){
+                        DrawUtil.DrawString(picg, tmp, ConstDefine.FONT_SISE, Color.White, 0, (rowCount++) * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
+                    }
+                }
+
+               // splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
+               // splitContainer1.Panel2.Invalidate();
+
+                this.picShow.Image = picShowSurface;
+            
+
         }
 
         void drawArrow(int y, int x)
@@ -583,57 +618,33 @@ namespace AGV_V1._0
         {
             distanceTotal.Text = str;
         }
+        //BlockingCollection<string>onShowMessageList=new BlockingCollection<string>();
+        // ConcurrentBag<string> onShowMessageList = new ConcurrentBag<string>();
+        //List<string> onShowMessageList = new List<string>();
+        ConcurrentQueue<string> onShowMessageList = new ConcurrentQueue<string>();
         public void OnShowMessageWithPicBox(object sender, MessageEventArgs e)
         {
+            onShowMessageList.Enqueue(e.Message);
 
-            if (pic.InvokeRequired)
-            {
-                // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
-                Action actionDelegate = () => { DrawMsgOnPic(e.Message); };
+            //if (pic.InvokeRequired)
+            //{
+            //    // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
+            //    Action actionDelegate = () => { DrawMsgOnPic(e.Message); };
 
-                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
+            //    //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
 
-                // 或者 
-                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
-                this.pic.Invoke(actionDelegate, null);
-            }
-            else
-            {
-                DrawMsgOnPic(e.Message);
-                // update(e.ShowMessage);
-            }
-
-        }
-        private Bitmap picShowSurface = null;
-        private Graphics picg = null;
-        private int rowCount = 0;
-        private static readonly object picgLock = new object();
-        void DrawMsgOnPic(string msg)
-        {
-            lock (picgLock)
-            {
-                int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
-                int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
-                // pic.Size = new Size(w, h);
-                //picShowSurface = new Bitmap(w2, h2);
-                //picShow.Size = new Size(w2, h2);
-                picShowSurface = new Bitmap(w2, h2);
-                //picg = Graphics.FromImage(picShowSurface);
-
-
-                if (rowCount > 250)
-                {
-                    rowCount = 0;
-                    picg.Clear(Color.FromArgb(0, 0, 0, 0));
-                    return;
-                }
-                DrawUtil.DrawString(picg, msg, ConstDefine.FONT_SISE, Color.White, 0, rowCount++ * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
-
-                splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
-                splitContainer1.Panel2.Invalidate();
-            }
+            //    // 或者 
+            //    // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
+            //    this.pic.Invoke(actionDelegate, null);
+            //}
+            //else
+            //{
+            //    DrawMsgOnPic(e.Message);
+            //    // update(e.ShowMessage);
+            //}
 
         }
+       
         //public void ShowSocketState(object sender,MessageEventArgs e)
         //{
         //    listBox1.Items.Add(new ListViewItem(DateTime.Now.ToLongTimeString().ToString()+" "+e.ShowMessage));
