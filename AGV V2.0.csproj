@@ -66,6 +66,12 @@
     <Compile Include="Agv\State.cs" />
     <Compile Include="Algorithm\AstarSearch.cs" />
     <Compile Include="Algorithm\Close.cs" />
+    <Compile Include="ExitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExitForm.Designer.cs">
+      <DependentUpon>ExitForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InitForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,9 @@
     <Compile Include="Network\Manager\ServerManager.cs" />
     <Compile Include="Agv\VehicleManager.cs" />
     <Compile Include="Util\MapFileUtil.cs" />
+    <EmbeddedResource Include="ExitForm.resx">
+      <DependentUpon>ExitForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
