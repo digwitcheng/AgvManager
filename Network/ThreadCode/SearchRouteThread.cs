@@ -37,11 +37,11 @@ namespace AGV_V1._0.ThreadCode
         }
         protected override void Run()
         {
-            if (SearchRouteQueue.Instance.IsMyQueueHasData())
+            if (SearchRouteQueue.Instance.IsHasData())
             {
                 // Debug.WriteLine(SearchRouteQueue.Instance.GetMyQueueCount() + "");
                 //搜索路径
-                SearchData td = SearchRouteQueue.Instance.GetMyQueueList();
+                SearchData td = SearchRouteQueue.Instance.Dequeue();
                 if (td != null)
                 {
                     SearchRoute(td);

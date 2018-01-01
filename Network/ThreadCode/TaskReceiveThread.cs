@@ -39,9 +39,9 @@ namespace AGV_V1._0.Network.ThreadCode
         {
             try
             {
-                if (TaskRecvQueue.Instance.IsMyQueueHasData())
+                if (TaskRecvQueue.Instance.IsHasData())
                 {
-                    string json = TaskRecvQueue.Instance.GetMyQueueList();
+                    string json = TaskRecvQueue.Instance.Dequeue();
                     if (json == null)
                     {
                         Logs.Warn("没取到任务");
@@ -59,7 +59,7 @@ namespace AGV_V1._0.Network.ThreadCode
                         SendData sd = (SendData)JsonConvert.DeserializeObject(json, typeof(SendData));
                         if (sd != null)
                         {
-                            SearchRouteQueue.Instance.AddMyQueueList(new SearchData(sd, false));
+                            SearchRouteQueue.Instance.Enqueue(new SearchData(sd, false));
                         }
                     }
                     catch (Exception ex)
