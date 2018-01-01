@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="up_left_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_left_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Vehicle_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Vehicle_R.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -145,14 +142,17 @@
   <data name="up_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="up_left_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_left_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="besides_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="right_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\right_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="besides_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="down_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up_left_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_left_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="right" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,17 +163,26 @@
   <data name="up_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="besides_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="besides_up_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_up_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_right_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_right_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="besides_up_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_up_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="besides_right_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_right_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_up_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_up_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Button_Obstacle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Obstacle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -193,6 +202,9 @@
   <data name="empty_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\empty_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="down_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -207,6 +219,9 @@
   </data>
   <data name="timg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\timg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_down_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_down_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -238,20 +253,26 @@
   <data name="besides_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Mid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Mid.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="down_left_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_left_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Button_Obstacle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Button_Obstacle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="up_left_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_left_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Scanner" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Scanner.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="besides_up_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_up_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="up_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Vehicle_B" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Vehicle_B.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Vehicle_F" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vehicle_F.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -262,8 +283,14 @@
   <data name="Vehicle_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Vehicle_Black.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="besides_down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_down_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="left_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\left_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="besides_left_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\besides_left_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -289,11 +316,14 @@
   <data name="down_left_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_left_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="besides_up_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_up_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Vehicle_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vehicle_L.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="down_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="youzheng" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\youzheng.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -301,8 +331,14 @@
   <data name="down_right_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_right_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Vehicle_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Vehicle_L.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="obstacle_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\obstacle_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="timg (6)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\timg (6).jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="up_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -322,8 +358,11 @@
   <data name="all_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\all_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Vehicle_F" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Vehicle_F.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="empty_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\empty_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vehicle_B" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vehicle_B.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="down_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -337,8 +376,11 @@
   <data name="down_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\down_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Mid" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Mid.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="up_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="besides_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\besides_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="left_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\left_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -346,11 +388,17 @@
   <data name="ChargeOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChargeOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="right_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\right_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="right_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\right_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="all_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\all_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Vehicle_Yellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Vehicle_Yellow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -358,52 +406,7 @@
   <data name="up_left_purple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up_left_purple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="timg (6)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timg (6).jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="all_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\all_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="besides_down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_down_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="besides_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="besides_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="besides_up_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\besides_up_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="down_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\down_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="down_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\down_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\down_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="empty_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\empty_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="up_left_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_left_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="up_right_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_right_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="up_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="obstacle_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\obstacle_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="9345d688d43f87942d96412cd91b0ef41bd53a42" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\9345d688d43f87942d96412cd91b0ef41bd53a42.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
