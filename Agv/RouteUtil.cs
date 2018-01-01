@@ -13,7 +13,7 @@ namespace AGV_V1._0.Algorithm
 
         public static Random rand = new Random(3);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
-        public static MyPoint randPoint(ElecMap Elc)
+        public static MyPoint RandPoint(ElecMap Elc)
         {
             int x = rand.Next(0, Elc.HeightNum - 1);
             int y = rand.Next(0, Elc.WidthNum - 1);
@@ -23,6 +23,21 @@ namespace AGV_V1._0.Algorithm
                 y = rand.Next(0, Elc.WidthNum - 1);
             }
 
+            return new MyPoint(x, y);
+        }
+        public static MyPoint RandRealPoint(ElecMap Elc)
+        {
+            int minX=ConstDefine.minX;
+            int maxX=ConstDefine.maxX;
+            int minY = ConstDefine.minY;
+            int maxY = ConstDefine.maxY;
+            int x = rand.Next(minX, maxX+1);
+            int y = rand.Next(minY,maxY+1);
+            while (!nodeIsAvailable(Elc, x, y))
+            {
+                x = rand.Next(minX, maxX);
+                y = rand.Next(minY, maxY);
+            }
             return new MyPoint(x, y);
         }
 

@@ -63,16 +63,6 @@ namespace AGV_V1._0.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap _9345d688d43f87942d96412cd91b0ef41bd53a42 {
-            get {
-                object obj = ResourceManager.GetObject("9345d688d43f87942d96412cd91b0ef41bd53a42", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
         internal static System.Drawing.Bitmap all {
             get {
                 object obj = ResourceManager.GetObject("all", resourceCulture);

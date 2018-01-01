@@ -15,7 +15,7 @@ namespace AGV_V1._0.Network.ThreadCode
     class CheckCongestionThread:BaseThread
     {
         private const int MODEL_LEN = 7;
-        private const int THRESHOLD = 36;//阈值
+        private const int THRESHOLD = 26;//阈值
         private static CheckCongestionThread instance;
         public static CheckCongestionThread Instance
         {

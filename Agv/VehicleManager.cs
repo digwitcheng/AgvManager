@@ -1,13 +1,16 @@
 ﻿using AGV_V1._0.Agv;
 using AGV_V1._0.Algorithm;
+using AGV_V1._0.DataBase;
 using AGV_V1._0.Event;
 using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
+using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
 using Astar;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -24,7 +27,7 @@ namespace AGV_V1._0
         private static Vehicle[] vehicles;
         List<Vehicle> vFinished = new List<Vehicle>();
         private bool vehicleInited = false;
-        private double  moveCount = 0;//统计移动的格数，当前地图一格1.5米
+        private double moveCount = 0;//统计移动的格数，当前地图一格1.5米
 
         private static Random rand = new Random(1);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
@@ -43,7 +46,7 @@ namespace AGV_V1._0
         }
         private VehicleManager()
         {
-          
+
         }
         protected override string ThreadName()
         {
@@ -52,17 +55,17 @@ namespace AGV_V1._0
         protected override void Run()
         {
             Thread.Sleep(ConstDefine.STEP_TIME);
-            
+
             if (vehicles == null)
             {
                 return;
-            }            
+            }
             for (int vnum = 0; vnum < vehicles.Length; vnum++)
             {
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)
                 {
 
-                   // SearchRoute(vnum, false);
+                    // SearchRoute(vnum, false);
 
                     //vehicle[vnum].LockNode.Clear();
                     //vehicle[vnum].Arrive = false;
@@ -78,7 +81,7 @@ namespace AGV_V1._0
                     //    SearchRoute(temp, false);  
                     //});  
 
-                  //  vehicles[vnum].LockNode.Clear();
+                    //  vehicles[vnum].LockNode.Clear();
                     vehicles[vnum].Arrive = true;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
@@ -113,7 +116,7 @@ namespace AGV_V1._0
                     //vehicle[vnum].BeginY = vehicle[vnum].EndY;
                     vehicles[vnum].CurState = State.unloading;
                     vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route.Clear();                 
+                    vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }
@@ -173,12 +176,18 @@ namespace AGV_V1._0
                 }
                 else
                 {
-                   bool isMove=  vehicles[vnum].Move(ElecMap.Instance);
-                   if (isMove)
-                   {                      
-                     moveCount++;
-                     OnShowMessage(string.Format("{0:N} 公里",(moveCount*1.5)/1000.0));                     
-                   }
+                    bool isMove = vehicles[vnum].Move(ElecMap.Instance);
+                    if (isMove)
+                    {
+                        AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                        moveCount++;
+                        OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
+                    }
+                    else
+                    {
+                        AGVServerManager.Instance.Send(MessageType.None, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                    }
+
                 }
             }
 
@@ -190,7 +199,7 @@ namespace AGV_V1._0
             {
                 for (int i = 0; i < vFinished.Count; i++)
                 {
-                    FinishedQueue.Instance.Enqueue(vFinished[i]);
+                    FinishedQueue.Instance.AddMyQueueList(vFinished[i]);
                 }
                 vFinished.Clear();
             }
@@ -250,7 +259,7 @@ namespace AGV_V1._0
         int GetDirCount(int row, int col)
         {
             int dir = 0;
-            if (ElecMap.Instance.mapnode[row, col].RightDifficulty <MapNode.MAX_ABLE_PASS)
+            if (ElecMap.Instance.mapnode[row, col].RightDifficulty < MapNode.MAX_ABLE_PASS)
             {
                 dir++;
             }
@@ -276,7 +285,7 @@ namespace AGV_V1._0
             vehicleInited = false;
             //初始化小车位置
 
-            if (null == FileUtil.sendData||FileUtil.sendData.Length<1)
+            if (null == FileUtil.sendData || FileUtil.sendData.Length < 1)
             {
                 throw new ArgumentNullException();
             }
@@ -286,9 +295,17 @@ namespace AGV_V1._0
             for (int i = 0; i < vehicleCount; i++)
             {
                 vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
-                MyPoint endPoint = RouteUtil.randPoint(ElecMap.Instance);
+                MyPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
                 //vehicle[i].endX = (int)endPoint.col;
                 //vehicle[i].endY = (int)endPoint.row;
+
+                MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(i);
+                if (mp != null)
+                {
+                    vehicles[i].BeginX = mp.X;
+                    vehicles[i].BeginY = mp.Y;
+                }
+
                 m++;
                 ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
 
@@ -309,18 +326,16 @@ namespace AGV_V1._0
 
         }
 
-        public void RandomMove(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                //MyPoint mp = RouteUtil.randPoint(ElecMap.Instance);
-                //MyPoint mpEnd = RouteUtil.randPoint(ElecMap.Instance);
-                //SendData sd = new SendData(i, mp.X, mp.Y, mpEnd.X, mpEnd.Y);
-                //sd.Arrive = false;
-                //sd.EndLoc = "rest";
-                //SearchRoute(i, false);
+        public void RandomMove(int Id)
+        {           
+            MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
+            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);
+            sd.Arrive = false;
+            sd.EndLoc = "rest";
 
-            }
+            SearchRouteQueue.Instance.AddMyQueueList(new SearchData(sd, false));
+
+
         }
         void SearchRoute(int num, bool isResarch)
         {
@@ -340,7 +355,7 @@ namespace AGV_V1._0
             //{
             //    MessageBox.Show("起点：" + td.BeginX + "," + td.BeginY + "" + "终点：" + td.EndX + "," + td.EndY);
             //}
-            SearchRouteQueue.Instance.Enqueue(new SearchData(td, isResarch));
+            SearchRouteQueue.Instance.AddMyQueueList(new SearchData(td, isResarch));
 
             //Task.Factory.StartNew(() => vehicle[num].SearchRoute(Elc), TaskCreationOptions.LongRunning);
         }

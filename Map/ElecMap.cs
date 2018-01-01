@@ -204,9 +204,21 @@ namespace AGV_V1._0
                 tdy = Convert.ToInt32(td[1]);
                 string strType = gridnode[p].InnerText.ToString().Trim();
                 XmlAttribute xa = gridnode[p].Attributes["direction"];
-                if (xa != null)
+
+                if (tdx >= ConstDefine.minX && tdx <= ConstDefine.maxX && tdy >=ConstDefine.minY&& tdy <=ConstDefine.maxY)
                 {
-                    string dir = xa.InnerText.ToString().Trim();
+                    mapnode[tdx, tdy].IsAbleCross = true;
+                    mapnode[tdx, tdy].Type =MapNodeType.Road;
+                }
+                else
+                {
+                    mapnode[tdx, tdy].IsAbleCross = false;
+                    mapnode[tdx, tdy].Type = MapNodeType.obstacle;
+                }
+                if (false)
+                {
+                    string dir = xa.InnerText.ToString().Trim();                   
+
                     if (dir == "0000")
                     {
                         mapnode[tdx, tdy].IsAbleCross = false;
