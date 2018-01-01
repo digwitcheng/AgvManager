@@ -33,6 +33,7 @@ using AGV_V1._0.Util;
 using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.DataBase;
+using System.Collections.Concurrent;
 
 namespace AGV_V1._0
 {
@@ -245,11 +246,7 @@ namespace AGV_V1._0
             ////设置滚动条滚动的区域
             //this.AutoScrollMinSize = new Size(ConstDefine.WIDTH + ConstDefine.BEGIN_X, ConstDefine.HEIGHT);
 
-            panel2.BackColor = Color.FromArgb(100, 0, 0, 0);
-            panel1.BackColor = Color.FromArgb(180, 0, 0, 0);
-            //pic.BackColor = Color.FromArgb(255, 0, 0, 0);
-            // listView1.BackColor = Color.FromArgb(100, 0, 0, 0);
-            splitContainer1.BackColor = Color.FromArgb(100, 0, 0, 0);
+          
 
 
             SetMapView();
@@ -257,6 +254,18 @@ namespace AGV_V1._0
 
 
 
+        }
+        /// <summary>
+        /// 减少界面闪烁
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
         }
         void SetInfoShowView()
         {
@@ -338,46 +347,6 @@ namespace AGV_V1._0
                     }
                 }
             }
-
-            ////Bitmap newSurface = new Bitmap(surface);
-            //Graphics gg = Graphics.FromImage(newSurface);
-
-            //for (int i = 0; i < Elc.HeightNum; i++)
-            //{
-            //    for (int j = 0; j < Elc.WidthNum; j++)
-            //    {
-            //        drawArrow(i, j);
-            //    }
-            //}
-            ////绘制标尺
-            //int w = Elc.WidthNum;
-            //int h = Elc.HeightNum;
-            //Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.nodeLength / 2);
-            //Brush brush = Brushes.Yellow;
-            //for (int i = 0; i < h + 1; i++)
-            //{
-            //    PointF pf = new PointF(0, i * ConstDefine.nodeLength);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 255)), new Rectangle(0, i * ConstDefine.nodeLength, ConstDefine.nodeLength, ConstDefine.nodeLength));
-            //    g.DrawString(i + "", font, brush, pf);
-
-            //    PointF pf2 = new PointF(w * ConstDefine.nodeLength, i * ConstDefine.nodeLength);
-            //   g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(w * ConstDefine.nodeLength, i * ConstDefine.nodeLength, ConstDefine.nodeLength , ConstDefine.nodeLength));
-            //    g.DrawString(i + "", font, brush, pf2);
-
-            //}
-            //for (int i = 1; i < w; i++)
-            //{
-            //    PointF pf = new PointF(i * ConstDefine.nodeLength, 0);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(i * ConstDefine.nodeLength, 0, ConstDefine.nodeLength - 2, ConstDefine.nodeLength - 2));
-            //    g.DrawString(i + "", font, brush, pf);
-
-            //    PointF pf2 = new PointF(i * ConstDefine.nodeLength, h * ConstDefine.nodeLength);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(180, 0, 0, 0)), new Rectangle(i * ConstDefine.nodeLength, h * ConstDefine.nodeLength, ConstDefine.nodeLength - 2, ConstDefine.nodeLength - 2));
-            //    g.DrawString(i + "", font, brush, pf2);
-
-            //}
-
-
 
         }
 
@@ -473,7 +442,7 @@ namespace AGV_V1._0
 
 
 
-
+            DrawMsgOnPic();
             pic.Image = newSurface;
         }
 
@@ -487,30 +456,6 @@ namespace AGV_V1._0
             {
                 g.DrawImage(ConstDefine.IMAGE_DICT[0], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
-
-
-            //int dir = 0;
-            //if (Elc.mapnode[y, x].RightDifficulty < MapNode.MAX_ABLE_PASS)
-            //{
-            //    dir |= ConstDefine.Right;
-            //}
-            //if (Elc.mapnode[y, x].LeftDifficulty < MapNode.MAX_ABLE_PASS)
-            //{
-            //    dir |= ConstDefine.Left;
-            //}
-            //if (Elc.mapnode[y, x].DownDifficulty < MapNode.MAX_ABLE_PASS)
-            //{
-            //    dir |= ConstDefine.Down;
-            //}
-            //if (Elc.mapnode[y, x].UpDifficulty < MapNode.MAX_ABLE_PASS)
-            //{
-            //    dir |= ConstDefine.Up;
-            //}
-            //Image img = ConstDefine.IMAGE_DICT[dir];
-            //if (img != null)
-            //{
-            //    g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
-            //}
         }
 
         bool first = true;
@@ -592,83 +537,49 @@ namespace AGV_V1._0
         {
             distanceTotal.Text = str;
         }
+        //BlockingCollection<string>onShowMessageList=new BlockingCollection<string>();
+        // ConcurrentBag<string> onShowMessageList = new ConcurrentBag<string>();
+        //List<string> onShowMessageList = new List<string>();
+        ConcurrentQueue<string> onShowMessageList = new ConcurrentQueue<string>();
         public void OnShowMessageWithPicBox(object sender, MessageEventArgs e)
         {
-
-            if (pic.InvokeRequired)
-            {
-                // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
-                Action actionDelegate = () => { DrawMsgOnPic(e.Message); };
-
-                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
-
-                // 或者 
-                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
-                this.pic.Invoke(actionDelegate, null);
-            }
-            else
-            {
-                DrawMsgOnPic(e.Message);
-                // update(e.ShowMessage);
-            }
-
+            onShowMessageList.Enqueue(e.Message);
         }
+
         private Bitmap picShowSurface = null;
         private Graphics picg = null;
-        private int rowCount = 0;
-        private static readonly object picgLock = new object();
-        void DrawMsgOnPic(string msg)
+        int rowCount = 0;
+        void DrawMsgOnPic()
         {
-            lock (picgLock)
+
+            //int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
+            //int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
+            //// pic.Size = new Size(w, h);
+            ////picShowSurface = new Bitmap(w2, h2);
+            ////picShow.Size = new Size(w2, h2);
+            //picShowSurface = new Bitmap(w2, h2);
+            //picg = Graphics.FromImage(picShowSurface);
+
+            if (!onShowMessageList.IsEmpty)
             {
-                int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
-                int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
-                // pic.Size = new Size(w, h);
-                //picShowSurface = new Bitmap(w2, h2);
-                //picShow.Size = new Size(w2, h2);
-                picShowSurface = new Bitmap(w2, h2);
-                //picg = Graphics.FromImage(picShowSurface);
-
-
-                if (rowCount > 250)
+                string tmp = "";
+                bool success = onShowMessageList.TryDequeue(out tmp);
+                if (success)
                 {
-                    rowCount = 0;
-                    picg.Clear(Color.FromArgb(0, 0, 0, 0));
-                    return;
+                    DrawUtil.DrawString(picg, tmp, ConstDefine.FONT_SISE, Color.White, 0, (rowCount++) * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
                 }
-                DrawUtil.DrawString(picg, msg, ConstDefine.FONT_SISE, Color.White, 0, rowCount++ * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
-
-                splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
-                splitContainer1.Panel2.Invalidate();
             }
 
-        }
-        //public void ShowSocketState(object sender,MessageEventArgs e)
-        //{
-        //    listBox1.Items.Add(new ListViewItem(DateTime.Now.ToLongTimeString().ToString()+" "+e.ShowMessage));
-        //}
-        // GuiLisenter sl;
-        //  TaskLisenter tl;
+            // splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
+            // splitContainer1.Panel2.Invalidate();
 
+            this.picShow.Image = picShowSurface;
+
+
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //让控件不闪烁
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint, true);
-
-            ////监听端口
-            //sl = new GuiLisenter(Convert.ToInt32(txtPort.Text));
-            //sl._del = UpdateUI;
-            //sl.Transmit += OnTransmitToTask;
-            //sl.ShowMessage += OnShowMessageWithPicBox;
-
-            //tl = new TaskLisenter();
-            //tl.ShowMessage += ShowMessage;
-            //tl.TaskMessage += ReceveTask;
-            //tl.StartLisent(txtPort.Text);
-
-
-
             //显示本机监听地址
             string ipv4 = GetHostAdress();
             txtServer.Text = ipv4;
@@ -787,15 +698,6 @@ namespace AGV_V1._0
         {
             SqlManager.Instance.GetElecMapInfo();
         }
-
-
-
-
-
-
-
-
-
 
 
     }
