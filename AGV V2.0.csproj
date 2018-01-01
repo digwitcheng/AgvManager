@@ -66,6 +66,8 @@
     <Compile Include="Agv\State.cs" />
     <Compile Include="Algorithm\AstarSearch.cs" />
     <Compile Include="Algorithm\Close.cs" />
+    <Compile Include="DataBase\SqlHelper.cs" />
+    <Compile Include="DataBase\SqlManager.cs" />
     <Compile Include="Network\Messages\FileMessage.cs" />
     <Compile Include="Network\Messages\MapFileMessage.cs" />
     <Compile Include="Network\Messages\BaseMessage.cs" />
@@ -333,6 +335,7 @@
     <Content Include="Agv\AGV.xml" />
     <Content Include="Map\ElcMap.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

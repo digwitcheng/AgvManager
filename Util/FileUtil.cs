@@ -56,7 +56,7 @@ namespace AGV_V1._0.Algorithm
             }
             XmlDocument xmlAgv = new XmlDocument();
             xmlAgv.Load(pathAGV);
-            //XML2.0:获取地图的格子数
+            //XML2.0:获取vehicle数
             XmlNode agvsum = xmlAgv.SelectSingleNode("Info/SUM");
             XmlNode xmlNode = xmlAgv.SelectSingleNode("Info/AGV_info");
             if (xmlNode == null)

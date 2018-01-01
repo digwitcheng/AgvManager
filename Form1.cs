@@ -32,6 +32,7 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
 using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
+using AGV_V1._0.DataBase;
 
 namespace AGV_V1._0
 {
@@ -52,10 +53,18 @@ namespace AGV_V1._0
         {
             InitializeComponent();
             InitServer();//初始化服务器
+            ConnectDataBase(); //连接数据库
+
             InitUiView();//绘制界面
             StartThread();//启动发送，接收，搜索等线程
             InitialSystem();//初始化小车
 
+
+        }
+
+        private void ConnectDataBase()
+        {
+           SqlManager.Instance.Connect2DataBase();
         }
         void StartThread()
         {
@@ -470,38 +479,38 @@ namespace AGV_V1._0
 
         void drawArrow(int y, int x)
         {
-            int dir = 0;
-            if (Elc.mapnode[y, x].RightDifficulty < MapNode.MAX_ABLE_PASS)
+            if (Elc.mapnode[y, x].IsAbleCross)
             {
-                dir |= ConstDefine.Right;
+                g.DrawImage(ConstDefine.IMAGE_DICT[15], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
-            if (Elc.mapnode[y, x].LeftDifficulty < MapNode.MAX_ABLE_PASS)
+            else
             {
-                dir |= ConstDefine.Left;
-            }
-            if (Elc.mapnode[y, x].DownDifficulty < MapNode.MAX_ABLE_PASS)
-            {
-                dir |= ConstDefine.Down;
-            }
-            if (Elc.mapnode[y, x].UpDifficulty < MapNode.MAX_ABLE_PASS)
-            {
-                dir |= ConstDefine.Up;
+                g.DrawImage(ConstDefine.IMAGE_DICT[0], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
 
-            //if (dir == 0)
-            //{
-            //    dir = -1;
-            //}
-            //else
-            //{
-            //    dir = 0;
-            //}
-            Image img = ConstDefine.IMAGE_DICT[dir];
-            if (img != null)
-            {
-                g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
 
-            }
+            //int dir = 0;
+            //if (Elc.mapnode[y, x].RightDifficulty < MapNode.MAX_ABLE_PASS)
+            //{
+            //    dir |= ConstDefine.Right;
+            //}
+            //if (Elc.mapnode[y, x].LeftDifficulty < MapNode.MAX_ABLE_PASS)
+            //{
+            //    dir |= ConstDefine.Left;
+            //}
+            //if (Elc.mapnode[y, x].DownDifficulty < MapNode.MAX_ABLE_PASS)
+            //{
+            //    dir |= ConstDefine.Down;
+            //}
+            //if (Elc.mapnode[y, x].UpDifficulty < MapNode.MAX_ABLE_PASS)
+            //{
+            //    dir |= ConstDefine.Up;
+            //}
+            //Image img = ConstDefine.IMAGE_DICT[dir];
+            //if (img != null)
+            //{
+            //    g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
+            //}
         }
 
         bool first = true;
@@ -769,13 +778,14 @@ namespace AGV_V1._0
         /// <param name="e"></param>
         private void button7_Click_1(object sender, EventArgs e)
         {
-            InitialAgv();
-            VehicleManager.Instance.RandomMove(11);
+            //InitialAgv();
+
+            VehicleManager.Instance.RandomMove(4);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-
+            SqlManager.Instance.GetElecMapInfo();
         }
 
 

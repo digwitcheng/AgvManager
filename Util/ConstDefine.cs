@@ -12,6 +12,12 @@ namespace AGV_V1._0.Util
 {
      class ConstDefine
     {
+         public const int minX = 8;
+         public const int maxX = 10;
+         public const int minY = 3;
+         public const int maxY = 7;
+
+
         public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
         public static int g_MapHeight = (int)(FORM_HEIGHT);
         public static int g_WidthNum    = 100;        //地图格子的个数，默认150*150
