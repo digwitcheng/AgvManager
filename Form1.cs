@@ -32,6 +32,7 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
 using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
+using AGV_V1._0.DataBase;
 using System.Collections.Concurrent;
 
 namespace AGV_V1._0
@@ -47,18 +48,24 @@ namespace AGV_V1._0
         public static Random rand = new Random(5);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
         private ElecMap Elc = ElecMap.Instance;
 
-
+        private System.Threading.Timer timer;
 
         public Form1()
         {
             InitializeComponent();
-
             InitServer();//初始化服务器
+            ConnectDataBase(); //连接数据库
+
+            InitUiView();//绘制界面
             StartThread();//启动发送，接收，搜索等线程
             InitialSystem();//初始化小车
-            InitUiView();//绘制界面
 
 
+        }
+
+        private void ConnectDataBase()
+        {
+           SqlManager.Instance.Connect2DataBase();
         }
         void StartThread()
         {
@@ -137,12 +144,16 @@ namespace AGV_V1._0
         /// </summary>
         private void InitialSystem()
         {
-            FinishedQueue.Instance.Clear();
-            TaskRecvQueue.Instance.Clear();
-            SearchRouteQueue.Instance.Clear();
+
+
+            timer1.Stop();
+            FinishedQueue.Instance.ClearData();
+            TaskRecvQueue.Instance.ClearData();
+            SearchRouteQueue.Instance.ClearData();
             Thread.Sleep(100);
 
             InitialAgv();
+            timer1.Start();
 
 
         }
@@ -189,12 +200,30 @@ namespace AGV_V1._0
             }
 
         }
+        //private void ReInitialAgv()
+        //{
+        //    if (tableLayoutPanel1.InvokeRequired)
+        //    {
+        //        // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
+        //        Action actionDelegate = () => { InitialAgv(); };
+        //        // 或者
+        //        // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
+        //        this.tableLayoutPanel1.Invoke(actionDelegate, null);
+        //    }
+        //    else
+        //    {
+        //        InitialAgv();
+        //    }
+
+        //}
         private void ReInitialSystem()
         {
             if (tableLayoutPanel1.InvokeRequired)
             {
                 // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
                 Action actionDelegate = () => { InitialSystem(); };
+                // 或者
+                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
                 this.tableLayoutPanel1.Invoke(actionDelegate, null);
             }
             else
@@ -214,12 +243,29 @@ namespace AGV_V1._0
             MAX_NODE_LENGTH = ConstDefine.g_NodeLength * 2;
             MIN_NODE_LENGTH = ConstDefine.g_NodeLength / 2;
 
+            ////设置滚动条滚动的区域
+            //this.AutoScrollMinSize = new Size(ConstDefine.WIDTH + ConstDefine.BEGIN_X, ConstDefine.HEIGHT);
+
+          
+
 
             SetMapView();
             SetInfoShowView();
 
 
 
+        }
+        /// <summary>
+        /// 减少界面闪烁
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
         }
         void SetInfoShowView()
         {
@@ -394,75 +440,21 @@ namespace AGV_V1._0
             //vehicle[0].Draw(e.Graphics);
             //vehicle[1].Draw(e.Graphics);
 
+
+
             DrawMsgOnPic();
-
-
             pic.Image = newSurface;
-        }
-        private Bitmap picShowSurface = null;
-        private Graphics picg = null;
-        int rowCount = 0;
-        void DrawMsgOnPic()
-        {
-            
-                //int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
-                //int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
-                //// pic.Size = new Size(w, h);
-                ////picShowSurface = new Bitmap(w2, h2);
-                ////picShow.Size = new Size(w2, h2);
-                //picShowSurface = new Bitmap(w2, h2);
-                //picg = Graphics.FromImage(picShowSurface);
-
-                if (!onShowMessageList.IsEmpty)
-                {
-                    string tmp = "";
-                    bool success= onShowMessageList.TryDequeue(out tmp);
-                    if(success){
-                        DrawUtil.DrawString(picg, tmp, ConstDefine.FONT_SISE, Color.White, 0, (rowCount++) * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
-                    }
-                }
-
-               // splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
-               // splitContainer1.Panel2.Invalidate();
-
-                this.picShow.Image = picShowSurface;
-            
-
         }
 
         void drawArrow(int y, int x)
         {
-            int dir = 0;
-            if (Elc.mapnode[y, x].RightDifficulty < MapNode.MAX_ABLE_PASS)
+            if (Elc.mapnode[y, x].IsAbleCross)
             {
-                dir |= ConstDefine.Right;
+                g.DrawImage(ConstDefine.IMAGE_DICT[15], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
-            if (Elc.mapnode[y, x].LeftDifficulty < MapNode.MAX_ABLE_PASS)
+            else
             {
-                dir |= ConstDefine.Left;
-            }
-            if (Elc.mapnode[y, x].DownDifficulty < MapNode.MAX_ABLE_PASS)
-            {
-                dir |= ConstDefine.Down;
-            }
-            if (Elc.mapnode[y, x].UpDifficulty < MapNode.MAX_ABLE_PASS)
-            {
-                dir |= ConstDefine.Up;
-            }
-
-            //if (dir == 0)
-            //{
-            //    dir = -1;
-            //}
-            //else
-            //{
-            //    dir = 0;
-            //}
-            Image img = ConstDefine.IMAGE_DICT[dir];
-            if (img != null)
-            {
-                g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
-
+                g.DrawImage(ConstDefine.IMAGE_DICT[0], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
         }
 
@@ -505,6 +497,11 @@ namespace AGV_V1._0
             {
                 // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
                 Action actionDelegate = () => { ShowFinishCount(e.Message); };
+
+                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
+
+                // 或者 
+                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
                 this.finishCountLabel.Invoke(actionDelegate, null);
             }
             else
@@ -523,6 +520,11 @@ namespace AGV_V1._0
             {
                 // 当一个控件的InvokeRequired属性值为真时，说明有一个创建它以外的线程想访问它
                 Action actionDelegate = () => { ShowDistanceCount(e.Message); };
+
+                //    IAsyncResult asyncResult =actionDelegate.BeginInvoke()
+
+                // 或者 
+                // Action<string> actionDelegate = delegate(string txt) { this.label2.Text = txt; };
                 this.finishCountLabel.Invoke(actionDelegate, null);
             }
             else
@@ -543,11 +545,41 @@ namespace AGV_V1._0
         {
             onShowMessageList.Enqueue(e.Message);
         }
-       
+
+        private Bitmap picShowSurface = null;
+        private Graphics picg = null;
+        int rowCount = 0;
+        void DrawMsgOnPic()
+        {
+
+            //int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
+            //int h2 = (int)(rowCount + 1) * ConstDefine.FONT_SISE;
+            //// pic.Size = new Size(w, h);
+            ////picShowSurface = new Bitmap(w2, h2);
+            ////picShow.Size = new Size(w2, h2);
+            //picShowSurface = new Bitmap(w2, h2);
+            //picg = Graphics.FromImage(picShowSurface);
+
+            if (!onShowMessageList.IsEmpty)
+            {
+                string tmp = "";
+                bool success = onShowMessageList.TryDequeue(out tmp);
+                if (success)
+                {
+                    DrawUtil.DrawString(picg, tmp, ConstDefine.FONT_SISE, Color.White, 0, (rowCount++) * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
+                }
+            }
+
+            // splitContainer1.Panel2.AutoScrollMinSize = new Size(w2, h2);
+            // splitContainer1.Panel2.Invalidate();
+
+            this.picShow.Image = picShowSurface;
+
+
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer1.Start();
             //显示本机监听地址
             string ipv4 = GetHostAdress();
             txtServer.Text = ipv4;
@@ -581,7 +613,7 @@ namespace AGV_V1._0
 
         public void ReceveTask(object sender, MessageEventArgs e)
         {
-            TaskRecvQueue.Instance.Enqueue(e.Message);
+            TaskRecvQueue.Instance.AddMyQueueList(e.Message);
         }
 
         public void MapText()
@@ -620,19 +652,6 @@ namespace AGV_V1._0
                 this.Invalidate();
             }
         }
-        /// <summary>
-        /// 减少界面闪烁
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
-
 
         /// <summary>
         /// 缩小键触发的函数
@@ -670,13 +689,14 @@ namespace AGV_V1._0
         /// <param name="e"></param>
         private void button7_Click_1(object sender, EventArgs e)
         {
-            InitialAgv();
-            VehicleManager.Instance.RandomMove(11);
+            //InitialAgv();
+
+            VehicleManager.Instance.RandomMove(4);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-
+            SqlManager.Instance.GetElecMapInfo();
         }
 
 

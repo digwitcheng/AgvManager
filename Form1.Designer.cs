@@ -71,7 +71,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.BackColor = System.Drawing.Color.Gray;
             this.panel2.Controls.Add(this.button7);
             this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.button5);
@@ -84,9 +84,9 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Location = new System.Drawing.Point(6, 6);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(146, 555);
+            this.panel2.Size = new System.Drawing.Size(144, 549);
             this.panel2.TabIndex = 14;
             // 
             // button7
@@ -122,7 +122,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.BackColor = System.Drawing.Color.Gray;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label9.ForeColor = System.Drawing.SystemColors.Window;
             this.label9.Location = new System.Drawing.Point(49, 301);
@@ -144,7 +144,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.BackColor = System.Drawing.Color.Gray;
             this.label10.ForeColor = System.Drawing.SystemColors.Window;
             this.label10.Location = new System.Drawing.Point(40, 331);
             this.label10.Name = "label10";
@@ -155,7 +155,7 @@
             // txtServer
             // 
             this.txtServer.AutoSize = true;
-            this.txtServer.BackColor = System.Drawing.Color.Transparent;
+            this.txtServer.BackColor = System.Drawing.Color.Gray;
             this.txtServer.ForeColor = System.Drawing.SystemColors.Window;
             this.txtServer.Location = new System.Drawing.Point(49, 184);
             this.txtServer.Name = "txtServer";
@@ -165,6 +165,7 @@
             // 
             // txtPort
             // 
+            this.txtPort.BackColor = System.Drawing.Color.Gray;
             this.txtPort.Location = new System.Drawing.Point(76, 212);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(55, 21);
@@ -174,7 +175,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.BackColor = System.Drawing.Color.Gray;
             this.label11.ForeColor = System.Drawing.SystemColors.Window;
             this.label11.Location = new System.Drawing.Point(29, 215);
             this.label11.Name = "label11";
@@ -213,8 +214,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoScroll = true;
-            this.tableLayoutPanel1.BackgroundImage = global::AGV_V1._0.Properties.Resources.timg__6_;
-            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Gray;
+            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble;
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
@@ -233,24 +235,26 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel1.Controls.Add(this.pic);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(155, 3);
+            this.panel1.Location = new System.Drawing.Point(159, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(704, 555);
+            this.panel1.Size = new System.Drawing.Size(696, 549);
             this.panel1.TabIndex = 35;
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(865, 3);
+            this.splitContainer1.Location = new System.Drawing.Point(864, 6);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gray;
             this.splitContainer1.Panel1.Controls.Add(this.distanceTotal);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
@@ -261,8 +265,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.picShow);
-            this.splitContainer1.Size = new System.Drawing.Size(147, 555);
-            this.splitContainer1.SplitterDistance = 269;
+            this.splitContainer1.Size = new System.Drawing.Size(145, 549);
+            this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 36;
             // 
             // distanceTotal
@@ -320,7 +324,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.BackColor = System.Drawing.Color.Gray;
             this.label1.ForeColor = System.Drawing.SystemColors.Window;
             this.label1.Location = new System.Drawing.Point(41, 45);
             this.label1.Name = "label1";
@@ -330,11 +334,11 @@
             // 
             // picShow
             // 
-            this.picShow.BackColor = System.Drawing.Color.Transparent;
+            this.picShow.BackColor = System.Drawing.Color.Gray;
             this.picShow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picShow.Location = new System.Drawing.Point(0, 0);
             this.picShow.Name = "picShow";
-            this.picShow.Size = new System.Drawing.Size(147, 282);
+            this.picShow.Size = new System.Drawing.Size(143, 277);
             this.picShow.TabIndex = 0;
             this.picShow.TabStop = false;
             // 
