@@ -14,6 +14,7 @@ namespace AGV_V1._0.Util
          public const string AGV_PORT_ADRESS = "12321";
          public const string AGV_PATH = "..\\..\\Agv\\AGV.xml";
          public const string MAP_PATH = "..\\..\\Map\\ElcMap.xml";
+         public const string CONFIG_PATH = "..\\..\\NLog\\NLog.config";
 
     }
 }

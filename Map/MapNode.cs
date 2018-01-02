@@ -79,12 +79,12 @@ namespace AGV_V1
         public int RightDifficulty { get { return rightDifficulty; } set { rightDifficulty = value; } }
 
 
-        public bool IsAbleCross    //节点可不可达,true表示可走，false表示不可走 
+        public bool IsAbleCross    //节点可不可走,true表示可走，false表示不可走 
         {
             get;
             set;
         }
-        public MapNodeType Type    //节点可不可达,true表示可达，false表示不可达 
+        public MapNodeType Type    //节点类型
         {
             get;
             set;

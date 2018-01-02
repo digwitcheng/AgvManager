@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using AGV_V1._0.Util;
+using NLog;
 using NLog.Config;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace AGV_V1._0.NLog
         static Logs()
         {
             //初始化配置日志
-            LogManager.Configuration = new XmlLoggingConfiguration(System.AppDomain.CurrentDomain.BaseDirectory.ToString() + "..\\..\\NLog\\NLog.config");
+            LogManager.Configuration = new XmlLoggingConfiguration(System.AppDomain.CurrentDomain.BaseDirectory.ToString() + ConstString.CONFIG_PATH);
         }
         /// <summary>
         /// 调试日志
@@ -103,13 +104,6 @@ namespace AGV_V1._0.NLog
                 logger.Warn(msg);
             }
             catch { }
-        }
-        public static void Flush(int? timeoutMilliseconds = null)
-        {
-            if (timeoutMilliseconds != null)
-                LogManager.Flush(timeoutMilliseconds.Value);
-
-            LogManager.Flush();
         }
     }
 }

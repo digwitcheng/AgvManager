@@ -85,7 +85,7 @@
             this.panel2.Controls.Add(this.button3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(7, 7);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(193, 687);
             this.panel2.TabIndex = 14;
@@ -93,7 +93,7 @@
             // button7
             // 
             this.button7.Location = new System.Drawing.Point(36, 486);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(100, 29);
             this.button7.TabIndex = 37;
@@ -103,8 +103,8 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(24, 447);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
+            this.button6.Location = new System.Drawing.Point(24, 448);
+            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(120, 31);
             this.button6.TabIndex = 36;
@@ -115,7 +115,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(56, 56);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 29);
             this.button5.TabIndex = 35;
@@ -140,7 +140,7 @@
             // button13
             // 
             this.button13.Location = new System.Drawing.Point(41, 305);
-            this.button13.Margin = new System.Windows.Forms.Padding(4);
+            this.button13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(95, 35);
             this.button13.TabIndex = 33;
@@ -175,7 +175,7 @@
             // 
             this.txtPort.BackColor = System.Drawing.Color.Gray;
             this.txtPort.Location = new System.Drawing.Point(101, 265);
-            this.txtPort.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(72, 25);
             this.txtPort.TabIndex = 31;
@@ -196,7 +196,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(56, 81);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 31);
             this.button2.TabIndex = 8;
@@ -207,7 +207,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(56, 120);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 31);
             this.button3.TabIndex = 9;
@@ -218,7 +218,7 @@
             // pic
             // 
             this.pic.Location = new System.Drawing.Point(36, 22);
-            this.pic.Margin = new System.Windows.Forms.Padding(4);
+            this.pic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pic.Name = "pic";
             this.pic.Size = new System.Drawing.Size(133, 62);
             this.pic.TabIndex = 0;
@@ -239,7 +239,7 @@
             this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -254,7 +254,7 @@
             this.panel1.Controls.Add(this.pic);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(211, 7);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(930, 687);
             this.panel1.TabIndex = 35;
@@ -264,7 +264,7 @@
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(1152, 7);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -282,7 +282,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.picShow);
             this.splitContainer1.Size = new System.Drawing.Size(194, 687);
-            this.splitContainer1.SplitterDistance = 334;
+            this.splitContainer1.SplitterDistance = 332;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 36;
             // 
@@ -360,9 +360,9 @@
             this.picShow.BackColor = System.Drawing.Color.Gray;
             this.picShow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picShow.Location = new System.Drawing.Point(0, 0);
-            this.picShow.Margin = new System.Windows.Forms.Padding(4);
+            this.picShow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.picShow.Name = "picShow";
-            this.picShow.Size = new System.Drawing.Size(192, 346);
+            this.picShow.Size = new System.Drawing.Size(192, 348);
             this.picShow.TabIndex = 0;
             this.picShow.TabStop = false;
             // 
@@ -375,8 +375,8 @@
             this.ClientSize = new System.Drawing.Size(1353, 701);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(1061, 614);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(1061, 612);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "AGV系统";

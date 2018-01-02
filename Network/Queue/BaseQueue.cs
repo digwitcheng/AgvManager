@@ -6,31 +6,35 @@ using System.Threading.Tasks;
 
 namespace AGV_V1._0
 {
+    /// <summary>
+    /// 线性安全的队列
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseQueue<T>where T:class
     {
-         Queue<T> MyQueue = new Queue<T>();
+         Queue<T> myQueue = new Queue<T>();
 
         //加一个锁
-        private Object MyQueueLock = new Object();
+        private Object myQueueLock = new Object();
 
         //判断队列里是否有数据
-        public bool IsMyQueueHasData()
+        public bool IsHasData()
         {
             bool ret = false;
-            lock (this.MyQueueLock)
+            lock (this.myQueueLock)
             {
-                ret = (this.MyQueue != null && this.MyQueue.Count > 0);
+                ret = (this.myQueue != null && this.myQueue.Count > 0);
             }
             return ret;
         }
-        public bool ClearData()
+        public bool Clear()
         {
             bool ret = false;
-            lock (this.MyQueueLock)
+            lock (this.myQueueLock)
             {
-                if (this.MyQueue != null && this.MyQueue.Count > 0)
+                if (this.myQueue != null && this.myQueue.Count > 0)
                 {
-                    this.MyQueue.Clear();
+                    this.myQueue.Clear();
                 }
                 ret = true;
             }
@@ -38,36 +42,36 @@ namespace AGV_V1._0
         }
 
         //判断队列里是否有数据
-        public int GetMyQueueCount()
+        public int Count()
         {
             int ret = 0;
-            lock (this.MyQueueLock)
+            lock (this.myQueueLock)
             {
-                ret = this.MyQueue.Count;
+                ret = this.myQueue.Count;
             }
             return ret;
         }
 
         //入队操作，增加数据
-        public void AddMyQueueList(T obj)
+        public void Enqueue(T obj)
         {
 
-            lock (this.MyQueueLock)
+            lock (this.myQueueLock)
             {
-                this.MyQueue.Enqueue(obj);
+                this.myQueue.Enqueue(obj);
             }
         }
 
         //出队操作，获得数据
-        public T GetMyQueueList()
+        public T Dequeue()
         {
             T obj = default(T);
-            lock (this.MyQueueLock)
+            lock (this.myQueueLock)
             {
-                bool has = (this.MyQueue != null && this.MyQueue.Count > 0);
+                bool has = (this.myQueue != null && this.myQueue.Count > 0);
                 if (has)
                 {
-                    obj = this.MyQueue.Dequeue() as T;
+                    obj = this.myQueue.Dequeue() as T;
                 }
 
             }

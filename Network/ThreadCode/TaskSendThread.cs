@@ -44,9 +44,9 @@ namespace AGV_V1._0.Network.ThreadCode
         {
             try
             {                
-                if (FinishedQueue.Instance.IsMyQueueHasData())
+                if (FinishedQueue.Instance.IsHasData())
                 {
-                    Vehicle v = FinishedQueue.Instance.GetMyQueueList();
+                    Vehicle v = FinishedQueue.Instance.Dequeue();
                     if (v.CurState == State.unloading)
                     {
                         DateTime nowTime = DateTime.Now;
@@ -81,7 +81,7 @@ namespace AGV_V1._0.Network.ThreadCode
             {
                 System.Threading.Thread.Sleep(ConstDefine.UNLOADING_TIME);
                 v.CurState = State.Free;
-                FinishedQueue.Instance.AddMyQueueList(v);
+                FinishedQueue.Instance.Enqueue(v);
             });
 
         }
