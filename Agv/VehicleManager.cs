@@ -329,7 +329,7 @@ namespace AGV_V1._0
         public void RandomMove(int Id)
         {           
             MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
-            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);
+            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, vehicles[Id].BeginX, mpEnd.Y);
             sd.Arrive = false;
             sd.EndLoc = "rest";
 

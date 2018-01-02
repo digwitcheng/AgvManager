@@ -1,4 +1,5 @@
 ﻿using AGV_V1._0.NLog;
+using AGV_V1._0.Util;
 using Astar;
 using DataBase;
 using System;
@@ -35,8 +36,8 @@ namespace AGV_V1._0.DataBase
             }
             public void Connect2DataBase()
             {
-                Task.Factory.StartNew(() => TryConnect2DataBase());//启动线程            
-               // TryConnect2DataBase();
+                //Task.Factory.StartNew(() => TryConnect2DataBase());//启动线程            
+                TryConnect2DataBase();
             }
             void TryConnect2DataBase()
             {
@@ -59,7 +60,7 @@ namespace AGV_V1._0.DataBase
                 {
                     if (table != null && table.Rows.Count > 0)
                     {
-                        point = new MyPoint((int)Math.Round(float.Parse(table.Rows[0]["CurX"].ToString()) / 600), (int)Math.Round(float.Parse(table.Rows[0]["CurY"].ToString()) / 600));
+                        point = new MyPoint((int)Math.Round(float.Parse(table.Rows[0]["CurX"].ToString()) / ConstDefine.CELL_UNIT), (int)Math.Round(float.Parse(table.Rows[0]["CurY"].ToString()) / ConstDefine.CELL_UNIT));
                     }
                 }
                 catch

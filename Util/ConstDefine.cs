@@ -12,10 +12,11 @@ namespace AGV_V1._0.Util
 {
      class ConstDefine
     {
-         public const int minX = 8;
-         public const int maxX = 10;
-         public const int minY = 3;
-         public const int maxY = 7;
+         public const int minX = 5;
+         public const int maxX = 7;
+         public const int minY = 6;
+         public const int maxY = 10;
+         public const int CELL_UNIT = 1000;//格和毫格的转换单位
 
 
         public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
@@ -38,7 +39,7 @@ namespace AGV_V1._0.Util
         public const int CHECK_CONGESTION = 3000;//检测拥堵情况
         public const int SEARCH_TIME = 3;//搜索路径的间隔
         public const int TASK_TIME = 5;  //处理任务的间隔
-        public const int FORWORD_STEP = 2; 
+        public const int FORWORD_STEP = 4; //搜定多少格
         public const int RESEARCH_COUNT = 10;
         public const int UNLOADING_TIME = 2000;//在投放口停留的时间
         public const int Up = (1 << 3);

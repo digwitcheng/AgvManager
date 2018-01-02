@@ -17,7 +17,7 @@ namespace AGV_V1._0.Algorithm
         {
             int x = rand.Next(0, Elc.HeightNum - 1);
             int y = rand.Next(0, Elc.WidthNum - 1);
-            while (!nodeIsAvailable(Elc, x, y))
+            while (!Elc.IsNodeAvailable(x, y))
             {
                 x = rand.Next(0, Elc.HeightNum - 1);
                 y = rand.Next(0, Elc.WidthNum - 1);
@@ -33,18 +33,12 @@ namespace AGV_V1._0.Algorithm
             int maxY = ConstDefine.maxY;
             int x = rand.Next(minX, maxX+1);
             int y = rand.Next(minY,maxY+1);
-            while (!nodeIsAvailable(Elc, x, y))
+            while (!Elc.IsNodeAvailable(x, y))
             {
                 x = rand.Next(minX, maxX);
                 y = rand.Next(minY, maxY);
             }
             return new MyPoint(x, y);
-        }
-
-        static Boolean nodeIsAvailable(ElecMap Elc, int x, int y)
-        {
-            return Elc.mapnode[x, y].IsAbleCross;
-
         }
 
         /// <summary>

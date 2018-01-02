@@ -255,18 +255,18 @@ namespace AGV_V1._0
 
 
         }
-        /// <summary>
-        /// 减少界面闪烁
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
+        ///// <summary>
+        ///// 减少界面闪烁
+        ///// </summary>
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams cp = base.CreateParams;
+        //        cp.ExStyle |= 0x02000000;
+        //        return cp;
+        //    }
+        //}
         void SetInfoShowView()
         {
             //设置显示文字图片的属性

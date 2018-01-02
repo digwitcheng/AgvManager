@@ -396,15 +396,15 @@ namespace AGV_V1._0
         //    g.DrawImage(img_Obstacle, ConstDefine.BLANK_X, ConstDefine.BLANK_Y + 5 * ConstDefine.SPACE);
         //    g.DrawImage(img_Scanner, ConstDefine.BLANK_X, ConstDefine.BLANK_Y + 6 * ConstDefine.SPACE);
         //}       
-        public Boolean canMoveToNode(Vehicle v, int x, int y)
+        public Boolean IsVehicleCanMove(Vehicle v, int x, int y)
         {
             Boolean temp = mapnode[x, y].IsAbleCross && (mapnode[x, y].NodeCanUsed == -1 || mapnode[x, y].NodeCanUsed == v.Id);
             return temp;
         }
-        public Boolean nodeIsAvailable(int x, int y)
+        public Boolean IsNodeAvailable(int x, int y)
         {
-            return mapnode[x, y].IsAbleCross;
-
+            Boolean temp = mapnode[x, y].IsAbleCross && (mapnode[x, y].NodeCanUsed == -1);
+            return temp;
         }
         public  bool IsLegalLocation(int X,int Y)
         {
