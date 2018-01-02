@@ -147,9 +147,9 @@ namespace AGV_V1._0
 
 
             timer1.Stop();
-            FinishedQueue.Instance.ClearData();
-            TaskRecvQueue.Instance.ClearData();
-            SearchRouteQueue.Instance.ClearData();
+            FinishedQueue.Instance.Clear();
+            TaskRecvQueue.Instance.Clear();
+            SearchRouteQueue.Instance.Clear();
             Thread.Sleep(100);
 
             InitialAgv();
@@ -613,7 +613,7 @@ namespace AGV_V1._0
 
         public void ReceveTask(object sender, MessageEventArgs e)
         {
-            TaskRecvQueue.Instance.AddMyQueueList(e.Message);
+            TaskRecvQueue.Instance.Enqueue(e.Message);
         }
 
         public void MapText()

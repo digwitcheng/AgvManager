@@ -199,7 +199,7 @@ namespace AGV_V1._0
             {
                 for (int i = 0; i < vFinished.Count; i++)
                 {
-                    FinishedQueue.Instance.AddMyQueueList(vFinished[i]);
+                    FinishedQueue.Instance.Enqueue(vFinished[i]);
                 }
                 vFinished.Clear();
             }
@@ -333,7 +333,7 @@ namespace AGV_V1._0
             sd.Arrive = false;
             sd.EndLoc = "rest";
 
-            SearchRouteQueue.Instance.AddMyQueueList(new SearchData(sd, false));
+            SearchRouteQueue.Instance.Enqueue(new SearchData(sd, false));
 
 
         }
@@ -355,7 +355,7 @@ namespace AGV_V1._0
             //{
             //    MessageBox.Show("起点：" + td.BeginX + "," + td.BeginY + "" + "终点：" + td.EndX + "," + td.EndY);
             //}
-            SearchRouteQueue.Instance.AddMyQueueList(new SearchData(td, isResarch));
+            SearchRouteQueue.Instance.Enqueue(new SearchData(td, isResarch));
 
             //Task.Factory.StartNew(() => vehicle[num].SearchRoute(Elc), TaskCreationOptions.LongRunning);
         }
