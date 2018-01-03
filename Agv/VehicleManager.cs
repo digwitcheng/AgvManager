@@ -133,6 +133,7 @@ namespace AGV_V1._0
 
         private bool ShouldMove(int vnum)
         {
+            //aa
              MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
                 if (mp != null)
                 {
