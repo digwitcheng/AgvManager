@@ -1,5 +1,6 @@
 ﻿using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
+using AGVSocket.Network;
 using Astar;
 using DataBase;
 using System;

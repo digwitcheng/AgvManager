@@ -18,15 +18,17 @@ namespace AGV_V1._0.Util
          public const int maxY = 10;
          public const int CELL_UNIT = 1000;//格和毫格的转换单位
          public const float DEVIATION = 0.1f;//坐标相差在0.1以内就看作在一个点
+         public const byte CHECKSUM = 0x7f;
+         public const int UPDATA_SQL_TIME = 50;
 
 
 
-        public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
-        public static int g_MapHeight = (int)(FORM_HEIGHT);
-        public static int g_WidthNum    = 100;        //地图格子的个数，默认150*150
-        public static int g_HeightNum   = 100;       //
-        public static int g_NodeLength  = 12;       //默认边长
-        public static int g_VehicleCount = 10;     //小车数量
+        public static uint g_MapWidth = (uint)(FORM_WIDTH * PANEL_RADIO);
+        public static uint g_MapHeight = (uint)(FORM_HEIGHT);
+        public static uint g_WidthNum    = 100;        //地图格子的个数，默认150*150
+        public static uint g_HeightNum   = 100;       //
+        public static uint g_NodeLength  = 12;       //默认边长
+        public static uint g_VehicleCount = 10;     //小车数量
 
 
 

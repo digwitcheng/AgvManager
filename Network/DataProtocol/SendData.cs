@@ -65,12 +65,12 @@ namespace AGV_V1._0
             get { return battery; }
             set { battery = value; }
         }
-        public int BeginX { get; set; }
-        public int BeginY { get; set; }
-        public int EndX { get; set; }
-        public int EndY { get; set; }
-        public int DestX { get; set; }
-        public int DestY { get; set; }
+        public uint BeginX { get; set; }
+        public uint BeginY { get; set; }
+        public uint EndX { get; set; }
+        public uint EndY { get; set; }
+        public uint DestX { get; set; }
+        public uint DestY { get; set; }
 
         private string startloc;
         public string StartLoc

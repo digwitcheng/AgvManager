@@ -67,7 +67,7 @@ namespace AGV_V1._0
         }
 
         //小车编号
-        public int Id
+        public uint Id
         {
             get;
             private set;
@@ -137,12 +137,12 @@ namespace AGV_V1._0
         public int cost;   //截止到当前时间，总共的花费
 
         public Direction Dir { get; set; }
-        public int EndX { get; set; }
-        public int EndY { get; set; }
-        public int BeginX { get; set; }
-        public int BeginY { get; set; }
-        public int DestX { get; set; }
-        public int DestY { get; set; }
+        public uint EndX { get; set; }
+        public uint EndY { get; set; }
+        public uint BeginX { get; set; }
+        public uint BeginY { get; set; }
+        public uint DestX { get; set; }
+        public uint DestY { get; set; }
 
         //  public float Distance;//上一个节拍所走的距离；
         // public int stopTime;//停留时钟数
@@ -180,14 +180,14 @@ namespace AGV_V1._0
             set;
         }
         //车的横坐标
-        public int X
+        public uint X
         {
             get;
             set;
         }
 
         //车的纵坐标
-        public int Y
+        public uint Y
         {
             get;
             set;
@@ -242,7 +242,7 @@ namespace AGV_V1._0
         /// <param name="electricity">电量</param>
         /// <param name="acceleration">加速度</param>
         /// <param name="maxspeed">最大速度</param>
-        public Vehicle(int x, int y, int speed, int electricity, int acceleration, int maxspeed, Direction direction)
+        public Vehicle(uint x, uint y, int speed, int electricity, int acceleration, int maxspeed, Direction direction)
         {
             this.BeginX = x;
             this.BeginY = y;
@@ -257,7 +257,7 @@ namespace AGV_V1._0
             this.Dir = direction;
         }
 
-        public Vehicle(int x, int y, int v_num, bool arrive, Direction direction)
+        public Vehicle(uint x, uint y, uint v_num, bool arrive, Direction direction)
         {
             this.BeginX = x;
             this.BeginY = y;
@@ -287,7 +287,7 @@ namespace AGV_V1._0
             lock (RouteLock)
             {
 
-                Rectangle rect = new Rectangle(BeginY * ConstDefine.g_NodeLength, (int)BeginX * ConstDefine.g_NodeLength, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
+                Rectangle rect = new Rectangle((int)(BeginY * ConstDefine.g_NodeLength), (int)(BeginX * ConstDefine.g_NodeLength), (int)ConstDefine.g_NodeLength - 2, (int)ConstDefine.g_NodeLength - 2);
                 DrawUtil.FillRectangle(g,showColor,rect);
 
                 PointF p = new PointF((int)((BeginY) * ConstDefine.g_NodeLength), (int)((BeginX) * ConstDefine.g_NodeLength));
@@ -338,7 +338,7 @@ namespace AGV_V1._0
                             }
                             else
                             {
-                                Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                                Elc.mapnode[tx, ty].NodeCanUsed = (int)this.Id;
                             }
                         }
                     }
@@ -352,7 +352,7 @@ namespace AGV_V1._0
 
                     if (tPtr >= route.Count - 1)
                     {
-                        Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
+                        Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = (int)this.Id;
                         Arrive = true;
                         return false;
                     }
@@ -371,7 +371,7 @@ namespace AGV_V1._0
                         }
                         else
                         {
-                            Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                            Elc.mapnode[tx, ty].NodeCanUsed = (int)this.Id;
                             StopTime = ConstDefine.STOP_TIME;
                             Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
                             tPtr++;

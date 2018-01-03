@@ -22,14 +22,21 @@ namespace AGV_V1._0.Util
         {
             DrawString(g, context+"", fontSize, fontColor, x, y);
         }
-        
+        public static void DrawString(Graphics g, int context, float fontSize, Color fontColor, uint x, uint y)
+        {
+            DrawString(g, context + "", fontSize, fontColor, x, y);
+        }
 
         public static void DrawString(Graphics g, string context, float fontSize, Color fontColor, int x, int y)
         {
             DrawString(g, context, fontSize, fontColor, new PointF(x, y));
         }
+        public static void DrawString(Graphics g, string context, float fontSize, Color fontColor, uint x, uint y)
+        {
+            DrawString(g, context, fontSize, fontColor, new PointF(x, y));
+        }
 
-        public static void DrawString(Graphics g, int context, float fontSize, Color fontColor, PointF pf)
+        public static void DrawString(Graphics g, uint context, float fontSize, Color fontColor, PointF pf)
         {
             DrawString(g, context + "", fontSize, fontColor, pf);
         }

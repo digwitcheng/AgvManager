@@ -9,16 +9,16 @@ namespace Astar
     [Serializable]
     class MyPoint
     {
-      private  int x;
-      private  int y;
+      private  UInt32 x;
+      private UInt32 y;
 
-        public int Y
+      public UInt32 Y
         {
             get { return y; }
             set { y = value; }
         }
 
-        public int X
+      public UInt32 X
         {
             get { return x; }
             set { x = value; }
@@ -30,10 +30,15 @@ namespace Astar
             this.y = point.y;
 
         }
-        public MyPoint(int x, int y)
+        public MyPoint(UInt32 x, UInt32 y)
         {
             this.x = x;
             this.y = y;
+        }
+        public MyPoint(int x, int y)
+        {
+            this.x = (UInt32)x;
+            this.y = (UInt32) y;
         }
        
         //public MyPoint(MyPoint point,int addSpeed)

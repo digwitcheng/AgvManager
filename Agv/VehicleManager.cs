@@ -7,6 +7,9 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
 using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
+using AGVSocket.Network;
+using AGVSocket.Network.EnumType;
+using AGVSocket.Network.Packet;
 using Astar;
 using System;
 using System.Collections.Generic;
@@ -112,7 +115,9 @@ namespace AGV_V1._0
                         bool isMove = vehicles[vnum].Move(ElecMap.Instance);
                         if (isMove)
                         {
-                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                            //AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(vehicles[vnum].BeginX * ConstDefine.CELL_UNIT, vehicles[vnum].BeginY * ConstDefine.CELL_UNIT), new CellPoint(vehicles[vnum].BeginX * ConstDefine.CELL_UNIT, vehicles[vnum].BeginY* ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.None)); AgvServerManager.Instance.Send(rp);
+
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
                         }
@@ -134,7 +139,7 @@ namespace AGV_V1._0
         private bool ShouldMove(int vnum)
         {
             //aa
-             MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
+             CellPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
                 if (mp != null)
                 {
                     if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION+ConstDefine.FORWORD_STEP-1 && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION)
@@ -153,7 +158,7 @@ namespace AGV_V1._0
                 }
             
         }
-        int GetDirCount(int row, int col)
+        int GetDirCount(uint row, uint col)
         {
             int dir = 0;
             if (ElecMap.Instance.mapnode[row, col].RightDifficulty < MapNode.MAX_ABLE_PASS)
@@ -191,7 +196,7 @@ namespace AGV_V1._0
             int m = 0;
             for (int i = 0; i < vehicleCount; i++)
             {
-                vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
+                vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY,(uint)i, false, Direction.Right);
                 MyPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
                 //vehicle[i].endX = (int)endPoint.col;
                 //vehicle[i].endY = (int)endPoint.row;
@@ -223,7 +228,7 @@ namespace AGV_V1._0
 
         }
 
-        public void RandomMove(int Id)
+        public void RandomMove(uint Id)
         {           
             MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
             SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);

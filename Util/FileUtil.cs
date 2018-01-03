@@ -36,8 +36,8 @@ namespace AGV_V1._0.Algorithm
             XmlNode map_w = xmlfile.SelectSingleNode("config/Map/Widthnum");
             XmlNode map_h = xmlfile.SelectSingleNode("config/Map/Heightnum");
 
-            ConstDefine.g_WidthNum = Convert.ToInt32(map_w.InnerText);
-            ConstDefine.g_HeightNum = Convert.ToInt32(map_h.InnerText);
+            ConstDefine.g_WidthNum = Convert.ToUInt32(map_w.InnerText);
+            ConstDefine.g_HeightNum = Convert.ToUInt32(map_h.InnerText);
             Logs.Info("load map success");
 
 

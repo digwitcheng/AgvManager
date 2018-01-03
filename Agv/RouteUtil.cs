@@ -56,16 +56,8 @@ namespace AGV_V1._0.Algorithm
             int count = vehicle.Length;
             for (int i = 0; i < count; i++)
             {
-                Elc.mapnode[(vehicle[i].BeginX), (vehicle[i].BeginY)].NodeCanUsed = vehicle[i].Id;
+                Elc.mapnode[(vehicle[i].BeginX), (vehicle[i].BeginY)].NodeCanUsed = (int)vehicle[i].Id;
             }
-        }
-        public int changeX(int X)
-        {
-            return (X ) / ConstDefine.g_NodeLength;
-        }
-        public int changeY(int Y)
-        {
-            return Y / ConstDefine.g_NodeLength;
         }
 
 

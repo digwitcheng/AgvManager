@@ -34,6 +34,7 @@ using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.DataBase;
 using System.Collections.Concurrent;
+using AGVSocket.Network;
 
 namespace AGV_V1._0
 {
@@ -44,7 +45,7 @@ namespace AGV_V1._0
         //private Graphics gg = null;
         GuiServerManager gm;
         TaskServerManager tm;
-        AGVServerManager am;
+        AgvServerManager am;
         public static Random rand = new Random(5);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
         private ElecMap Elc = ElecMap.Instance;
 
@@ -115,11 +116,11 @@ namespace AGV_V1._0
             tm.DataMessage += ReceveTask;
             tm.StartServer(Convert.ToInt32(txtPort.Text) + 1);
 
-            am = AGVServerManager.Instance;
+            am = AgvServerManager.Instance;
             am.ShowMessage += OnShowMessageWithPicBox;
             am.ReLoad += ReInitialSystem;
             am.DataMessage += OnTransmitToTask;
-            am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
+            am.StartServer(54321);
         }
         void DisposeServer()
         {
