@@ -17,6 +17,8 @@ namespace AGV_V1._0.Util
          public const int minY = 6;
          public const int maxY = 10;
          public const int CELL_UNIT = 1000;//格和毫格的转换单位
+         public const float DEVIATION = 0.1f;//坐标相差在0.1以内就看作在一个点
+
 
 
         public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
@@ -39,7 +41,7 @@ namespace AGV_V1._0.Util
         public const int CHECK_CONGESTION = 3000;//检测拥堵情况
         public const int SEARCH_TIME = 3;//搜索路径的间隔
         public const int TASK_TIME = 5;  //处理任务的间隔
-        public const int FORWORD_STEP = 4; //搜定多少格
+        public const int FORWORD_STEP = 3; //锁定多少格(包括自己所在的位置)
         public const int RESEARCH_COUNT = 10;
         public const int UNLOADING_TIME = 2000;//在投放口停留的时间
         public const int Up = (1 << 3);

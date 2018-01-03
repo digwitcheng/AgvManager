@@ -64,24 +64,6 @@ namespace AGV_V1._0
             {
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)
                 {
-
-                    // SearchRoute(vnum, false);
-
-                    //vehicle[vnum].LockNode.Clear();
-                    //vehicle[vnum].Arrive = false;
-                    //int temp = vnum;
-                    //vehicle[vnum].vehical_state = State.carried;
-                    //SearchRoute(temp, false);
-
-                    ////搜索路径
-                    //int temp = vnum;
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    Thread.Sleep(500); 
-                    //    SearchRoute(temp, false);  
-                    //});  
-
-                    //  vehicles[vnum].LockNode.Clear();
                     vehicles[vnum].Arrive = true;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
@@ -93,27 +75,8 @@ namespace AGV_V1._0
                 {
                     continue;
                 }
-                //if (vehicle[vnum].Arrive == true && vehicle[vnum].CurNodeTypy() == NodeType.queueEntra)
-                //{
-                //    MyPoint nextEnd = ElecMap.Instance.CalculateScannerPoint(new MyPoint(vehicle[vnum].BeginX, vehicle[vnum].BeginY));
-                //    //ElecMap.Instance.GetScannerPoint(vehicle[vnum].BeginX,vehicle[vnum].BeginY);
-                //    if (nextEnd == null)
-                //    {
-                //        MessageBox.Show("排队入口点未找到对应的扫描仪");
-                //        continue;
-                //    }
-                //    vehicle[vnum].EndX = nextEnd.X;
-                //    vehicle[vnum].EndY = nextEnd.Y;
-                //    vehicle[vnum].SetRoute(null);
-                //    vehicle[vnum].GetLockNode().Clear();
-                //    vehicle[vnum].EndLoc = "ScanArea";
-                //    SearchRoute(vnum, false);
-                //    continue;
-                //}
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
                 {
-                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
-                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
                     vehicles[vnum].CurState = State.unloading;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
@@ -122,41 +85,12 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Arrive == true)
                 {
-                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
-                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
-                    //vehicle[vnum].vehical_state = State.unloading;
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
 
                     continue;
                 }
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-
-                //if (vehicle[vnum].StopTime < ConstDefine.STOP_TIME)
-                //{
-                //    int nextVnum=vehicle[vnum].Stoped;                            
-                //    if ( nextVnum>= 0 && nextVnum< vehicle.Length)
-                //    {
-                //        int nextVnumStopedBy = vehicle[nextVnum].Stoped;
-                //        if (nextVnumStopedBy == vnum)//相向冲突
-                //        {
-                //            //重新搜索路径
-                //            SearchRoute(vnum, true);
-                //        }
-                //        else//交叉冲突
-                //        {
-                //            vehicle[vnum].Vehicle_Move2(ElecMap.Instance);
-                //            moveCount++;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    vehicle[vnum].Vehicle_Move2(ElecMap.Instance);
-                //}
-
 
                 if (vehicles[vnum].StopTime < 0)
                 {
@@ -168,33 +102,24 @@ namespace AGV_V1._0
                         }
                         //重新搜索路径
                         SearchRoute(vnum, true);
-                        // Task.Factory.StartNew(() => SearchRoute(vnum), TaskCreationOptions.LongRunning);
-                        //  vehicle[vnum].SearchRoute(ElecMap.Instance);
-                        //路径搜索完 节点开锁 ElecMap.Instance.mapnode[vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.X, vehicle[i].Route[vehicle[i].Virtual_tPtr].Point.Y].LockNode = -1;
                     }
                     vehicles[vnum].StopTime = 3;
                 }
                 else
                 {
-                    bool isMove = vehicles[vnum].Move(ElecMap.Instance);
-                    if (isMove)
+                    if (ShouldMove(vnum))
                     {
-                        AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
-                        moveCount++;
-                        OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
-                    }
-                    else
-                    {
-                        AGVServerManager.Instance.Send(MessageType.None, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                        bool isMove = vehicles[vnum].Move(ElecMap.Instance);
+                        if (isMove)
+                        {
+                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                            moveCount++;
+                            OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
+                        }
                     }
 
                 }
             }
-
-
-            //sl.SendVehicleData(vehicle);
-            // QueueData.Instance.AddMyQueueList(data);
-
             if (vFinished != null)
             {
                 for (int i = 0; i < vFinished.Count; i++)
@@ -204,57 +129,28 @@ namespace AGV_V1._0
                 vFinished.Clear();
             }
 
+        }
 
-            //小车移动
-            //for (int i = 0; i < vehicle.Length; i++)
-            //{
-            //    if (i == 5)
-            //    {
-            //        sb.Append(vehicle[1].Distance + " ");
-            //    }
-            //    if (vehicle[i].route == null)
-            //    {
-            //        continue;
-            //    }
-            //    if (vehicle[i].stoped==-1)
-            //    {
-            //       int num= vehicle[i].Vehicle_Move(ElecMap.Instance);
-            //       if (num >= 0 && num < vehicle.Length)
-            //       {
-            //           vehicle[num].stoped= vehicle[i].v_num;                   
-            //           vehicle[i].SearchRouteThread(ElecMap.Instance);                       
-            //       }
-            //    }
-            //    else
-            //    {
-            //        //if (vehicle[i].routeIndex + 1 < vehicle[i].route.Count)
-            //        //{
-            //        //    int tx = (int)vehicle[i].route[vehicle[i].routeIndex + 1].X;
-            //        //    int ty = (int)vehicle[i].route[vehicle[i].routeIndex + 1].Y;
-            //        //    Boolean temp = ElecMap.Instance.canMoveToNode(vehicle[i], tx, ty);
-            //        //    if (temp)
-            //        //    {
-            //        //        vehicle[i].stoped = -1;
-            //        //    }
-            //        //}
-            //    }
+        private bool ShouldMove(int vnum)
+        {
+             MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
+                if (mp != null)
+                {
+                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION+ConstDefine.FORWORD_STEP-1 && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION)
+                    {
+                        return true;
+                    }
+                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION  && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION+ ConstDefine.FORWORD_STEP - 1)
+                    {
+                        return true;
+                    }
+                    return false;
 
-
-
-            //else
-            //{
-            //    vehicle[i].stopTime = 3;
-
-            //}
-
-            //}
-            // label8.Text = sb.ToString();
-
-            // MapText();
-            //  routeUtil.CheckeConflictNode(vehicle, ElecMap.Instance);
-            //对窗体进行更新
-            //this.Invalidate();
-
+                }
+                else{
+                    return false;
+                }
+            
         }
         int GetDirCount(int row, int col)
         {
@@ -329,7 +225,7 @@ namespace AGV_V1._0
         public void RandomMove(int Id)
         {           
             MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
-            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, vehicles[Id].BeginX, mpEnd.Y);
+            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);
             sd.Arrive = false;
             sd.EndLoc = "rest";
 
