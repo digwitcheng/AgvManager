@@ -1,5 +1,6 @@
 ﻿using AGV_V1._0.NLog;
 using AGV_V1._0.Util;
+using AGVSocket.Network;
 using Astar;
 using DataBase;
 using System;
@@ -52,15 +53,15 @@ namespace AGV_V1._0.DataBase
                     Logs.Warn("未能连上数据库");
                 }
             }
-            public MyPoint GetVehicleCurLocationWithId(int Id)
+            public CellPoint GetVehicleCurLocationWithId(int Id)
             {
-                MyPoint point = null;
+                CellPoint point = null;
                 DataTable table = GetVehicleInfoWithId(Id);
                 try
                 {
                     if (table != null && table.Rows.Count > 0)
                     {
-                        point = new MyPoint((int)Math.Round(float.Parse(table.Rows[0]["CurX"].ToString()) / ConstDefine.CELL_UNIT), (int)Math.Round(float.Parse(table.Rows[0]["CurY"].ToString()) / ConstDefine.CELL_UNIT));
+                        point = new CellPoint((uint)Math.Round(float.Parse(table.Rows[0]["CurX"].ToString()) / ConstDefine.CELL_UNIT), (uint)Math.Round(float.Parse(table.Rows[0]["CurY"].ToString()) / ConstDefine.CELL_UNIT));
                     }
                 }
                 catch

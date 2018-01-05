@@ -7,8 +7,12 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
 using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
+using AGVSocket.Network;
+using AGVSocket.Network.EnumType;
+using AGVSocket.Network.Packet;
 using Astar;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -75,6 +79,19 @@ namespace AGV_V1._0
                 {
                     continue;
                 }
+                if (vehicles[vnum].Arrive == true)
+                {
+                    TrayPacket tp = new TrayPacket(1, 4, TrayMotion.TopLeft);
+                    AgvServerManager.Instance.Send(tp);
+
+                    vFinished.Add(vehicles[vnum]);
+                    vehicles[vnum].Route.Clear();
+                    vehicles[vnum].LockNode.Clear();
+
+                    RandomMove(4);
+
+                    continue;
+                }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
                 {
                     vehicles[vnum].CurState = State.unloading;
@@ -83,14 +100,7 @@ namespace AGV_V1._0
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }
-                if (vehicles[vnum].Arrive == true)
-                {
-                    vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route.Clear();
-                    vehicles[vnum].LockNode.Clear();
-
-                    continue;
-                }
+               
 
                 if (vehicles[vnum].StopTime < 0)
                 {
@@ -112,7 +122,8 @@ namespace AGV_V1._0
                         bool isMove = vehicles[vnum].Move(ElecMap.Instance);
                         if (isMove)
                         {
-                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(vehicles[vnum].BeginX * ConstDefine.CELL_UNIT, vehicles[vnum].BeginY * ConstDefine.CELL_UNIT), new CellPoint(vehicles[vnum].BeginX * ConstDefine.CELL_UNIT, vehicles[vnum].BeginY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.None));
+                            AgvServerManager.Instance.Send(rp);
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
                         }
@@ -133,24 +144,25 @@ namespace AGV_V1._0
 
         private bool ShouldMove(int vnum)
         {
-             MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
-                if (mp != null)
+            CellPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
+            if (mp != null)
+            {
+                if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION)
                 {
-                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION+ConstDefine.FORWORD_STEP-1 && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION)
-                    {
-                        return true;
-                    }
-                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION  && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION+ ConstDefine.FORWORD_STEP - 1)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return true;
+                }
+                if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
+                {
+                    return true;
+                }
+                return false;
 
-                }
-                else{
-                    return false;
-                }
-            
+            }
+            else
+            {
+                return false;
+            }
+
         }
         int GetDirCount(int row, int col)
         {
@@ -187,27 +199,26 @@ namespace AGV_V1._0
             }
             int vehicleCount = FileUtil.sendData.Length;
             vehicles = new Vehicle[vehicleCount];
-            int m = 0;
+           // int m = 0;
             for (int i = 0; i < vehicleCount; i++)
             {
                 vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
-                MyPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
+                CellPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
                 //vehicle[i].endX = (int)endPoint.col;
                 //vehicle[i].endY = (int)endPoint.row;
 
-                MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(i);
+                CellPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(i);
                 if (mp != null)
                 {
-                    vehicles[i].BeginX = mp.X;
-                    vehicles[i].BeginY = mp.Y;
+                    vehicles[i].BeginX = (int)mp.X;
+                    vehicles[i].BeginY = (int)mp.Y;
                 }
 
-                m++;
-                ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
-
-                vehicles[i].Speed = 0;
-                vehicles[i].MaxSpeed = 4;
-                vehicles[i].Acceleration = 1;
+                //m++;
+                //ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
+                //vehicles[i].Speed = 0;
+                //vehicles[i].MaxSpeed = 4;
+                //vehicles[i].Acceleration = 1;
 
                 int R = rand.Next(20, 225);
                 int G = rand.Next(20, 225);
@@ -216,6 +227,21 @@ namespace AGV_V1._0
                 vehicles[i].showColor = Color.FromArgb(255, R, G, B);
             }
 
+            ConcurrentDictionary<ushort, AgvInfo> agvInfo = AgvServerManager.Instance.GetAgvInfo;
+            foreach (var key in agvInfo.Keys)
+            {
+                int id = key;
+                AgvInfo info = null;
+                agvInfo.TryGetValue(key, out info);
+                if (info != null)
+                {
+                    vehicles[id].BeginX =(int) info.CurLocation.CurNode.X;
+                    vehicles[id].BeginY =(int) info.CurLocation.CurNode.Y;
+                }
+            }
+
+
+
             vehicleInited = true;
             ////把小车所在的节点设为占用状态
             RouteUtil.VehicleOcuppyNode(ElecMap.Instance, vehicles);
@@ -223,10 +249,10 @@ namespace AGV_V1._0
         }
 
         public void RandomMove(int Id)
-        {       
+        {
             //
-            MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
-            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);
+            CellPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
+            SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, (int)mpEnd.X, (int)mpEnd.Y);
             sd.Arrive = false;
             sd.EndLoc = "rest";
 

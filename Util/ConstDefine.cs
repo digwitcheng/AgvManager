@@ -28,6 +28,8 @@ namespace AGV_V1._0.Util
         public static int g_NodeLength  = 12;       //默认边长
         public static int g_VehicleCount = 10;     //小车数量
 
+        public static int AGV_PORT = 54321;
+
 
 
         public const float PANEL_RADIO = 0.7f;   //界面布局，中间场地占屏比

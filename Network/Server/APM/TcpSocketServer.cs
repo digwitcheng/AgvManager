@@ -11,7 +11,7 @@ namespace Cowboy.Sockets
 {
     public class TcpSocketServer
     {
-        #region Fields 
+        #region Fields
 
         //private static readonly NLog _log = Logger.Get<TcpSocketServer>();
         private TcpListener _listener;
@@ -44,8 +44,8 @@ namespace Cowboy.Sockets
 
             if (_configuration.BufferManager == null)
                 throw new InvalidProgramException("The buffer manager in configuration cannot be null.");
-          //  if (_configuration.FrameBuilder == null)
-          //      throw new InvalidProgramException("The frame handler in configuration cannot be null.");
+            //  if (_configuration.FrameBuilder == null)
+            //      throw new InvalidProgramException("The frame handler in configuration cannot be null.");
         }
 
         #endregion
@@ -73,8 +73,8 @@ namespace Cowboy.Sockets
                 _isListening = true;
                 _listener.Start(_configuration.PendingConnectionBacklog);
 
-                 ContinueAcceptSession(_listener);
-               
+                ContinueAcceptSession(_listener);
+
             }
         }
 
@@ -101,7 +101,7 @@ namespace Cowboy.Sockets
                 {
                     if (!ShouldThrow(ex))
                     {
-                      Logs.Error(ex.Message, ex);
+                        Logs.Error(ex.Message, ex);
                     }
                     else throw;
                 }
@@ -136,7 +136,7 @@ namespace Cowboy.Sockets
             {
                 if (!ShouldThrow(ex))
                 {
-                   Logs.Error(ex.Message, ex);
+                    Logs.Error(ex.Message, ex);
                 }
                 else throw;
             }
@@ -187,7 +187,7 @@ namespace Cowboy.Sockets
             }
         }
 
-        private void   CloseSession(TcpSocketSession session)
+        private void CloseSession(TcpSocketSession session)
         {
             TcpSocketSession sessionToBeThrowAway;
             _sessions.TryRemove(session.SessionKey, out sessionToBeThrowAway);
@@ -456,7 +456,7 @@ namespace Cowboy.Sockets
             GuardRunning();
 
             if (data == null)
-                throw new ArgumentNullException("data");
+                return;
 
             Broadcast(data, 0, data.Length);
         }
@@ -466,12 +466,24 @@ namespace Cowboy.Sockets
             GuardRunning();
 
             if (data == null)
-                throw new ArgumentNullException("data");
+                return;
 
             foreach (var session in _sessions.Values)
             {
-                session.Send(data, offset, count);
+                try
+                {
+                    session.Send(data, offset, count);
+                }
+                catch (InvalidProgramException iex)
+                {
+                    TcpSocketSession var;
+                    _sessions.TryRemove(session.SessionKey,out var);
+                }
+                catch(Exception ex) {
+                    Logs.Error("broadCast异常:"+ex);
+                }
             }
+
         }
 
         public void BeginBroadcast(byte[] data)

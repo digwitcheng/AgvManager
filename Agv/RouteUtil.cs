@@ -1,4 +1,5 @@
 ﻿using AGV_V1._0.Util;
+using AGVSocket.Network;
 using Astar;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,34 @@ namespace AGV_V1._0.Algorithm
 
         public static Random rand = new Random(3);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
-        public static MyPoint RandPoint(ElecMap Elc)
+        //public static MyPoint RandPoint(ElecMap Elc)
+        //{
+        //    int x = rand.Next(0, Elc.HeightNum - 1);
+        //    int y = rand.Next(0, Elc.WidthNum - 1);
+        //    while (!Elc.IsNodeAvailable(x, y))
+        //    {
+        //        x = rand.Next(0, Elc.HeightNum - 1);
+        //        y = rand.Next(0, Elc.WidthNum - 1);
+        //    }
+
+        //    return new MyPoint(x, y);
+        //}
+        //public static MyPoint RandRealPoint(ElecMap Elc)
+        //{
+        //    int minX=ConstDefine.minX;
+        //    int maxX=ConstDefine.maxX;
+        //    int minY = ConstDefine.minY;
+        //    int maxY = ConstDefine.maxY;
+        //    int x = rand.Next(minX, maxX+1);
+        //    int y = rand.Next(minY,maxY+1);
+        //    while (!Elc.IsNodeAvailable(x, y))
+        //    {
+        //        x = rand.Next(minX, maxX);
+        //        y = rand.Next(minY, maxY);
+        //    }
+        //    return new MyPoint(x, y);
+        //}
+        public static CellPoint RandPoint(ElecMap Elc)
         {
             int x = rand.Next(0, Elc.HeightNum - 1);
             int y = rand.Next(0, Elc.WidthNum - 1);
@@ -22,23 +50,22 @@ namespace AGV_V1._0.Algorithm
                 x = rand.Next(0, Elc.HeightNum - 1);
                 y = rand.Next(0, Elc.WidthNum - 1);
             }
-
-            return new MyPoint(x, y);
+            return new CellPoint(x, y);
         }
-        public static MyPoint RandRealPoint(ElecMap Elc)
+        public static CellPoint RandRealPoint(ElecMap Elc)
         {
-            int minX=ConstDefine.minX;
-            int maxX=ConstDefine.maxX;
+            int minX = ConstDefine.minX;
+            int maxX = ConstDefine.maxX;
             int minY = ConstDefine.minY;
             int maxY = ConstDefine.maxY;
-            int x = rand.Next(minX, maxX+1);
-            int y = rand.Next(minY,maxY+1);
+            int x = rand.Next(minX, maxX + 1);
+            int y = rand.Next(minY, maxY + 1);
             while (!Elc.IsNodeAvailable(x, y))
             {
                 x = rand.Next(minX, maxX);
                 y = rand.Next(minY, maxY);
             }
-            return new MyPoint(x, y);
+            return new CellPoint(x, y);
         }
 
         /// <summary>

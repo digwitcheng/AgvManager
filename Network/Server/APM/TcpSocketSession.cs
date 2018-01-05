@@ -339,7 +339,9 @@ namespace Cowboy.Sockets
 
             return sslStream;
         }
+#endregion
 
+        #region receive
         private void ContinueReadBuffer()
         {
             try
@@ -434,6 +436,24 @@ namespace Cowboy.Sockets
 
             SegmentBufferDeflector.ReplaceBuffer(_bufferManager, ref _receiveBuffer, ref _receiveBufferOffset, receiveCount);
 
+            //try
+            //{
+            //    _server.RaiseClientDataReceived(this, _receiveBuffer.Array, _receiveBufferOffset, receiveCount);
+            //}
+            //catch (Exception ex) // catch all exceptions from out-side
+            //{
+            //    HandleUserSideError(ex);
+            //}
+            //finally
+            //{
+            //    consumedLength += receiveCount;
+            //}
+
+           
+            //    _server.RaiseClientDataReceived(this, _receiveBuffer.Array, _receiveBuffer.Offset, receiveCount);
+            
+            //Console.WriteLine();
+
             while (true)
             {
                 frameLength = 0;
@@ -485,7 +505,7 @@ namespace Cowboy.Sockets
             }
 
             CloseIfShould(ex);
-            throw new TcpSocketException(ex.Message, ex);
+            //throw new TcpSocketException(ex.Message, ex);
         }
 
         private void HandleReceiveOperationException(Exception ex)
@@ -518,8 +538,8 @@ namespace Cowboy.Sockets
                 || ex is ArgumentException      // buffer array operation
                 )
             {
-                if (ex is SocketException)
-                    Logs.Error(string.Format("Session [{0}] exception occurred, [{1}].", this, ex.Message), ex);
+                //if (ex is SocketException)
+                Logs.Error(string.Format("Session [{0}] exception occurred, [{1}].", this, ex.Message), ex);
 
                 Close(true); // catch specified exception then intend to close the session
 
@@ -552,6 +572,7 @@ namespace Cowboy.Sockets
 
             if (State != TcpSocketConnectionState.Connected)
             {
+                Close(true);
                 throw new InvalidProgramException("This session has been closed.");
             }
 
