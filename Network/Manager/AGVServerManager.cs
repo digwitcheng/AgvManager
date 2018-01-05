@@ -51,7 +51,7 @@ namespace AGV_V1._0.Server.APM
             MessageType type = (MessageType)e.Data[e.DataOffset];
             var text = Encoding.UTF8.GetString(e.Data, e.DataOffset + 1, e.DataLength - 1);
 
-
+            //
             BaseMessage bm = BaseMessage.Factory(type, text);
             bm.ShowMessage += OnMessageEvent;
             bm.DataMessage += OnDataMessageEvent;
