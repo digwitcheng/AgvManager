@@ -238,7 +238,7 @@ namespace AGV_V1._0
                     vehicles[id].BeginX =(int) info.CurLocation.CurNode.X;
                     vehicles[id].BeginY =(int) info.CurLocation.CurNode.Y;
                 }
-            }
+            }    
 
 
 
