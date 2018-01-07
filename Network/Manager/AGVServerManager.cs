@@ -31,7 +31,7 @@ namespace AGV_V1._0.Server.APM
 
         public override void server_ClientConnected(object sender, TcpClientConnectedEventArgs e)
         {
-            string str = string.Format("TCP client {0} has connected.", e.Session.RemoteEndPoint);
+            string str = string.Format("小车通信程序连接成功，", e.Session.RemoteEndPoint);
             Console.WriteLine(str);
             OnMessageEvent(this, new MessageEventArgs(str));
 
@@ -41,7 +41,7 @@ namespace AGV_V1._0.Server.APM
 
         public override void server_ClientDisconnected(object sender, TcpClientDisconnectedEventArgs e)
         {
-            string str = string.Format("TCP client {0} has disconnected.", e.Session.RemoteEndPoint);
+            string str = string.Format("小车通信程序断开连接，", e.Session.RemoteEndPoint);
             Console.WriteLine(str);
             OnMessageEvent(this, new MessageEventArgs(str));
         }

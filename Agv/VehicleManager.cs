@@ -77,48 +77,55 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
                 {
-                    vehicles[vnum].CurState = State.unloading;
+                    bool res = DataBseUtil.ReallyArrived(vnum);
+                   if (res)
+                   {
+                       //AGVServerManager.Instance.Send(MessageType.ReStart, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY+":"
+                       //    + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
+                       vehicles[vnum].CurState = State.unloading;
+                   }
+                   else
+                   {
+                       AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].EndX + ":" + vehicles[vnum].EndY + ":"
+                           + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
+                   }
+                    continue;
+                }
+                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
+                {
+                    RandomMove(4);
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }
-                if (vehicles[vnum].Arrive == true)
-                {
-                    vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route.Clear();
-                    vehicles[vnum].LockNode.Clear();
 
-                    continue;
-                }
+                //if (vehicles[vnum].StopTime < 0)
+                //{
+                //    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
+                //    {
+                //        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
+                //        {
+                //            vehicles[vehicles[vnum].Stoped].StopTime = 2;
+                //        }
+                //        //重新搜索路径
+                //        SearchRoute(vnum, true);
+                //    }
+                //    vehicles[vnum].StopTime = 3;
+                //}
+                //else
+                //{
 
-                if (vehicles[vnum].StopTime < 0)
-                {
-                    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
-                    {
-                        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
-                        {
-                            vehicles[vehicles[vnum].Stoped].StopTime = 2;
-                        }
-                        //重新搜索路径
-                        SearchRoute(vnum, true);
-                    }
-                    vehicles[vnum].StopTime = 3;
-                }
-                else
-                {
-                    if (ShouldMove(vnum))
-                    {
-                        bool isMove = vehicles[vnum].Move(ElecMap.Instance);
+                    bool isMove = vehicles[vnum].Move(ElecMap.Instance);// vehicles[vnum].SimpleMove();// 
                         if (isMove)
                         {
-                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY);
+                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY + ":"
+                           + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
                         }
-                    }
 
-                }
+                //}
             }
             if (vFinished != null)
             {
@@ -130,28 +137,7 @@ namespace AGV_V1._0
             }
 
         }
-
-        private bool ShouldMove(int vnum)
-        {
-             MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(vnum);
-                if (mp != null)
-                {
-                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION+ConstDefine.FORWORD_STEP-1 && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION)
-                    {
-                        return true;
-                    }
-                    if (Math.Abs(vehicles[vnum].BeginX - mp.X) < ConstDefine.DEVIATION  && Math.Abs(vehicles[vnum].BeginY - mp.Y) < ConstDefine.DEVIATION+ ConstDefine.FORWORD_STEP - 1)
-                    {
-                        return true;
-                    }
-                    return false;
-
-                }
-                else{
-                    return false;
-                }
-            
-        }
+       
         int GetDirCount(int row, int col)
         {
             int dir = 0;
@@ -187,7 +173,6 @@ namespace AGV_V1._0
             }
             int vehicleCount = FileUtil.sendData.Length;
             vehicles = new Vehicle[vehicleCount];
-            int m = 0;
             for (int i = 0; i < vehicleCount; i++)
             {
                 vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
@@ -201,14 +186,6 @@ namespace AGV_V1._0
                     vehicles[i].BeginX = mp.X;
                     vehicles[i].BeginY = mp.Y;
                 }
-
-                m++;
-                ElecMap.Instance.mapnode[FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY].NodeCanUsed = i;
-
-                vehicles[i].Speed = 0;
-                vehicles[i].MaxSpeed = 4;
-                vehicles[i].Acceleration = 1;
-
                 int R = rand.Next(20, 225);
                 int G = rand.Next(20, 225);
                 int B = rand.Next(20, 225);
@@ -224,10 +201,16 @@ namespace AGV_V1._0
 
         public void RandomMove(int Id)
         {           
+            
             MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
+            while (mpEnd.X == vehicles[Id].BeginX && mpEnd.Y == vehicles[Id].Y)
+            {
+                mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
+            }
             SendData sd = new SendData(Id, vehicles[Id].BeginX, vehicles[Id].BeginY, mpEnd.X, mpEnd.Y);
             sd.Arrive = false;
             sd.EndLoc = "rest";
+            sd.State = State.carried;
 
             SearchRouteQueue.Instance.Enqueue(new SearchData(sd, false));
 

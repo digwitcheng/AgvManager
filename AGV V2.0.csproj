@@ -69,6 +69,8 @@
     <Compile Include="Agv\State.cs" />
     <Compile Include="Algorithm\AstarSearch.cs" />
     <Compile Include="Algorithm\Close.cs" />
+    <Compile Include="DataBase\DataBseUtil.cs" />
+    <Compile Include="DataBase\Sql.cs" />
     <Compile Include="DataBase\SqlHelper.cs" />
     <Compile Include="DataBase\SqlManager.cs" />
     <Compile Include="Network\Messages\FileMessage.cs" />
@@ -87,7 +89,6 @@
     <Compile Include="Network\ThreadCode\TaskReceiveThread.cs" />
     <Compile Include="Network\ThreadCode\GuiSendThread.cs" />
     <Compile Include="Network\ThreadCode\TaskSendThread.cs" />
-    <Compile Include="Util\AgvFileUtil.cs" />
     <Compile Include="Util\ConstString.cs" />
     <Compile Include="Util\DrawUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />

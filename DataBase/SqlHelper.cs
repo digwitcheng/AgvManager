@@ -13,7 +13,7 @@ namespace DataBase
         //public static string LocalDbConnStr = "";
         //Data Source=DIGWITC;Initial Catalog=agv;Integrated Security=True
         public static string CONECTIONG_STRING = "Data Source=LocalHost;Initial Catalog=agv;User Id=sa;Password=1046541763;";
-       
+
         #region 获得一个本地数据库(SQLSERVER2008)的SQL连接
         public static SqlConnection GetSqlConnection()
         {
@@ -87,7 +87,7 @@ namespace DataBase
             }
             catch (Exception ex)
             {
-                Logs.Error("SqlHelper.OpenSqlConn"+"SQL:打开数据库连接时捕获异常:" + ex.Message);
+                Logs.Error("SqlHelper.OpenSqlConn" + "SQL:打开数据库连接时捕获异常:" + ex.Message);
                 return false;
             }
         }
@@ -140,24 +140,26 @@ namespace DataBase
                     return 0;
                 }
             }
-
-            try
+            using (cmd = new SqlCommand(cmdTxt, sqlconn))
             {
-                cmd = new SqlCommand(cmdTxt, sqlconn);
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandTimeout = 10;
+                try
+                {
 
-                rowCount = cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Logs.Error("SqlHelper.ExecNonQuery " + "SQL:SqlHelper.ExecNonQuery方法捕获异常:" + ex.Message);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandTimeout = 10;
 
-                rowCount = 0;
-            }
-            finally
-            {
-                cmd.Dispose();
+                    rowCount = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Logs.Error("SqlHelper.ExecNonQuery " + "SQL:SqlHelper.ExecNonQuery方法捕获异常:" + ex.Message);
+
+                    rowCount = 0;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
             }
 
             return rowCount;
@@ -248,21 +250,23 @@ namespace DataBase
 
             try
             {
-                cmd = new SqlCommand();
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandTimeout = 10;
-                cmd.CommandText = procedureName;  //存储过程名称
-                cmd.Connection = sqlconn;
+                using (cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 10;
+                    cmd.CommandText = procedureName;  //存储过程名称
+                    cmd.Connection = sqlconn;
 
-                PrepareCommand(cmd, cmdParams);
+                    PrepareCommand(cmd, cmdParams);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-                bResult = true;
+                    bResult = true;
+                }
             }
             catch (Exception ex)
             {
-                Logs.Error("SqlHelper.ExecProcedure "+"SQL:SqlHelper.ExecProcedure方法捕获异常:" + ex.Message);
+                Logs.Error("SqlHelper.ExecProcedure " + "SQL:SqlHelper.ExecProcedure方法捕获异常:" + ex.Message);
 
                 bResult = false;
             }
@@ -275,11 +279,16 @@ namespace DataBase
         }
         #endregion
 
-        #region 返回一个数据集
+        #region 返回一个数据集    
+           private static SqlDataAdapter sda = new SqlDataAdapter();
+           private static DataSet ds = new DataSet();
+          // private static SqlCommand myCmd = new SqlCommand();
+         //  private static DataTable myTable = new DataTable();
+       // private static DataTable ds = new DataTable();
         public static DataSet GetDataSet(SqlConnection sqlconn, string cmdTxt)
         {
-            SqlDataAdapter sda = null;
-            DataSet ds = null;
+          // SqlDataAdapter sda = null;
+          //  DataSet ds = null;
 
             if (sqlconn == null)
             {
@@ -293,23 +302,24 @@ namespace DataBase
                     return null;
                 }
             }
-
-            try
+            using (sda = new SqlDataAdapter(cmdTxt, sqlconn))
             {
-                sda = new SqlDataAdapter(cmdTxt, sqlconn);
-                ds = new DataSet();
+                try
+                {
+                    ds = new DataSet();
 
-                sda.Fill(ds);
-            }
-            catch (Exception ex)
-            {
-                Logs.Error("SqlHelper.GetDataSet "+"SQL:SqlHelper.GetDataSet方法捕获到异常:" + ex.Message);
+                    sda.Fill(ds);
+                }
+                catch (Exception ex)
+                {
+                    Logs.Error("SqlHelper.GetDataSet " + "SQL:SqlHelper.GetDataSet方法捕获到异常:" + ex.Message);
 
-                ds = null;
-            }
-            finally
-            {
-                sda.Dispose();
+                    ds = null;
+                }
+                finally
+                {
+                    sda.Dispose();
+                }
             }
 
             return ds;
@@ -320,7 +330,8 @@ namespace DataBase
         public static DataTable GetDataTable(SqlConnection sqlconn, string cmdTxt)
         {
 
-            DataSet ds = SqlHelper.GetDataSet(sqlconn, cmdTxt);
+           // DataSet ds = SqlHelper.GetDataSet(sqlconn, cmdTxt);
+            ds = SqlHelper.GetDataSet(sqlconn, cmdTxt);
 
             if (ds == null || ds.Tables.Count < 1)
             {

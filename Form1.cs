@@ -34,6 +34,7 @@ using AGV_V1._0.Network.Messages;
 using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.DataBase;
 using System.Collections.Concurrent;
+using AGV_V1._0.Agv;
 
 namespace AGV_V1._0
 {
@@ -69,36 +70,49 @@ namespace AGV_V1._0
         }
         void StartThread()
         {
-            TaskSendThread.Instance.Start();
-            TaskReceiveThread.Instance.Start();
-            GuiSendThread.Instance.Start();
+            //TaskSendThread.Instance.Start();
+            //TaskSendThread.Instance.ShowMessage += OnShowMessageFinishCount;
+
+            //TaskReceiveThread.Instance.Start();
+            //TaskReceiveThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+
+            //GuiSendThread.Instance.Start();
+            //GuiSendThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+
             SearchRouteThread.Instance.Start();
-            CheckCongestionThread.Instance.Start();
-
-
-
-            TaskSendThread.Instance.ShowMessage += OnShowMessageFinishCount;
-            TaskReceiveThread.Instance.ShowMessage += OnShowMessageWithPicBox;
             SearchRouteThread.Instance.ShowMessage += OnShowMessageWithPicBox;
-            GuiSendThread.Instance.ShowMessage += OnShowMessageWithPicBox;
-            CheckCongestionThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+
+            //CheckCongestionThread.Instance.Start();
+            //CheckCongestionThread.Instance.ShowMessage += OnShowMessageWithPicBox;
+
+
+            SqlManager.Instance.Start();
+            SqlManager.Instance.ShowMessage += OnShowMessageWithPicBox;
 
         }
         void EndThread()
         {
-            TaskSendThread.Instance.ShowMessage -= OnShowMessageFinishCount;
-            TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
-            CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //TaskSendThread.Instance.ShowMessage -= OnShowMessageFinishCount;
+            //TaskSendThread.Instance.End();
 
-            CheckCongestionThread.Instance.End();
+            //TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //TaskReceiveThread.Instance.End();
+
+            //GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //GuiSendThread.Instance.End();
+
+            SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SearchRouteThread.Instance.End();
+
+
+            VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
             VehicleManager.Instance.End();
-            GuiSendThread.Instance.End();
-            SearchRouteThread.Instance.End();//启动路径搜索线程
-            TaskSendThread.Instance.End();
-            TaskReceiveThread.Instance.End();
+
+            SqlManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SqlManager.Instance.End();
+
+            //CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //CheckCongestionThread.Instance.End();
 
 
         }
@@ -118,7 +132,7 @@ namespace AGV_V1._0
             am = AGVServerManager.Instance;
             am.ShowMessage += OnShowMessageWithPicBox;
             am.ReLoad += ReInitialSystem;
-            am.DataMessage += OnTransmitToTask;
+            am.DataMessage +=OnAgvDone ;
             am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
         }
         void DisposeServer()
@@ -131,7 +145,7 @@ namespace AGV_V1._0
 
             am.ShowMessage -= OnShowMessageWithPicBox;
             am.ReLoad -= ReInitialSystem;
-            am.DataMessage -= OnTransmitToTask;
+            am.DataMessage -= OnAgvDone;
             am.Dispose();
 
 
@@ -238,7 +252,7 @@ namespace AGV_V1._0
         {
             Elc.InitialElc();
 
-            this.WindowState = FormWindowState.Maximized;
+           // this.WindowState = FormWindowState.Maximized;
             ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
             MAX_NODE_LENGTH = ConstDefine.g_NodeLength * 2;
             MIN_NODE_LENGTH = ConstDefine.g_NodeLength / 2;
@@ -377,39 +391,39 @@ namespace AGV_V1._0
             //    }
             //}
 
-            //绘制锁住的节点            
-            //for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
-            //{
-            //    List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
-            //    for (int q = 0; q < listNode.Count; q++)
-            //    {
-
-            //        int i = listNode[q].X;
-            //        int j = listNode[q].Y;
-            //        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-            //        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-            //        Brush brush = Brushes.DarkMagenta;
-            //        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-            //        gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
-
-            //    }
-            //}
-
-            //绘制拥堵的节点
-            for (int i = 0; i < Elc.mapnode.GetLength(0); i++)
+           // 绘制锁住的节点            
+            for (int num = 0; num < VehicleManager.Instance.GetVehicles().Length; num++)
             {
-                for (int j = 0; j < Elc.mapnode.GetLength(1); j++)
+                List<MyPoint> listNode = new List<MyPoint>(VehicleManager.Instance.GetVehicles()[num].LockNode);
+                for (int q = 0; q < listNode.Count; q++)
                 {
-                    if (Elc.mapnode[i, j].TraCongesIntensity > 0)
-                    {
-                        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-                        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-                        Brush brush = Brushes.DarkMagenta;
-                        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-                        gg.DrawString(Elc.mapnode[i, j].TraCongesIntensity + "", font, brush, pf);
-                    }
+
+                    int i = listNode[q].X;
+                    int j = listNode[q].Y;
+                    gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+                    Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+                    Brush brush = Brushes.DarkMagenta;
+                    PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+                    gg.DrawString(VehicleManager.Instance.GetVehicles()[num].Id + "", font, brush, pf);
+
                 }
             }
+
+            ////绘制拥堵的节点
+            //for (int i = 0; i < Elc.mapnode.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < Elc.mapnode.GetLength(1); j++)
+            //    {
+            //        if (Elc.mapnode[i, j].TraCongesIntensity > 0)
+            //        {
+            //            gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+            //            Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+            //            Brush brush = Brushes.DarkMagenta;
+            //            PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+            //            gg.DrawString(Elc.mapnode[i, j].TraCongesIntensity + "", font, brush, pf);
+            //        }
+            //    }
+            //}
 
             //绘制小车
             Vehicle[] v = VehicleManager.Instance.GetVehicles();
@@ -479,8 +493,6 @@ namespace AGV_V1._0
         long oldTime = 0;
         public void OnTransmitToTask(object sender, MessageEventArgs e)
         {
-            //OnShowMessageWithPicBox(sender,e);
-            // OnShowMessageWithPicBox(sender, new MessageEventArgs("归位"));
             try
             {
                 tm.Send(e.Type, e.Message);
@@ -491,6 +503,19 @@ namespace AGV_V1._0
                 OnShowMessageWithPicBox(this, new MessageEventArgs("转发异常:" + ex.Message));
             }
         }
+        public void OnAgvDone(object sender, MessageEventArgs e)
+        {
+            try
+            {
+                if (e.Type == MessageType.ReStart)
+                {
+                    int id = Convert.ToInt32(e.Message);
+                    VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
+                }
+            }
+            catch { }
+        }
+
         public void OnShowMessageFinishCount(object sender, MessageEventArgs e)
         {
             if (finishCountLabel.InvokeRequired)
@@ -616,25 +641,6 @@ namespace AGV_V1._0
             TaskRecvQueue.Instance.Enqueue(e.Message);
         }
 
-        public void MapText()
-        {
-
-            StringBuilder sb = new StringBuilder();
-
-            //for (int i = 0; i < vehicle[3].route.Count-1; i++)
-            //{                
-            //    sb.Append("[" + vehicle[3].route[i].col + "," + vehicle[3].route[i].row + "] ");                
-            //}
-            //sb.Append("\r\n");
-            //if (vehicle[6].route != null)
-            //{
-            //    for (int i = 0; i < vehicle[6].route.Count - 1; i++)
-            //    {
-            //        sb.Append("[" + vehicle[6].route[i].col + "," + vehicle[6].route[i].row + "] ");
-            //    }
-            //}
-            //  label8.Text = sb.ToString();
-        }
 
         /// <summary>
         /// 放大键触发的函数

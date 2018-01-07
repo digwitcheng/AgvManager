@@ -16,6 +16,7 @@ using AGV_V1._0.Agv;
 using AGV_V1._0.Util;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using AGV_V1._0.DataBase;
 
 namespace AGV_V1._0
 {
@@ -197,6 +198,7 @@ namespace AGV_V1._0
         public Color showColor=Color.Pink;
 
 
+        private int realTPtr;
         public int VirtualTPtr
         {
             get;
@@ -234,28 +236,7 @@ namespace AGV_V1._0
             get;
             set;
         }
-
-        /// <summary>
-        /// 构造函数，初始化所有变量
-        /// </summary>
-        /// <param name="speed">速度</param>
-        /// <param name="electricity">电量</param>
-        /// <param name="acceleration">加速度</param>
-        /// <param name="maxspeed">最大速度</param>
-        public Vehicle(int x, int y, int speed, int electricity, int acceleration, int maxspeed, Direction direction)
-        {
-            this.BeginX = x;
-            this.BeginY = y;
-            this.X = x;
-            this.Y = y;
-            this.Speed = speed;
-            this.MaxSpeed = maxspeed;
-
-            this.Electricity = electricity;
-            this.Acceleration = acceleration;
-            this.CurState = State.Free;
-            this.Dir = direction;
-        }
+       
 
         public Vehicle(int x, int y, int v_num, bool arrive, Direction direction)
         {
@@ -318,7 +299,7 @@ namespace AGV_V1._0
                 if (route == null || route.Count < 1)
                 {
                     return false;
-                }
+                }               
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
 
@@ -328,8 +309,7 @@ namespace AGV_V1._0
                         {
                             int tx = (int)route[VirtualTPtr].X;
                             int ty = (int)route[VirtualTPtr].Y;
-                            // Boolean temp = Elc.canMoveToNode(this, tx, ty);
-                            int temp = Elc.mapnode[tx, ty].NodeCanUsed;
+                            int temp = -1;// Elc.mapnode[tx, ty].NodeCanUsed;
                             if (temp > -1)
                             {
                                 Stoped = temp;
@@ -350,19 +330,11 @@ namespace AGV_V1._0
                 else  if (tPtr > 0)
                 {
 
-                    if (tPtr >= route.Count - 1)
-                    {
-                        Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
-                        Arrive = true;
-                        return false;
-                    }
-
                     if (VirtualTPtr <= route.Count - 1)
                     {
                         int tx = (int)route[VirtualTPtr].X;
                         int ty = (int)route[VirtualTPtr].Y;
-                        // Boolean temp = Elc.canMoveToNode(this, tx, ty);
-                        int temp = Elc.mapnode[tx, ty].NodeCanUsed;
+                        int temp = -1;// Elc.mapnode[tx, ty].NodeCanUsed;
                         if (temp > -1)
                         {
                             Stoped = temp;
@@ -371,11 +343,18 @@ namespace AGV_V1._0
                         }
                         else
                         {
-                            Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
-                            StopTime = ConstDefine.STOP_TIME;
-                            Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
-                            tPtr++;
-                            VirtualTPtr++;
+                            //if (ShouldMove(route[tPtr + 1].X, route[tPtr + 1].Y))
+                            //{
+                                Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                                StopTime = ConstDefine.STOP_TIME;
+                                Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
+                                tPtr++;
+                                VirtualTPtr++;
+                            //}
+                            //else
+                            //{
+                            //    return false;
+                            //}
                         }
 
                     }
@@ -386,18 +365,93 @@ namespace AGV_V1._0
                         tPtr++;
                     }
 
-                    //    else
-                    //    {
-                    //        Arrive = true;
-                    //    }
-
-                    //tPtr++;
 
                 }
-                BeginX = route[tPtr].X;
-                BeginY = route[tPtr].Y;
-                return true;
+                //BeginX = route[tPtr].X;
+                //BeginY = route[tPtr].Y;
+                //return true;
+                if (tPtr == 3)
+                {
+                    int a = 0;
+                }
+                if (tPtr >= route.Count)
+                {
+                    Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
+                    BeginX = route[route.Count - 1].X;
+                    BeginY = route[route.Count - 1].Y; 
+                    Arrive = true;
+                    return true;
+                }
+                if (ShouldMove(route[tPtr].X, route[tPtr].Y))
+                {
+                    BeginX = route[tPtr].X;
+                    BeginY = route[tPtr].Y;                    
+                    return true;
+                }
+                else
+                {
+                    int tx = (int)route[VirtualTPtr].X;
+                    int ty = (int)route[VirtualTPtr].Y;
+                    Elc.mapnode[tx, ty].NodeCanUsed = -1;
+                    Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
+                    tPtr--;
+                    VirtualTPtr--;
+                    tx = (int)route[VirtualTPtr].X;
+                    ty = (int)route[VirtualTPtr].Y;
+                    Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                    Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
+                    return false;
+                }
+               
             }
-        }         
+        }
+
+        public bool SimpleMove()
+        {
+            lock (RouteLock)
+            {
+                if (route == null || route.Count < 1)
+                {
+                    return false;
+                }
+                if(tPtr<route.Count){
+                    if (ShouldMove(route[tPtr].X,route[tPtr].Y))
+                    {
+                        tPtr++;
+                        BeginX = route[tPtr].X;
+                        BeginY = route[tPtr].Y;
+                        return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    this.Arrive = true;
+                    return false;
+                }
+            }
+        }
+        private bool ShouldMove(int nextX,int nextY)
+        {
+            MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(this.Id);
+            if (mp != null)
+            {
+                if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION)
+                {
+                    return true;
+                }
+                if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
+                {
+                    return true;
+                }
+                return false;
+
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

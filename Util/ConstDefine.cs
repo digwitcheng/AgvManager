@@ -17,7 +17,8 @@ namespace AGV_V1._0.Util
          public const int minY = 6;
          public const int maxY = 10;
          public const int CELL_UNIT = 1000;//格和毫格的转换单位
-         public const float DEVIATION = 0.1f;//坐标相差在0.1以内就看作在一个点
+         public const float DEVIATION = 0.02f;//坐标相差在DEVIATION以内就看作在一个点
+         public const int UPDATA_SQL_TIME = 50;
 
 
 
@@ -36,12 +37,12 @@ namespace AGV_V1._0.Util
         public const int FONT_SISE = 10; //消息显示面板字体大小
         public const int ROW_BOARD = 4;  //消息显示上下行空白大小
         public const int STOP_TIME = 6; //设置等待时间片段
-        public const int STEP_TIME = 750;//小车每走一格的间隔
+        public const int STEP_TIME = 1000;//小车每走一格的间隔
         public const int GUI_TIME = 100;//发送给界面的间隔
         public const int CHECK_CONGESTION = 3000;//检测拥堵情况
         public const int SEARCH_TIME = 3;//搜索路径的间隔
         public const int TASK_TIME = 5;  //处理任务的间隔
-        public const int FORWORD_STEP = 3; //锁定多少格(包括自己所在的位置)
+        public const int FORWORD_STEP =2; //锁定多少格(包括自己所在的位置)
         public const int RESEARCH_COUNT = 10;
         public const int UNLOADING_TIME = 2000;//在投放口停留的时间
         public const int Up = (1 << 3);
