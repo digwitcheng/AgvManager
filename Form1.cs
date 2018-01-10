@@ -44,6 +44,16 @@ namespace AGV_V1._0
 {
     public partial class Form1 : Form
     {
+        public const float PANEL_RADIO = 0.7f;   //界面布局，中间场地占屏比
+        public const float ENLARGER_RADIO = 1.2f;//每次放大的比率
+        public const float NARROW_RADIO = 0.8f; //每次缩小的比率
+        public const int FONT_SISE = 10; //消息显示面板字体大小
+        public const int ROW_BOARD = 4;  //消息显示上下行空白大小
+        public static int g_MapWidth = (int)(FORM_WIDTH * PANEL_RADIO);
+        public static int g_MapHeight = (int)(FORM_HEIGHT);
+        public static readonly int FORM_WIDTH = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;   //框体的宽度
+        public static readonly int FORM_HEIGHT = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;    //框体的长度  
+
         private Bitmap surface = null;
         private Graphics g = null;
         //private Graphics gg = null;
@@ -246,7 +256,7 @@ namespace AGV_V1._0
             Elc.InitialElc();
 
            // this.WindowState = FormWindowState.Maximized;
-            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
+            ConstDefine.g_NodeLength = (int)(FORM_WIDTH * PANEL_RADIO) / ConstDefine.g_WidthNum;
             MAX_NODE_LENGTH = ConstDefine.g_NodeLength * 2;
             MIN_NODE_LENGTH = ConstDefine.g_NodeLength / 2;
 
@@ -277,8 +287,8 @@ namespace AGV_V1._0
         void SetInfoShowView()
         {
             //设置显示文字图片的属性
-            int w2 = (int)(ConstDefine.FORM_WIDTH * 0.14);
-            int h2 = (int)(ConstDefine.FORM_WIDTH);
+            int w2 = (int)(FORM_WIDTH * 0.14);
+            int h2 = (int)(FORM_WIDTH);
             picShow.Location = Point.Empty;
             // picShow.Size = new Size(w2, h2);
             picShowSurface = new Bitmap(w2, h2);
@@ -584,7 +594,7 @@ namespace AGV_V1._0
                 bool success = onShowMessageList.TryDequeue(out tmp);
                 if (success)
                 {
-                    DrawUtil.DrawString(picg, tmp, ConstDefine.FONT_SISE, Color.White, 0, (rowCount++) * (ConstDefine.FONT_SISE + ConstDefine.ROW_BOARD));
+                    DrawUtil.DrawString(picg, tmp, FONT_SISE, Color.White, 0, (rowCount++) * (FONT_SISE + ROW_BOARD));
                 }
             }
 
@@ -645,7 +655,7 @@ namespace AGV_V1._0
         {
             if (ConstDefine.g_NodeLength < MAX_NODE_LENGTH)
             {
-                ConstDefine.g_NodeLength = (int)(ConstDefine.g_NodeLength * ConstDefine.ENLARGER_RADIO);
+                ConstDefine.g_NodeLength = (int)(ConstDefine.g_NodeLength * ENLARGER_RADIO);
                 // Elc.InitialElc(); //初始化电子地图
                 SetMapView();
                 this.Invalidate();
@@ -661,7 +671,7 @@ namespace AGV_V1._0
         {
             if (ConstDefine.g_NodeLength > MIN_NODE_LENGTH && ConstDefine.g_NodeLength > 1)
             {
-                ConstDefine.g_NodeLength = (int)(ConstDefine.g_NodeLength * ConstDefine.NARROW_RADIO);
+                ConstDefine.g_NodeLength = (int)(ConstDefine.g_NodeLength * NARROW_RADIO);
                 //  Elc.InitialElc(); //初始化电子地图
                 SetMapView();
                 this.Invalidate();
@@ -675,7 +685,7 @@ namespace AGV_V1._0
         /// <param name="e"></param>
         private void button5_Click_1(object sender, EventArgs e)
         {
-            ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
+            ConstDefine.g_NodeLength = (int)(FORM_WIDTH * PANEL_RADIO) / ConstDefine.g_WidthNum;
             //Elc.InitialElc(); //初始化电子地图
             SetMapView();
             this.Invalidate();
