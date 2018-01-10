@@ -24,7 +24,7 @@ namespace AGV_V1._0.Algorithm
         public static void LoadMapXml()
         {
             //XML1.0:获取xml文件路径
-            string pathMap = ConstString.MAP_PATH;
+            string pathMap = ConstDefine.MAP_PATH;
 
             if (!File.Exists(pathMap))
             {
@@ -49,7 +49,7 @@ namespace AGV_V1._0.Algorithm
         {
 
             //XML1.0:获取xml文件路径
-            string pathAGV = ConstString.AGV_PATH ;
+            string pathAGV = ConstDefine.AGV_PATH ;
             if (!File.Exists(pathAGV))
             {
                 throw new FileNotFoundException("agvxml");
@@ -113,7 +113,7 @@ namespace AGV_V1._0.Algorithm
             try
             {
                 //XML1.0:获取xml文件路径
-                string pathAGV = ConstString.AGV_PATH;
+                string pathAGV = ConstDefine.AGV_PATH;
                 if (!File.Exists(pathAGV))
                 {
                     return res;
@@ -213,5 +213,6 @@ namespace AGV_V1._0.Algorithm
             }
             return value;
         }
+
     }
 }

@@ -38,7 +38,7 @@ namespace CowboyTest.Server.APM
             Console.WriteLine(str);
             Logs.Info(str);
             OnMessageEvent(this,new MessageEventArgs (str));
-            string pathAgv =ConstString.AGV_PATH;
+            string pathAgv =ConstDefine.AGV_PATH;
             SendTo(e.Session.SessionKey,MessageType.AgvFile, pathAgv,false);
             //_server.SendTo()
         }

@@ -12,6 +12,10 @@ namespace AGV_V1._0.Util
 {
      class ConstDefine
     {
+
+         public const int REMOTE_PORT = 8081;//远程过程调用端口
+         public const string REMOTE_NAME = "RouteSearch";//远程过程调用名称
+
          public const int minX = 5;
          public const int maxX = 7;
          public const int minY = 6;
@@ -50,25 +54,16 @@ namespace AGV_V1._0.Util
         public const int Left = (1 << 1);
         public const int Right = (1 << 0);
         public static readonly int FORM_WIDTH = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;   //框体的宽度
-        public static readonly int FORM_HEIGHT = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;    //框体的长度
-        public static readonly Dictionary<int, Image> IMAGE_DICT = new Dictionary<int, Image>{
-        {15,Resources.all_white},              //1111   15
-        {7 ,Resources.besides_up_white},       //0111   7
-        {11,Resources.besides_down_white},     //1011   11
-        {13,Resources.besides_left_white},     //1101   13
-        {14,Resources.besides_right_white},    //1110   14
-        {10,Resources.up_left_white},          //1010   10
-        {9 ,Resources.up_right_white},         //1001   9
-        {6 ,Resources.down_left_white},        //0110   6
-        {5 ,Resources.down_right_white},       //0101   5
-        {8 ,Resources.up_white},               //1000   8
-        {4 ,Resources.down_white},             //0100   4
-        {2 ,Resources.left_white},             //0010   2
-        {1 ,Resources.right_white},            //0001   1
-        {0 ,Resources.empty_white},            //0000   0
-        {-1,Resources.obstacle_white}                //ffff   -1
-        };
+        public static readonly int FORM_HEIGHT = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;    //框体的长度       
 
+
+        public const string IP_ADRESS = "127.0.0.1";
+        public const string GUI_PORT_ADRESS = "5555";
+        public const string TASK_PORT_ADRESS = "5556";
+        public const string AGV_PORT_ADRESS = "12321";
+        public const string AGV_PATH = "..\\..\\Agv\\AGV.xml";
+        public const string MAP_PATH = "..\\..\\Map\\ElcMap.xml";
+        public const string CONFIG_PATH = "..\\..\\NLog\\NLog.config";
     }
    
 

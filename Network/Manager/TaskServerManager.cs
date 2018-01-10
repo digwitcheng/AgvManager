@@ -35,7 +35,7 @@ namespace AGV_V1._0.Server.APM
             Console.WriteLine(str);
             OnMessageEvent(this, new MessageEventArgs(str));
 
-            string pathAgv = ConstString.AGV_PATH;
+            string pathAgv = ConstDefine.AGV_PATH;
             SendTo(e.Session.SessionKey, MessageType.AgvFile, pathAgv, false);
         }
 

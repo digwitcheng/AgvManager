@@ -28,7 +28,7 @@ namespace AGV_V1._0.Network.Messages
             try
             {
                 OnMessageEvent("接收中...");
-                string pathAgv = ConstString.AGV_PATH;
+                string pathAgv = ConstDefine.AGV_PATH;
                 //Task.Factory.StartNew(() => ReciveFile(pathAgv, e), TaskCreationOptions.LongRunning);
                 ReciveFile(pathAgv, this.Message);
                 OnMessageEvent("文件接收成功");

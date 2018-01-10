@@ -24,7 +24,7 @@ namespace AGV_V1._0.NLog
         static Logs()
         {
             //初始化配置日志
-            LogManager.Configuration = new XmlLoggingConfiguration(System.AppDomain.CurrentDomain.BaseDirectory.ToString() + ConstString.CONFIG_PATH);
+            LogManager.Configuration = new XmlLoggingConfiguration(System.AppDomain.CurrentDomain.BaseDirectory.ToString() + ConstDefine.CONFIG_PATH);
         }
         /// <summary>
         /// 调试日志

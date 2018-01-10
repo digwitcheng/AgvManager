@@ -35,6 +35,10 @@ using AGV_V1._0.Network.ThreadCode;
 using AGV_V1._0.DataBase;
 using System.Collections.Concurrent;
 using AGV_V1._0.Agv;
+using AGV_V1._0.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels.Tcp;
 
 namespace AGV_V1._0
 {
@@ -48,8 +52,27 @@ namespace AGV_V1._0
         AGVServerManager am;
         public static Random rand = new Random(5);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
         private ElecMap Elc = ElecMap.Instance;
-
         private System.Threading.Timer timer;
+
+        private RouteRemoteObject remotableObject;
+
+        private static readonly Dictionary<int, Image> IMAGE_DICT = new Dictionary<int, Image>{
+        {15,Resources.all_white},              //1111   15
+        {7 ,Resources.besides_up_white},       //0111   7
+        {11,Resources.besides_down_white},     //1011   11
+        {13,Resources.besides_left_white},     //1101   13
+        {14,Resources.besides_right_white},    //1110   14
+        {10,Resources.up_left_white},          //1010   10
+        {9 ,Resources.up_right_white},         //1001   9
+        {6 ,Resources.down_left_white},        //0110   6
+        {5 ,Resources.down_right_white},       //0101   5
+        {8 ,Resources.up_white},               //1000   8
+        {4 ,Resources.down_white},             //0100   4
+        {2 ,Resources.left_white},             //0010   2
+        {1 ,Resources.right_white},            //0001   1
+        {0 ,Resources.empty_white},            //0000   0
+        {-1,Resources.obstacle_white}                //ffff   -1
+        };
 
         public Form1()
         {
@@ -61,13 +84,44 @@ namespace AGV_V1._0
             StartThread();//启动发送，接收，搜索等线程
             InitialSystem();//初始化小车
 
-
+            StartRemoteServer();
         }
 
+        private void StartRemoteServer()
+        {
+             remotableObject = new RouteRemoteObject();
+            TcpChannel channel = new TcpChannel(ConstDefine.REMOTE_PORT);
+            ChannelServices.RegisterChannel(channel);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(RouteRemoteObject), ConstDefine.REMOTE_NAME, WellKnownObjectMode.Singleton);
+
+
+        }
+       
         private void ConnectDataBase()
         {
            SqlManager.Instance.Connect2DataBase();
         }
+      
+        void InitServer()
+        {
+            gm = GuiServerManager.Instance;
+            gm.ShowMessage += OnShowMessageWithPicBox;
+            gm.ReLoad += ReInitialSystem;
+            gm.DataMessage += OnTransmitToTask;
+            gm.StartServer(Convert.ToInt32(txtPort.Text));
+
+            tm = TaskServerManager.Instance;
+            tm.ShowMessage += OnShowMessageWithPicBox;
+            tm.DataMessage += ReceveTask;
+            tm.StartServer(Convert.ToInt32(txtPort.Text) + 1);
+
+            am = AGVServerManager.Instance;
+            am.ShowMessage += OnShowMessageWithPicBox;
+            am.ReLoad += ReInitialSystem;
+            am.DataMessage +=OnAgvDone ;
+            am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
+        }
+       
         void StartThread()
         {
             //TaskSendThread.Instance.Start();
@@ -90,69 +144,8 @@ namespace AGV_V1._0
             SqlManager.Instance.ShowMessage += OnShowMessageWithPicBox;
 
         }
-        void EndThread()
-        {
-            //TaskSendThread.Instance.ShowMessage -= OnShowMessageFinishCount;
-            //TaskSendThread.Instance.End();
-
-            //TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            //TaskReceiveThread.Instance.End();
-
-            //GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            //GuiSendThread.Instance.End();
-
-            SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            SearchRouteThread.Instance.End();
-
-
-            VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
-            VehicleManager.Instance.End();
-
-            SqlManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            SqlManager.Instance.End();
-
-            //CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            //CheckCongestionThread.Instance.End();
-
-
-        }
-        void InitServer()
-        {
-            gm = GuiServerManager.Instance;
-            gm.ShowMessage += OnShowMessageWithPicBox;
-            gm.ReLoad += ReInitialSystem;
-            gm.DataMessage += OnTransmitToTask;
-            gm.StartServer(Convert.ToInt32(txtPort.Text));
-
-            tm = TaskServerManager.Instance;
-            tm.ShowMessage += OnShowMessageWithPicBox;
-            tm.DataMessage += ReceveTask;
-            tm.StartServer(Convert.ToInt32(txtPort.Text) + 1);
-
-            am = AGVServerManager.Instance;
-            am.ShowMessage += OnShowMessageWithPicBox;
-            am.ReLoad += ReInitialSystem;
-            am.DataMessage +=OnAgvDone ;
-            am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
-        }
-        void DisposeServer()
-        {
-            gm.ShowMessage -= OnShowMessageWithPicBox;
-            gm.ReLoad -= ReInitialSystem;
-            gm.DataMessage -= OnTransmitToTask;
-            gm.Dispose();
-
-
-            am.ShowMessage -= OnShowMessageWithPicBox;
-            am.ReLoad -= ReInitialSystem;
-            am.DataMessage -= OnAgvDone;
-            am.Dispose();
-
-
-            tm.ShowMessage -= OnShowMessageWithPicBox;
-            tm.DataMessage -= ReceveTask;
-            tm.Dispose();
-        }
+      
+       
         /// <summary>
         /// 初始化
         /// </summary>
@@ -464,11 +457,11 @@ namespace AGV_V1._0
         {
             if (Elc.mapnode[y, x].IsAbleCross)
             {
-                g.DrawImage(ConstDefine.IMAGE_DICT[15], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
+                g.DrawImage(IMAGE_DICT[15], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
             else
             {
-                g.DrawImage(ConstDefine.IMAGE_DICT[0], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
+                g.DrawImage(IMAGE_DICT[0], new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
             }
         }
 
@@ -705,6 +698,52 @@ namespace AGV_V1._0
             SqlManager.Instance.GetElecMapInfo();
         }
 
+        private void EndRemoteServer()
+        {
+            RemotingServices.Disconnect(remotableObject);
+        }
+        void DisposeServer()
+        {
+            gm.ShowMessage -= OnShowMessageWithPicBox;
+            gm.ReLoad -= ReInitialSystem;
+            gm.DataMessage -= OnTransmitToTask;
+            gm.Dispose();
 
+
+            am.ShowMessage -= OnShowMessageWithPicBox;
+            am.ReLoad -= ReInitialSystem;
+            am.DataMessage -= OnAgvDone;
+            am.Dispose();
+
+
+            tm.ShowMessage -= OnShowMessageWithPicBox;
+            tm.DataMessage -= ReceveTask;
+            tm.Dispose();
+        }
+
+        void EndThread()
+        {
+            //TaskSendThread.Instance.ShowMessage -= OnShowMessageFinishCount;
+            //TaskSendThread.Instance.End();
+
+            //TaskReceiveThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //TaskReceiveThread.Instance.End();
+
+            //GuiSendThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //GuiSendThread.Instance.End();
+
+            SearchRouteThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SearchRouteThread.Instance.End();
+
+
+            VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
+            VehicleManager.Instance.End();
+
+            SqlManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SqlManager.Instance.End();
+
+            //CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //CheckCongestionThread.Instance.End();
+        }
     }
 }
