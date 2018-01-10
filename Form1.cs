@@ -59,7 +59,7 @@ namespace AGV_V1._0
 
             InitUiView();//绘制界面
             StartThread();//启动发送，接收，搜索等线程
-            InitialSystem();//初始化小车
+           // InitialSystem();//初始化小车
 
 
         }
