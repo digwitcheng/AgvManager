@@ -104,7 +104,7 @@ namespace AGV_V1._0
                 //{
                 //    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
                 //    {
-                //        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
+                //        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)D:\0研究生\AGV\程序2\实体agv\agvManager\DataBase\SqlHelper.cs
                 //        {
                 //            vehicles[vehicles[vnum].Stoped].StopTime = 2;
                 //        }
