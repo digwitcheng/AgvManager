@@ -329,7 +329,7 @@ namespace DataBase
         #region 返回一个数据表
         public static DataTable GetDataTable(SqlConnection sqlconn, string cmdTxt)
         {
-
+            //
            // DataSet ds = SqlHelper.GetDataSet(sqlconn, cmdTxt);
             ds = SqlHelper.GetDataSet(sqlconn, cmdTxt);
 
