@@ -60,7 +60,7 @@ namespace AGVSocket.Network
            //// var text = Encoding.UTF8.GetString(e.Data, e.DataOffset, e.DataLength);
            //// OnMessageEvent(this, new PackMessageEventArgs(text));
            // Console.WriteLine(text);
-
+            //
 
             if (e==null||e.DataLength < 8)//
             {
