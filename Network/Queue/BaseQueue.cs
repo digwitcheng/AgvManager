@@ -61,6 +61,20 @@ namespace AGV_V1._0
                 this.myQueue.Enqueue(obj);
             }
         }
+        public T Peek()
+        {
+            T obj = default(T);
+            lock (this.myQueueLock)
+            {
+                bool has = (this.myQueue != null && this.myQueue.Count > 0);
+                if (has)
+                {
+                    obj = this.myQueue.Peek() as T;
+                }
+
+            }
+            return obj;
+        }
 
         //出队操作，获得数据
         public T Dequeue()

@@ -435,7 +435,7 @@ namespace AGV_V1._0
                 }
             }
         }
-        private bool ShouldMove(int nextX, int nextY)
+         bool ShouldMove(int nextX, int nextY)
         {
             if (agvInfo == null)
             {
@@ -445,12 +445,12 @@ namespace AGV_V1._0
             {
                 return false;
             }
-            if (agvInfo.Electricity < 20)
-            {
-                return false;
-            }
-            int tempX = (int)agvInfo.CurLocation.CurNode.X;
-            int tempY = (int)agvInfo.CurLocation.CurNode.Y;
+            //if (agvInfo.Electricity < 20)
+            //{
+            //    return false;
+            //}
+            int tempX = (int)Math.Round(agvInfo.CurLocation.CurNode.X/1000.0);
+            int tempY = (int)Math.Round(agvInfo.CurLocation.CurNode.Y/1000.0);
             if (Math.Abs(nextX - tempX) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - tempY) < ConstDefine.DEVIATION)
             {
                 return true;
@@ -462,25 +462,33 @@ namespace AGV_V1._0
             }
             return false;
 
-
-            //MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(this.Id);
-            //if (mp != null)
-            //{
-            //    if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION)
-            //    {
-            //        return true;
-            //    }
-            //    if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
-            //    {
-            //        return true;
-            //    }
-            //    return false;
-
-            //}
-            //else
+        }
+        public bool EqualWithRealLocation(int srcX, int srcY)
+        {
+            if (agvInfo == null)
+            {
+                return false;
+            }
+            if (agvInfo.Alarm != AlarmState.Normal)
+            {
+                return false;
+            }
+            //if (agvInfo.Electricity < 20)
             //{
             //    return false;
             //}
+            int tempX = (int)Math.Round(agvInfo.CurLocation.CurNode.X / 1000.0);
+            int tempY = (int)Math.Round(agvInfo.CurLocation.CurNode.Y / 1000.0);
+            if (Math.Abs(srcX - tempX) < ConstDefine.DEVIATION && Math.Abs(srcY - tempY) < ConstDefine.DEVIATION)
+            {
+                return true;
+            }
+            if (Math.Abs(srcX - tempX) < ConstDefine.DEVIATION && Math.Abs(srcY - tempY
+                ) < ConstDefine.DEVIATION)
+            {
+                return true;
+            }
+            return false;
 
         }
     }

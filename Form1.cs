@@ -95,7 +95,13 @@ namespace AGV_V1._0
             StartThread();//启动发送，接收，搜索等线程
             InitialSystem();//初始化小车
 
-            StartRemoteServer();
+            ReInitWithiRealAgv();
+        }
+
+        private void ReInitWithiRealAgv()
+        {
+            
+            VehicleManager.Instance.ReInitWithiRealAgv();
         }
 
         private void StartRemoteServer()
@@ -153,6 +159,9 @@ namespace AGV_V1._0
 
             SqlManager.Instance.Start();
             SqlManager.Instance.ShowMessage += OnShowMessageWithPicBox;
+
+            SendPacketThread.Instance.Start();
+            SendPacketThread.Instance.ShowMessage += OnShowMessageWithPicBox;
 
         }
       
@@ -507,18 +516,6 @@ namespace AGV_V1._0
                 OnShowMessageWithPicBox(this, new MessageEventArgs("转发异常:" + ex.Message));
             }
         }
-        //public void OnAgvDone(object sender, MessageEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (e.Type == MessageType.ReStart)
-        //        {
-        //            int id = Convert.ToInt32(e.Message);
-        //            VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
-        //        }
-        //    }
-        //    catch { }
-        //}
 
         public void OnShowMessageFinishCount(object sender, MessageEventArgs e)
         {
@@ -755,6 +752,9 @@ namespace AGV_V1._0
 
             //CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
             //CheckCongestionThread.Instance.End();
+
+            SendPacketThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            SendPacketThread.Instance.End();
         }
     }
 }

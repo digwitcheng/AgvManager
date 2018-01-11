@@ -8,6 +8,8 @@ using AGV_V1._0.Queue;
 using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
 using AGVSocket.Network;
+using AGVSocket.Network.EnumType;
+using AGVSocket.Network.Packet;
 using Astar;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,7 @@ namespace AGV_V1._0
         List<Vehicle> vFinished = new List<Vehicle>();
         private bool vehicleInited = false;
         private double moveCount = 0;//统计移动的格数，当前地图一格1.5米
+        public const int REINIT_COUNT = 100;
 
         private static Random rand = new Random(1);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
@@ -81,12 +84,9 @@ namespace AGV_V1._0
                     //vehicle[vnum].BeginX = vehicle[vnum].EndX;
                     //vehicle[vnum].BeginY = vehicle[vnum].EndY;
                     vehicles[vnum].CurState = State.unloading;
-                    vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route.Clear();                 
-                    vehicles[vnum].LockNode.Clear();
                     continue;
                 }
-                if (vehicles[vnum].Arrive == true)
+                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
                 {
                     //vehicle[vnum].BeginX = vehicle[vnum].EndX;
                     //vehicle[vnum].BeginY = vehicle[vnum].EndY;
@@ -94,6 +94,8 @@ namespace AGV_V1._0
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
+
+                    RandomMove(4);
 
                     continue;
                 }
@@ -113,12 +115,32 @@ namespace AGV_V1._0
                 }
                 else
                 {
-
+                    if (!vehicles[vnum].EqualWithRealLocation(vehicles[vnum].BeginX, vehicles[vnum].BeginY))
+                    {
+                        uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
+                        uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
+                        uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
+                        uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
+                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                        //asm.Send(rp);
+                        SendPacketQueue.Instance.Enqueue(rp);
+                        continue;
+                    }
                     bool isMove = vehicles[vnum].Move(ElecMap.Instance);// vehicles[vnum].SimpleMove();// 
                         if (isMove)
                         {
                            // AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY + ":"
                            //+ vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
+                            uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
+                            uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
+                            uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
+                            uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
+                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                            //asm.Send(rp);
+                            SendPacketQueue.Instance.Enqueue(rp);
+
+                            Console.WriteLine(x + "," + y + "->" + endX + "," + endY);
+
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
                         }
@@ -139,6 +161,7 @@ namespace AGV_V1._0
             }
 
         }
+        
        
         int GetDirCount(int row, int col)
         {
@@ -178,16 +201,13 @@ namespace AGV_V1._0
             for (int i = 0; i < vehicleCount; i++)
             {
                 vehicles[i] = new Vehicle(FileUtil.sendData[i].BeginX, FileUtil.sendData[i].BeginY, i, false, Direction.Right);
-                MyPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
-                //vehicle[i].endX = (int)endPoint.col;
-                //vehicle[i].endY = (int)endPoint.row;
-
-                MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(i);
-                if (mp != null)
-                {
-                    vehicles[i].BeginX = mp.X;
-                    vehicles[i].BeginY = mp.Y;
-                }
+                //MyPoint endPoint = RouteUtil.RandPoint(ElecMap.Instance);
+                //MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(i);
+                //if (mp != null)
+                //{
+                //    vehicles[i].BeginX = mp.X;
+                //    vehicles[i].BeginY = mp.Y;
+                //}
                 int R = rand.Next(20, 225);
                 int G = rand.Next(20, 225);
                 int B = rand.Next(20, 225);
@@ -199,6 +219,26 @@ namespace AGV_V1._0
             ////把小车所在的节点设为占用状态
             RouteUtil.VehicleOcuppyNode(ElecMap.Instance, vehicles);
 
+        }
+        public void ReInitWithiRealAgv()
+        {
+            
+            bool res = false;
+            int count=1;
+            while (res == false && count < REINIT_COUNT)
+            {
+                Thread.Sleep(count * 50);
+                for (int i = 0; i < vehicles.Length; i++)
+                {
+                    if (vehicles[i].agvInfo != null)
+                    {
+                        vehicles[i].BeginX = (int)Math.Round(vehicles[i].agvInfo.CurLocation.CurNode.X/1000.0);
+                        vehicles[i].BeginY = (int)Math.Round(vehicles[i].agvInfo.CurLocation.CurNode.Y/1000.0);
+                        res = true;
+                    }
+                }
+                count++;
+            }
         }
         public void AddOrUpdate(ushort agvId, AgvInfo info)
         {
