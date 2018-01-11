@@ -81,22 +81,28 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
                 {
-                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
-                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
-                    vehicles[vnum].CurState = State.unloading;
+                    if (vehicles[vnum].EqualWithRealLocation(vehicles[vnum].BeginX, vehicles[vnum].BeginY))
+                    {
+                        vehicles[vnum].CurState = State.unloading;
+                    }
+                    else
+                    {
+                        uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
+                        uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
+                        uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
+                        uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
+                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                        //asm.Send(rp);
+                        SendPacketQueue.Instance.Enqueue(rp);
+                    }
                     continue;
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
                 {
-                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
-                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
-                    //vehicle[vnum].vehical_state = State.unloading;
+                    RandomMove(4);
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
-
-                    RandomMove(4);
-
                     continue;
                 }
 
@@ -114,18 +120,7 @@ namespace AGV_V1._0
                     vehicles[vnum].StopTime = 3;
                 }
                 else
-                {
-                    if (!vehicles[vnum].EqualWithRealLocation(vehicles[vnum].BeginX, vehicles[vnum].BeginY))
-                    {
-                        uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
-                        uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
-                        uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
-                        uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
-                        //asm.Send(rp);
-                        SendPacketQueue.Instance.Enqueue(rp);
-                        continue;
-                    }
+                {                    
                     bool isMove = vehicles[vnum].Move(ElecMap.Instance);// vehicles[vnum].SimpleMove();// 
                         if (isMove)
                         {

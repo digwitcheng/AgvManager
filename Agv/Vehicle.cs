@@ -303,6 +303,11 @@ namespace AGV_V1._0
                 {
                     return false;
                 }
+                if (!ShouldMove(BeginX, BeginY))
+                {
+                    return false;
+                }
+
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
 
@@ -370,41 +375,40 @@ namespace AGV_V1._0
 
 
                 }
-                //BeginX = route[tPtr].X;
-                //BeginY = route[tPtr].Y;
-                //return true;
-                if (tPtr == 3)
-                {
-                    int a = 0;
-                }
-                if (tPtr >= route.Count)
-                {
-                    Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
-                    BeginX = route[route.Count - 1].X;
-                    BeginY = route[route.Count - 1].Y;
-                    Arrive = true;
-                    return true;
-                }
-                if (ShouldMove(route[tPtr].X, route[tPtr].Y))
-                {
-                    BeginX = route[tPtr].X;
-                    BeginY = route[tPtr].Y;
-                    return true;
-                }
-                else
-                {
-                    int tx = (int)route[VirtualTPtr].X;
-                    int ty = (int)route[VirtualTPtr].Y;
-                    Elc.mapnode[tx, ty].NodeCanUsed = -1;
-                    Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
-                    tPtr--;
-                    VirtualTPtr--;
-                    tx = (int)route[VirtualTPtr].X;
-                    ty = (int)route[VirtualTPtr].Y;
-                    Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
-                    Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
-                    return false;
-                }
+                BeginX = route[tPtr].X;
+                BeginY = route[tPtr].Y;
+                return true;
+                //if (tPtr >= route.Count)
+                //{
+                //    Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
+                //    BeginX = route[route.Count - 1].X;
+                //    BeginY = route[route.Count - 1].Y;
+                //    Arrive = true;
+                //    return true;
+                //}
+                //if (ShouldMove(route[tPtr].X, route[tPtr].Y))
+                //{
+                //    BeginX = route[tPtr].X;
+                //    BeginY = route[tPtr].Y;
+                //    return true;
+                //}
+                //else
+                //{
+                //    //int tx = (int)route[VirtualTPtr].X;
+                //    //int ty = (int)route[VirtualTPtr].Y;
+                //    //Elc.mapnode[tx, ty].NodeCanUsed = -1;
+                //    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
+                //    //tPtr--;
+                //    //VirtualTPtr--;
+                //    //tx = (int)route[VirtualTPtr].X;
+                //    //ty = (int)route[VirtualTPtr].Y;
+                //    //Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                //    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
+
+                //    tPtr--;
+                //    VirtualTPtr--;
+                //    return false;
+                //}
 
             }
         }
