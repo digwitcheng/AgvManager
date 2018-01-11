@@ -18,10 +18,12 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using AGV_V1._0.DataBase;
 using AGVSocket.Network;
+using AGVSocket.Network.EnumType;
+using AGV_V1._0.NLog;
 
 namespace AGV_V1._0
 {
-    
+
     class Vehicle
     {
         public AgvInfo agvInfo { get; set; }
@@ -195,8 +197,8 @@ namespace AGV_V1._0
             set;
         }
 
-        public Color pathColor=Color.Red;
-        public Color showColor=Color.Pink;
+        public Color pathColor = Color.Red;
+        public Color showColor = Color.Pink;
 
 
         private int realTPtr;
@@ -237,13 +239,13 @@ namespace AGV_V1._0
             get;
             set;
         }
-       
+
 
         public Vehicle(int x, int y, int v_num, bool arrive, Direction direction)
         {
             this.BeginX = x;
             this.BeginY = y;
-            this.X = y * ConstDefine.g_NodeLength ;
+            this.X = y * ConstDefine.g_NodeLength;
             this.Y = x * ConstDefine.g_NodeLength;
             this.Id = v_num;
             this.Arrive = arrive;
@@ -270,12 +272,12 @@ namespace AGV_V1._0
             {
 
                 Rectangle rect = new Rectangle(BeginY * ConstDefine.g_NodeLength, (int)BeginX * ConstDefine.g_NodeLength, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
-                DrawUtil.FillRectangle(g,showColor,rect);
+                DrawUtil.FillRectangle(g, showColor, rect);
 
                 PointF p = new PointF((int)((BeginY) * ConstDefine.g_NodeLength), (int)((BeginX) * ConstDefine.g_NodeLength));
                 DrawUtil.DrawString(g, this.Id, ConstDefine.g_NodeLength / 2, Color.Black, p);
 
-               
+
             }
         }
         public MapNodeType CurNodeTypy()
@@ -300,7 +302,7 @@ namespace AGV_V1._0
                 if (route == null || route.Count < 1)
                 {
                     return false;
-                }               
+                }
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
 
@@ -328,7 +330,7 @@ namespace AGV_V1._0
                     tPtr++;
 
                 }
-                else  if (tPtr > 0)
+                else if (tPtr > 0)
                 {
 
                     if (VirtualTPtr <= route.Count - 1)
@@ -346,11 +348,11 @@ namespace AGV_V1._0
                         {
                             //if (ShouldMove(route[tPtr + 1].X, route[tPtr + 1].Y))
                             //{
-                                Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
-                                StopTime = ConstDefine.STOP_TIME;
-                                Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
-                                tPtr++;
-                                VirtualTPtr++;
+                            Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                            StopTime = ConstDefine.STOP_TIME;
+                            Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
+                            tPtr++;
+                            VirtualTPtr++;
                             //}
                             //else
                             //{
@@ -379,14 +381,14 @@ namespace AGV_V1._0
                 {
                     Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
                     BeginX = route[route.Count - 1].X;
-                    BeginY = route[route.Count - 1].Y; 
+                    BeginY = route[route.Count - 1].Y;
                     Arrive = true;
                     return true;
                 }
                 if (ShouldMove(route[tPtr].X, route[tPtr].Y))
                 {
                     BeginX = route[tPtr].X;
-                    BeginY = route[tPtr].Y;                    
+                    BeginY = route[tPtr].Y;
                     return true;
                 }
                 else
@@ -403,7 +405,7 @@ namespace AGV_V1._0
                     Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
                     return false;
                 }
-               
+
             }
         }
 
@@ -415,8 +417,9 @@ namespace AGV_V1._0
                 {
                     return false;
                 }
-                if(tPtr<route.Count){
-                    if (ShouldMove(route[tPtr].X,route[tPtr].Y))
+                if (tPtr < route.Count)
+                {
+                    if (ShouldMove(route[tPtr].X, route[tPtr].Y))
                     {
                         tPtr++;
                         BeginX = route[tPtr].X;
@@ -432,26 +435,52 @@ namespace AGV_V1._0
                 }
             }
         }
-        private bool ShouldMove(int nextX,int nextY)
+        private bool ShouldMove(int nextX, int nextY)
         {
-            MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(this.Id);
-            if (mp != null)
+            if (agvInfo == null)
             {
-                if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION)
-                {
-                    return true;
-                }
-                if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
-                {
-                    return true;
-                }
                 return false;
+            }
+            if (agvInfo.Alarm != AlarmState.Normal)
+            {
+                return false;
+            }
+            if (agvInfo.Electricity < 20)
+            {
+                return false;
+            }
+            int tempX = (int)agvInfo.CurLocation.CurNode.X;
+            int tempY = (int)agvInfo.CurLocation.CurNode.Y;
+            if (Math.Abs(nextX - tempX) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - tempY) < ConstDefine.DEVIATION)
+            {
+                return true;
+            }
+            if (Math.Abs(nextX - tempX) < ConstDefine.DEVIATION && Math.Abs(nextY - tempY
+                ) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
+            {
+                return true;
+            }
+            return false;
 
-            }
-            else
-            {
-                return false;
-            }
+
+            //MyPoint mp = SqlManager.Instance.GetVehicleCurLocationWithId(this.Id);
+            //if (mp != null)
+            //{
+            //    if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION)
+            //    {
+            //        return true;
+            //    }
+            //    if (Math.Abs(nextX - mp.X) < ConstDefine.DEVIATION && Math.Abs(nextY - mp.Y) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)
+            //    {
+            //        return true;
+            //    }
+            //    return false;
+
+            //}
+            //else
+            //{
+            //    return false;
+            //}
 
         }
     }
