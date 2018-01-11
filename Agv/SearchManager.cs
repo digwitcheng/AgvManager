@@ -120,6 +120,7 @@ namespace AGV_V1._0
                         v.EndLoc = "ScanArea";
                     }
                 }
+                //
                 // this.vehical_state = State.carried;
 
                 //Route = new ConcurrentDictionary<int, MyLocation>();
