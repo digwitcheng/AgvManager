@@ -30,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -74,6 +75,61 @@
     <Compile Include="DataBase\Sql.cs" />
     <Compile Include="DataBase\SqlHelper.cs" />
     <Compile Include="DataBase\SqlManager.cs" />
+    <Compile Include="Network\AgvNetwork\AgvInfo.cs" />
+    <Compile Include="Network\Manager\AgvServerManager.cs" />
+    <Compile Include="Network\AgvNetwork\CurrentLocation.cs" />
+    <Compile Include="Network\AgvNetwork\Destination.cs" />
+    <Compile Include="Network\AgvNetwork\DriftAngle.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\AgvDirection.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\AgvMotionState.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\AlarmState.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\ExceptionCode.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\ObstacleAvoidSwitch.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\OprationState.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\OrderExec.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\PacketType.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\ResponseState.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\TrayMotion.cs" />
+    <Compile Include="Network\AgvNetwork\EnumType\TrayState.cs" />
+    <Compile Include="Network\AgvNetwork\Event\MyErrorEventArgs.cs" />
+    <Compile Include="Network\AgvNetwork\Event\PackMessageEventArgs.cs" />
+    <Compile Include="Network\AgvNetwork\MyBitConverter.cs" />
+    <Compile Include="Network\AgvNetwork\MyException\PacketException.cs" />
+    <Compile Include="Network\AgvNetwork\CellPoint.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\AgvInfoPacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\AgvResponsePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\BasePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\DoneReplyPacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\ErrorPacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\ReceiveBasePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\RunPacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\SendBasePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\SwervePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\SysResponsePacket.cs" />
+    <Compile Include="Network\AgvNetwork\Packet\TrayPacket.cs" />
+    <Compile Include="Network\Server\APM\TcpSocketServer.cs" />
+    <Compile Include="Network\Server\APM\TcpSocketServerConfiguration.cs" />
+    <Compile Include="Network\Server\APM\TcpSocketSession.cs" />
+    <Compile Include="Network\Server\Buffer\BufferValidator.cs" />
+    <Compile Include="Network\Server\Buffer\ISegmentBufferManager.cs" />
+    <Compile Include="Network\Server\Buffer\SegmentBufferDeflector.cs" />
+    <Compile Include="Network\Server\Buffer\SegmentBufferManager.cs" />
+    <Compile Include="Network\Server\Buffer\UnableToAllocateBufferException.cs" />
+    <Compile Include="Network\Server\Buffer\UnableToCreateMemoryException .cs" />
+    <Compile Include="Network\Server\EventArgs\TcpClientConnectedEventArgs.cs" />
+    <Compile Include="Network\Server\EventArgs\TcpClientDataReceivedEventArgs.cs" />
+    <Compile Include="Network\Server\EventArgs\TcpClientDisconnectedEventArgs.cs" />
+    <Compile Include="Network\Server\Framing\Base\FrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\Base\IFrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\Base\IFrameDecoder.cs" />
+    <Compile Include="Network\Server\Framing\Base\IFrameEncoder.cs" />
+    <Compile Include="Network\Server\Framing\FixedLengthFrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\LengthFieldBasedFrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\LengthPrefixedFrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\LineBasedFrameBuilder.cs" />
+    <Compile Include="Network\Server\Framing\RawBufferFrameBuilder.cs" />
+    <Compile Include="Network\Server\TcpSocketConnectionState.cs" />
+    <Compile Include="Network\Server\TcpSocketException.cs" />
     <Compile Include="Network\Messages\FileMessage.cs" />
     <Compile Include="Network\Messages\MapFileMessage.cs" />
     <Compile Include="Network\Messages\BaseMessage.cs" />
@@ -120,7 +176,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Agv\SearchManager.cs" />
-    <Compile Include="Network\Manager\AGVServerManager.cs" />
     <Compile Include="Network\Manager\ServerManager.cs" />
     <Compile Include="Agv\VehicleManager.cs" />
     <Compile Include="Util\MapFileUtil.cs" />
@@ -161,29 +216,6 @@
     <Compile Include="Network\DataProtocol\SendData.cs" />
     <Compile Include="Network\Manager\GuiServerManager.cs" />
     <Compile Include="Network\Manager\TaskServerManager.cs" />
-    <Compile Include="Network\Server\APM\TcpSocketServer.cs" />
-    <Compile Include="Network\Server\APM\TcpSocketServerConfiguration.cs" />
-    <Compile Include="Network\Server\APM\TcpSocketSession.cs" />
-    <Compile Include="Network\Server\Buffer\BufferValidator.cs" />
-    <Compile Include="Network\Server\Buffer\ISegmentBufferManager.cs" />
-    <Compile Include="Network\Server\Buffer\SegmentBufferDeflector.cs" />
-    <Compile Include="Network\Server\Buffer\SegmentBufferManager.cs" />
-    <Compile Include="Network\Server\Buffer\UnableToAllocateBufferException.cs" />
-    <Compile Include="Network\Server\Buffer\UnableToCreateMemoryException .cs" />
-    <Compile Include="Network\Server\EventArgs\TcpClientConnectedEventArgs.cs" />
-    <Compile Include="Network\Server\EventArgs\TcpClientDataReceivedEventArgs.cs" />
-    <Compile Include="Network\Server\EventArgs\TcpClientDisconnectedEventArgs.cs" />
-    <Compile Include="Network\Server\Framing\Base\FrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\Base\IFrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\Base\IFrameDecoder.cs" />
-    <Compile Include="Network\Server\Framing\Base\IFrameEncoder.cs" />
-    <Compile Include="Network\Server\Framing\FixedLengthFrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\LengthFieldBasedFrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\LengthPrefixedFrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\LineBasedFrameBuilder.cs" />
-    <Compile Include="Network\Server\Framing\RawBufferFrameBuilder.cs" />
-    <Compile Include="Network\Server\TcpSocketConnectionState.cs" />
-    <Compile Include="Network\Server\TcpSocketException.cs" />
     <Compile Include="Network\DataProtocol\TaskData.cs" />
     <Compile Include="Network\ThreadCode\SearchRouteThread.cs" />
     <Compile Include="Agv\Vehicle.cs" />

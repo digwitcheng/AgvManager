@@ -39,6 +39,7 @@ using AGV_V1._0.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels.Tcp;
+using AGVSocket.Network;
 
 namespace AGV_V1._0
 {
@@ -59,7 +60,7 @@ namespace AGV_V1._0
         //private Graphics gg = null;
         GuiServerManager gm;
         TaskServerManager tm;
-        AGVServerManager am;
+        AgvServerManager am;
         public static Random rand = new Random(5);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
         private ElecMap Elc = ElecMap.Instance;
         private System.Threading.Timer timer;
@@ -125,11 +126,11 @@ namespace AGV_V1._0
             tm.DataMessage += ReceveTask;
             tm.StartServer(Convert.ToInt32(txtPort.Text) + 1);
 
-            am = AGVServerManager.Instance;
+            am = AgvServerManager.Instance;
             am.ShowMessage += OnShowMessageWithPicBox;
-            am.ReLoad += ReInitialSystem;
-            am.DataMessage +=OnAgvDone ;
-            am.StartServer(Convert.ToInt32(txtPort.Text) + 2);
+           //am.ReLoad += ReInitialSystem;
+           //am.DataMessage +=OnAgvDone ;
+            am.StartServer(54321);
         }
        
         void StartThread()
@@ -506,18 +507,18 @@ namespace AGV_V1._0
                 OnShowMessageWithPicBox(this, new MessageEventArgs("转发异常:" + ex.Message));
             }
         }
-        public void OnAgvDone(object sender, MessageEventArgs e)
-        {
-            try
-            {
-                if (e.Type == MessageType.ReStart)
-                {
-                    int id = Convert.ToInt32(e.Message);
-                    VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
-                }
-            }
-            catch { }
-        }
+        //public void OnAgvDone(object sender, MessageEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.Type == MessageType.ReStart)
+        //        {
+        //            int id = Convert.ToInt32(e.Message);
+        //            VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
+        //        }
+        //    }
+        //    catch { }
+        //}
 
         public void OnShowMessageFinishCount(object sender, MessageEventArgs e)
         {
@@ -721,8 +722,8 @@ namespace AGV_V1._0
 
 
             am.ShowMessage -= OnShowMessageWithPicBox;
-            am.ReLoad -= ReInitialSystem;
-            am.DataMessage -= OnAgvDone;
+           // am.ReLoad -= ReInitialSystem;
+           // am.DataMessage -= OnAgvDone;
             am.Dispose();
 
 

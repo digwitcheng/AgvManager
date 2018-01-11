@@ -7,6 +7,7 @@ using AGV_V1._0.NLog;
 using AGV_V1._0.Queue;
 using AGV_V1._0.Server.APM;
 using AGV_V1._0.Util;
+using AGVSocket.Network;
 using Astar;
 using System;
 using System.Collections.Generic;
@@ -77,57 +78,54 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
                 {
-                    bool res = DataBseUtil.ReallyArrived(vnum);
-                   if (res)
-                   {
-                       //AGVServerManager.Instance.Send(MessageType.ReStart, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY+":"
-                       //    + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
-                       vehicles[vnum].CurState = State.unloading;
-                   }
-                   else
-                   {
-                       AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].EndX + ":" + vehicles[vnum].EndY + ":"
-                           + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
-                   }
-                    continue;
-                }
-                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
-                {
-                    RandomMove(4);
+                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
+                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
+                    vehicles[vnum].CurState = State.unloading;
                     vFinished.Add(vehicles[vnum]);
-                    vehicles[vnum].Route.Clear();
+                    vehicles[vnum].Route.Clear();                 
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }
+                if (vehicles[vnum].Arrive == true)
+                {
+                    //vehicle[vnum].BeginX = vehicle[vnum].EndX;
+                    //vehicle[vnum].BeginY = vehicle[vnum].EndY;
+                    //vehicle[vnum].vehical_state = State.unloading;
+                    vFinished.Add(vehicles[vnum]);
+                    vehicles[vnum].Route.Clear();
+                    vehicles[vnum].LockNode.Clear();
 
-                //if (vehicles[vnum].StopTime < 0)
-                //{
-                //    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
-                //    {
-                //        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)D:\0研究生\AGV\程序2\实体agv\agvManager\DataBase\SqlHelper.cs
-                //        {
-                //            vehicles[vehicles[vnum].Stoped].StopTime = 2;
-                //        }
-                //        //重新搜索路径
-                //        SearchRoute(vnum, true);
-                //    }
-                //    vehicles[vnum].StopTime = 3;
-                //}
-                //else
-                //{
+                    continue;
+                }
+
+                if (vehicles[vnum].StopTime < 0)
+                {
+                    if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
+                    {
+                        if (vehicles[vnum].Stoped > -1 && vehicles[vnum].Stoped < vehicles.Length)
+                        {
+                            vehicles[vehicles[vnum].Stoped].StopTime = 2;
+                        }
+                        //重新搜索路径
+                        SearchRoute(vnum, true);
+                    }
+                    vehicles[vnum].StopTime = 3;
+                }
+                else
+                {
 
                     bool isMove = vehicles[vnum].Move(ElecMap.Instance);// vehicles[vnum].SimpleMove();// 
                         if (isMove)
                         {
-                            AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY + ":"
-                           + vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
+                           // AGVServerManager.Instance.Send(MessageType.Move, vehicles[vnum].BeginX + ":" + vehicles[vnum].BeginY + ":"
+                           //+ vehicles[vnum].EndX + ":" + vehicles[vnum].EndY);
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
                         }
 
-                //}
+                }
 
-                //
+                
 
 
             }
@@ -202,7 +200,23 @@ namespace AGV_V1._0
             RouteUtil.VehicleOcuppyNode(ElecMap.Instance, vehicles);
 
         }
-
+        public void AddOrUpdate(ushort agvId, AgvInfo info)
+        {
+            if (vehicleInited == false)
+            {
+                return;
+            }
+            if (agvId >= vehicles.Length)
+            {
+                Logs.Error("程序预设的agv数量少了");
+                return;
+            }
+            if (info == null)
+            {
+                return;
+            }
+            vehicles[(int)agvId].agvInfo = info;
+        }
         public void RandomMove(int Id)
         {           
             

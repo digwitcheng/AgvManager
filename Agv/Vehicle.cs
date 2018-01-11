@@ -17,13 +17,14 @@ using AGV_V1._0.Util;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using AGV_V1._0.DataBase;
+using AGVSocket.Network;
 
 namespace AGV_V1._0
 {
     
     class Vehicle
     {
-
+        public AgvInfo agvInfo { get; set; }
         private int routeIndex = 0;
         public int RouteIndex
         {

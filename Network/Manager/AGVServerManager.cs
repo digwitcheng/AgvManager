@@ -1,79 +1,117 @@
-﻿using AGV_V1._0.Event;
-using AGV_V1._0.Network.Messages;
-using AGV_V1._0.NLog;
-using AGV_V1._0.Util;
-using Cowboy.Sockets;
-using CowboyTest.Server.APM;
+﻿using AGVSocket.Network.Packet;
+using AGV;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AGV.Event;
+using AGVSocket.Network.MyException;
+using System.Diagnostics;
+using System.Collections.Concurrent;
+using AGV_V1._0.Server.APM;
+using AGV_V1._0.Event;
+using AGV_V1._0.NLog;
 
-namespace AGV_V1._0.Server.APM
+namespace AGVSocket.Network
 {
-    class AGVServerManager : ServerManager
+    class AgvServerManager:ServerManager
     {
-        private static AGVServerManager instance;
-        public static AGVServerManager Instance
+
+       
+        private readonly ConcurrentDictionary<ushort, AgvInfo> agvInfo = new ConcurrentDictionary<ushort, AgvInfo>();
+        public ConcurrentDictionary<ushort, AgvInfo> GetAgvInfo
+        {
+            get
+            {
+                return agvInfo;
+            }
+        }
+         private static AgvServerManager instance;
+        public static AgvServerManager Instance
         {
             get
             {
                 if (null == instance)
                 {
-                    instance = new AGVServerManager();
+                    instance = new AgvServerManager();
                 }
                 return instance;
             }
         }
-        private AGVServerManager() { }
-
-        public override void server_ClientConnected(object sender, TcpClientConnectedEventArgs e)
+        private AgvServerManager() { }
+        public override void server_ClientConnected(object sender, Cowboy.Sockets.TcpClientConnectedEventArgs e)
         {
-            string str = string.Format("小车通信程序连接成功，", e.Session.RemoteEndPoint);
-            Console.WriteLine(str);
-            OnMessageEvent(this, new MessageEventArgs(str));
-
-            //string pathAgv = ConstString.AGV_PATH;
-            //SendTo(e.Session.SessionKey, MessageType.AgvFile, pathAgv, false);
-        }
-
-        public override void server_ClientDisconnected(object sender, TcpClientDisconnectedEventArgs e)
-        {
-            string str = string.Format("小车通信程序断开连接，", e.Session.RemoteEndPoint);
+            string str = string.Format("小车连接成功，", e.Session.RemoteEndPoint);
             Console.WriteLine(str);
             OnMessageEvent(this, new MessageEventArgs(str));
         }
 
-        public override void server_ClientDataReceived(object sender, TcpClientDataReceivedEventArgs e)
+        public override void server_ClientDisconnected(object sender, Cowboy.Sockets.TcpClientDisconnectedEventArgs e)
         {
-            MessageType type = (MessageType)e.Data[e.DataOffset];
-            var text = Encoding.UTF8.GetString(e.Data, e.DataOffset + 1, e.DataLength - 1);
-
-
-            BaseMessage bm = BaseMessage.Factory(type, text);
-            bm.ShowMessage += OnMessageEvent;
-            bm.DataMessage += OnDataMessageEvent;
-            bm.ReLoad += ReLoadDel;
-            bm.Receive();
-
+            string str = string.Format("小车断开连接，", e.Session.RemoteEndPoint);
+            Console.WriteLine(str);
+            OnMessageEvent(this, new MessageEventArgs(str));
         }
 
-        public void Send(MessageType type, string json)
+        public override void server_ClientDataReceived(object sender, Cowboy.Sockets.TcpClientDataReceivedEventArgs e)
+        {
+           //  var text= Encoding.ASCII.GetChars(e.Data, e.DataOffset, e.DataLength);
+           //// var text = Encoding.UTF8.GetString(e.Data, e.DataOffset, e.DataLength);
+           //// OnMessageEvent(this, new PackMessageEventArgs(text));
+           // Console.WriteLine(text);
+
+
+            if (e==null||e.DataLength < 8)//
+            {
+                Debug.WriteLine("data error!,len<8");
+                Logs.Error("data error!,len<8");
+                return;
+            }
+            PacketType type = (PacketType)e.Data[e.DataOffset + 4];
+            byte[] buffers = new byte[e.DataLength];
+            Buffer.BlockCopy(e.Data, e.DataOffset, buffers, 0, e.DataLength);
+            // var text = Encoding.UTF8.SetBytes(e.Data, e.DataOffset, e.DataLength);
+
+            
+            try
+            {
+                ReceiveBasePacket rbp = ReceiveBasePacket.Factory(type, buffers);
+                //bp.ShowMessage += OnMessageEvent;
+                //bp.ErrorMessage += OnErrorEvent;
+                //bp.DataMessage += OnDataMessageEvent;
+                //bp.ReLoad += ReLoadDel; 
+                rbp.Receive();
+              //  rbp.ReceiveResponse();
+                
+            }
+            catch (PacketException ex)
+            {
+                HanderPacketException(ex);
+            }
+            catch (Exception ex)
+            {
+                Logs.Error("未知错误:"+ex);
+            }
+             
+           
+        }       
+
+        private void HanderPacketException(PacketException ex)
+        {
+            Logs.Error("接收错误 "+ex.Code + "-" + ex.Data);
+        }
+        public void Send(SendBasePacket pack)
         {
             try
             {
-                //if (false == isSendFile)
-                //{
-                SendTo("", type, json, true);
-                //}
+                pack.Send(_server);
             }
-            catch
-            {
-                //throw;
-            }
-
+            catch { }
+        }
+        public void AddOrUpdate(ushort agvId, AgvInfo info)
+        {
+            agvInfo.AddOrUpdate(agvId, info, (key, oldValue) => info);
         }
     }
 }
