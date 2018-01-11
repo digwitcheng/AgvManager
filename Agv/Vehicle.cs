@@ -295,17 +295,21 @@ namespace AGV_V1._0
             {
                 //if (BeginX == EndX && BeginY == EndY)
                 //{
-                //    Elc.mapnode[BeginX, BeginY].NodeCanUsed = this.v_num;
+                //    Elc.mapnode[BeginX, BeginY].NodeCanUsed = this.Id;
+                //    this.CurState = State.unloading;
                 //    Arrive = true;
-                //    return;
+                //    return false;
                 //}
                 if (route == null || route.Count < 1)
                 {
                     return false;
                 }
-                if (!ShouldMove(BeginX, BeginY))
+                if (tPtr <= route.Count - 1)
                 {
-                    return false;
+                    if (!ShouldMove(route[tPtr].X, route[tPtr].Y)) 
+                    {
+                        return false;
+                    }
                 }
 
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
@@ -317,6 +321,7 @@ namespace AGV_V1._0
                         {
                             int tx = (int)route[VirtualTPtr].X;
                             int ty = (int)route[VirtualTPtr].Y;
+                            // Boolean temp = Elc.canMoveToNode(this, tx, ty);
                             int temp = -1;// Elc.mapnode[tx, ty].NodeCanUsed;
                             if (temp > -1)
                             {
@@ -338,10 +343,18 @@ namespace AGV_V1._0
                 else if (tPtr > 0)
                 {
 
+                    if (tPtr >= route.Count - 1)
+                    {
+                        Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
+                        Arrive = true;
+                        return false;
+                    }
+
                     if (VirtualTPtr <= route.Count - 1)
                     {
                         int tx = (int)route[VirtualTPtr].X;
                         int ty = (int)route[VirtualTPtr].Y;
+                        // Boolean temp = Elc.canMoveToNode(this, tx, ty);
                         int temp = -1;// Elc.mapnode[tx, ty].NodeCanUsed;
                         if (temp > -1)
                         {
@@ -351,18 +364,11 @@ namespace AGV_V1._0
                         }
                         else
                         {
-                            //if (ShouldMove(route[tPtr + 1].X, route[tPtr + 1].Y))
-                            //{
                             Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
                             StopTime = ConstDefine.STOP_TIME;
                             Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
                             tPtr++;
                             VirtualTPtr++;
-                            //}
-                            //else
-                            //{
-                            //    return false;
-                            //}
                         }
 
                     }
@@ -372,8 +378,6 @@ namespace AGV_V1._0
                         StopTime = ConstDefine.STOP_TIME;
                         tPtr++;
                     }
-
-
                 }
                 BeginX = route[tPtr].X;
                 BeginY = route[tPtr].Y;

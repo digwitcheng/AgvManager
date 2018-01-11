@@ -75,7 +75,7 @@ namespace AGV_V1._0
                     OnShowMessage(this, new MessageEventArgs(str));
                     continue;
                 }
-                if (vehicles[vnum].Route == null || vehicles[vnum].Route.Count <= 1)
+                if (vehicles[vnum].Route == null || vehicles[vnum].Route.Count <1)
                 {
                     continue;
                 }

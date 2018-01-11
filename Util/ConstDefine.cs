@@ -36,7 +36,7 @@ namespace AGV_V1._0.Util
         public static int g_HeightNum = 100;       //
         public static int g_NodeLength = 12;       //默认边长
         public static int g_VehicleCount = 10;     //小车数量
-        public const int FORWORD_STEP = 3; //锁定多少格(包括自己所在的位置)
+        public const int FORWORD_STEP = 2; //锁定多少格(包括自己所在的位置)
         
 
         public const int STOP_TIME = 6; //设置等待时间片段
