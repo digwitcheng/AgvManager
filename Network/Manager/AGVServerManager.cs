@@ -82,7 +82,6 @@ namespace AGVSocket.Network
                 //bp.DataMessage += OnDataMessageEvent;
                 //bp.ReLoad += ReLoadDel; 
                 rbp.Receive();
-              //  rbp.ReceiveResponse();
                 
             }
             catch (PacketException ex)

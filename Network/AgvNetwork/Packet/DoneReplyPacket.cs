@@ -29,7 +29,7 @@ namespace AGVSocket.Network.Packet
         {
             Debug.WriteLine("完成标识:{0},消息是否正确：{1},序列号:{2}",doneStyle, this.IsCheckSumCorrect,this.SerialNum);
            this.ReceiveResponse();
-
+             int id = Convert.ToInt32(this.AgvId);
            if (doneStyle == OprationState.Loaded)
            {
                    //string str = string.Format("update Vehicle set TrayState={0} where Id={1}",
@@ -38,8 +38,12 @@ namespace AGVSocket.Network.Packet
                    //UpdataSqlThread.Instance.Update(str);
               // Form1.cm.Send(client20710711.MessageType.reStart, this.AgvId+"");
 
-               int id = Convert.ToInt32(this.AgvId);
+              
                VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
+           }
+           if (doneStyle == OprationState.EmergencyStop || doneStyle == OprationState.Swerved)
+           {
+               VehicleManager.Instance.GetVehicles()[id].SetCurDirectionEqualNext();
            }
 
         }

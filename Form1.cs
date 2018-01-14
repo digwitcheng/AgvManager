@@ -89,7 +89,7 @@ namespace AGV_V1._0
         {
             InitializeComponent();
             InitServer();//初始化服务器
-            ConnectDataBase(); //连接数据库
+          //  ConnectDataBase(); //连接数据库
 
             InitUiView();//绘制界面
             StartThread();//启动发送，接收，搜索等线程
@@ -157,8 +157,8 @@ namespace AGV_V1._0
             //CheckCongestionThread.Instance.ShowMessage += OnShowMessageWithPicBox;
 
 
-            SqlManager.Instance.Start();
-            SqlManager.Instance.ShowMessage += OnShowMessageWithPicBox;
+            //SqlManager.Instance.Start();
+            //SqlManager.Instance.ShowMessage += OnShowMessageWithPicBox;
 
             SendPacketThread.Instance.Start();
             SendPacketThread.Instance.ShowMessage += OnShowMessageWithPicBox;
@@ -747,8 +747,8 @@ namespace AGV_V1._0
             VehicleManager.Instance.ShowMessage -= OnShowMessageDistanceCount;
             VehicleManager.Instance.End();
 
-            SqlManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
-            SqlManager.Instance.End();
+            //SqlManager.Instance.ShowMessage -= OnShowMessageWithPicBox;
+            //SqlManager.Instance.End();
 
             //CheckCongestionThread.Instance.ShowMessage -= OnShowMessageWithPicBox;
             //CheckCongestionThread.Instance.End();

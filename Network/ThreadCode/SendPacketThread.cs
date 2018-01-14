@@ -48,11 +48,9 @@ namespace AGV_V1._0.ThreadCode
                 {
                     if (SendPacketQueue.Instance.IsHasData())
                     {
-                        SendBasePacket sp = SendPacketQueue.Instance.Dequeue();// SendPacketQueue.Instance.Peek();
-                       // ReSendPacketQueue.Instance.Enqueue(sp);
+                        SendBasePacket sp = SendPacketQueue.Instance.Peek();// SendPacketQueue.Instance.Dequeue();//
                         AgvServerManager.Instance.Send(sp);
-                       // isCanSendNext = false;
-                      //  Console.WriteLine("iscanSendNext=false");
+                        isCanSendNext = false;
                     }
                 }
             }

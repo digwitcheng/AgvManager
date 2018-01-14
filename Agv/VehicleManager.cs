@@ -91,7 +91,7 @@ namespace AGV_V1._0
                         uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
                         uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
                         uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.None));
                         //asm.Send(rp);
                         SendPacketQueue.Instance.Enqueue(rp);
                     }
@@ -130,11 +130,13 @@ namespace AGV_V1._0
                             uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
                             uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
                             uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.None));
                             //asm.Send(rp);
                             SendPacketQueue.Instance.Enqueue(rp);
 
-                            Console.WriteLine(x + "," + y + "->" + endX + "," + endY);
+                            Console.WriteLine(x + "," + y + "->" + endX + "," + endY + " " + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0);
+
+                            CheckAlarmState(vnum);
 
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));
@@ -155,6 +157,13 @@ namespace AGV_V1._0
                 vFinished.Clear();
             }
 
+        }
+        void CheckAlarmState(int vnum)
+        {
+            if (vehicles[vnum].agvInfo.Alarm == AlarmState.ScanNone || vehicles[vnum].agvInfo.Alarm == AlarmState.CommunicationFault)
+            {
+                Logs.Error("通信故障或没扫到码");
+            }
         }
         
        
@@ -256,7 +265,7 @@ namespace AGV_V1._0
         {           
             
             MyPoint mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
-            while (mpEnd.X == vehicles[Id].BeginX && mpEnd.Y == vehicles[Id].Y)
+            while (mpEnd.X == vehicles[Id].BeginX && mpEnd.Y == vehicles[Id].BeginY)
             {
                 mpEnd = RouteUtil.RandRealPoint(ElecMap.Instance);
             }

@@ -78,7 +78,7 @@ namespace AGV_V1._0
             v.cost = 0;
             v.TPtr = 0;// tFram = 0;
             v.StopTime = ConstDefine.STOP_TIME;
-
+            v.SetCurDirectionEqualNext();
             if (!checkXY(v))
             {
                 v.CurState = State.cannotToDestination;

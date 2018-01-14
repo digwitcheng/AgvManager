@@ -27,7 +27,7 @@ namespace AGV_V1._0.Util
         public const int REMOTE_PORT = 8081;//远程过程调用端口
         public const string REMOTE_NAME = "RouteSearch";//远程过程调用名称
         public const int VEHICLE_SUM = 10;
-        public const float DEVIATION = 0.02f;//坐标相差在DEVIATION以内就看作在一个点
+        public const float DEVIATION = 0.05f;//坐标相差在DEVIATION以内就看作在一个点
 
 
 
@@ -36,7 +36,7 @@ namespace AGV_V1._0.Util
         public static int g_HeightNum = 100;       //
         public static int g_NodeLength = 12;       //默认边长
         public static int g_VehicleCount = 10;     //小车数量
-        public const int FORWORD_STEP = 2; //锁定多少格(包括自己所在的位置)
+        public const int FORWORD_STEP = 4; //锁定多少格(包括自己所在的位置)
         
 
         public const int STOP_TIME = 6; //设置等待时间片段
