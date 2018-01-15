@@ -21,12 +21,20 @@ namespace AGVSocket.Network
             {
                 midPoint = value;
             }
+            get
+            {
+                return midPoint;
+            }
         }
         public CellPoint DesPoint
         {
             set
             {
                 desPoint = value;
+            }
+            get
+            {
+                return desPoint;
             }
         }
         public AgvDriftAngle DesAngle

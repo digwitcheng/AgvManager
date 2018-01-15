@@ -48,9 +48,19 @@ namespace AGV_V1._0.ThreadCode
                 {
                     if (SendPacketQueue.Instance.IsHasData())
                     {
-                        SendBasePacket sp = SendPacketQueue.Instance.Peek();// SendPacketQueue.Instance.Dequeue();//
+                        //SendBasePacket sp = SendPacketQueue.Instance.Peek();// SendPacketQueue.Instance.Dequeue();//
+                        //AgvServerManager.Instance.Send(sp);
+                        //isCanSendNext = false;
+
+                        RunPacket sp = (RunPacket)SendPacketQueue.Instance.Dequeue();// (RunPacket)SendPacketQueue.Instance.Peek();//
                         AgvServerManager.Instance.Send(sp);
-                        isCanSendNext = false;
+                      //  isCanSendNext = false;
+                        uint x = sp.Locations.MidPoint.X/1000;
+                        uint y = sp.Locations.MidPoint.Y/1000;
+                        uint endX = sp.Locations.DesPoint.X/1000;
+                        uint endY = sp.Locations.DesPoint.Y/1000;
+                        Console.WriteLine(x + "," + y + "->" + endX + "," + endY+",序列号:"+sp.SerialNum);
+
                     }
                 }
             }

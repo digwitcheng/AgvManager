@@ -23,7 +23,7 @@ namespace AGVSocket.Network.Packet
 
         public MoveDirection Direction {  set{this.direction=value;} }
         public ushort Speed { set { this.speed = value; } }
-        public Destination Locations { set { this.locations = value; } }
+        public Destination Locations { set { this.locations = value; } get {return this.locations; } }
 
 
 

@@ -56,6 +56,7 @@ namespace AGV_V1._0
         {
             return "VehicleManager";
         }
+        byte serinum = 1;
         protected override void Run()
         {
             Thread.Sleep(ConstDefine.STEP_TIME);
@@ -85,16 +86,16 @@ namespace AGV_V1._0
                     {
                         vehicles[vnum].CurState = State.unloading;
                     }
-                    else
-                    {
-                        uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
-                        uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
-                        uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
-                        uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                        RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.None));
-                        //asm.Send(rp);
-                        SendPacketQueue.Instance.Enqueue(rp);
-                    }
+                    //else
+                    //{
+                    //    uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
+                    //    uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
+                    //    uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
+                    //    uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
+                    //    RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                    //    //asm.Send(rp);
+                    //    SendPacketQueue.Instance.Enqueue(rp);
+                    //}
                     continue;
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
@@ -105,7 +106,6 @@ namespace AGV_V1._0
                     vehicles[vnum].LockNode.Clear();
                     continue;
                 }
-
                 if (vehicles[vnum].StopTime < 0)
                 {
                     if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
@@ -130,11 +130,13 @@ namespace AGV_V1._0
                             uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
                             uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
                             uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                            RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.None));
+                            serinum = (byte)(serinum % 255);
+                            RunPacket rp = new RunPacket(serinum++, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.TopLeft));
                             //asm.Send(rp);
                             SendPacketQueue.Instance.Enqueue(rp);
 
-                            Console.WriteLine(x + "," + y + "->" + endX + "," + endY + " " + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0);
+                            Console.WriteLine("*--------------------------------------------------------------------------*");
+                            Console.WriteLine(vehicles[vnum].TPtr+":"+x + "," + y + "->" + endX + "," + endY + " " + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0+"序列号："+(serinum-1));
 
                             CheckAlarmState(vnum);
 
