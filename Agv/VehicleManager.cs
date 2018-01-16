@@ -67,6 +67,7 @@ namespace AGV_V1._0
             }
             for (int vnum = 0; vnum < vehicles.Length; vnum++)
             {
+                serinum = (byte)(serinum % 255);
                 if (vehicles[vnum].CurState == State.cannotToDestination && vehicles[vnum].Arrive == false)
                 {
                     vehicles[vnum].Arrive = true;
@@ -84,7 +85,12 @@ namespace AGV_V1._0
                 {
                     if (vehicles[vnum].EqualWithRealLocation(vehicles[vnum].BeginX, vehicles[vnum].BeginY))
                     {
-                        vehicles[vnum].CurState = State.unloading;
+                        if (vehicles[vnum].agvInfo.AgvMotion == AgvMotionState.StopedNode)
+                        {
+                            TrayPacket tp = new TrayPacket(serinum++, 4, TrayMotion.TopLeft);
+                            SendPacketQueue.Instance.Enqueue(tp);
+                            vehicles[vnum].CurState = State.unloading;
+                        }
                     }
                     //else
                     //{
@@ -129,9 +135,8 @@ namespace AGV_V1._0
                             uint x = Convert.ToUInt32(vehicles[vnum].BeginX);
                             uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
                             uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
-                            uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                            serinum = (byte)(serinum % 255);
-                            RunPacket rp = new RunPacket(serinum++, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.TopLeft));
+                            uint endY = Convert.ToUInt32(vehicles[vnum].EndY);                            
+                            RunPacket rp = new RunPacket(serinum++, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.None));
                             //asm.Send(rp);
                             SendPacketQueue.Instance.Enqueue(rp);
 
