@@ -137,11 +137,41 @@ namespace AGV_V1._0
                 }
             }
         }
-        
+
         //起点到终点的路线, 键表示时钟指针
         public int cost;   //截止到当前时间，总共的花费
 
-        public Direction Dir { get; set; }
+        private Direction dir;
+
+        public Direction Dir
+        {
+            get
+            {
+                return GetAgvDireciton();
+            }
+            set { dir = value; }
+
+        }
+
+        private Direction GetAgvDireciton()
+        {
+            if (agvInfo == null)
+            {
+                return dir;
+            }
+            else
+            {
+                int num = (int)((agvInfo.CurLocation.AgvAngle.Angle + 45) % 360 / 90.0);
+                switch (num)
+                {
+                    case 0: return Direction.Right;
+                    case 1: return Direction.Up;
+                    case 2: return Direction.Left;
+                    case 3: return Direction.Down;
+                    default: return Direction.Up;
+                }
+            }
+        }
         public int EndX { get; set; }
         public int EndY { get; set; }
         public int BeginX { get; set; }
@@ -293,19 +323,18 @@ namespace AGV_V1._0
         public bool Move(ElecMap Elc)
         {
             lock (RouteLock)
-            {                
+            {
                 if (route == null || route.Count < 1)
                 {
                     return false;
                 }
-                //if (tPtr <= route.Count - 1)
-                //{
-                //    if (!ShouldMove(route[tPtr].X, route[tPtr].Y)) 
-                //    {
-                //        return false;
-                //    }
-                //}
+
+                if (!ShouldMove(route[tPtr].X, route[tPtr].Y))
+                {
+                    return false;
+                }
                 bool virtulChange = false;
+
 
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
@@ -375,51 +404,42 @@ namespace AGV_V1._0
                         tPtr++;
                     }
                 }
-                //BeginX = route[tPtr].X;
-                //BeginY = route[tPtr].Y;
-                //return true;
-                if (tPtr >= route.Count)
-                {
-                    Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
-                    BeginX = route[route.Count - 1].X;
-                    BeginY = route[route.Count - 1].Y;
-                    Arrive = true;
-                    return true;
-                }
-                if (ShouldMove(route[tPtr].X, route[tPtr].Y))
-                {
-                    BeginX = route[tPtr].X;
-                    BeginY = route[tPtr].Y;
-                    return true;
-                }
-                else
-                {
-                    //int tx = (int)route[VirtualTPtr].X;
-                    //int ty = (int)route[VirtualTPtr].Y;
-                    //Elc.mapnode[tx, ty].NodeCanUsed = -1;
-                    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
-                    //tPtr--;
-                    //VirtualTPtr--;
-                    //tx = (int)route[VirtualTPtr].X;
-                    //ty = (int)route[VirtualTPtr].Y;
-                    //Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
-                    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
+                BeginX = route[tPtr].X;
+                BeginY = route[tPtr].Y;
+                return true;
 
-                    tPtr--;
-                    if (virtulChange)
-                    {
-                        VirtualTPtr--;
-                    }
-                    return false;
-                }
+                //if (ShouldMove(route[tPtr].X, route[tPtr].Y))
+                //{
+                //    BeginX = route[tPtr].X;
+                //    BeginY = route[tPtr].Y;
+                //    return true;
+                //}
+                //else
+                //{
+                //    //int tx = (int)route[VirtualTPtr].X;
+                //    //int ty = (int)route[VirtualTPtr].Y;
+                //    //Elc.mapnode[tx, ty].NodeCanUsed = -1;
+                //    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = -1;
+                //    //tx = (int)route[VirtualTPtr].X;
+                //    //ty = (int)route[VirtualTPtr].Y;
+                //    //Elc.mapnode[tx, ty].NodeCanUsed = this.Id;
+                //    //Elc.mapnode[route[tPtr].X, route[tPtr].Y].NodeCanUsed = this.Id;
+
+                //    tPtr--;
+                //    if (virtulChange)
+                //    {
+                //        VirtualTPtr--;
+                //    }
+                //    return false;
+                //}
 
             }
         }
-        private enum MoveDirecion { XDirection,YDirection}
+        private enum MoveDirecion { XDirection, YDirection }
         private MoveDirecion curMoveDirection;
         private MoveDirecion nextMoveDirection;
-      
-         bool ShouldMove(int nextX, int nextY)
+
+        bool ShouldMove(int nextX, int nextY)
         {
             if (agvInfo == null)
             {
@@ -429,37 +449,63 @@ namespace AGV_V1._0
             {
                 return false;
             }
-            //if (agvInfo.Electricity < 20)
-            //{
-            //    return false;
-            //}
-            if (curMoveDirection!=nextMoveDirection)
+            if (tPtr >= route.Count)
             {
                 return false;
             }
-            double tempX = agvInfo.CurLocation.CurNode.X/1000.0;
-            double tempY = agvInfo.CurLocation.CurNode.Y/1000.0;
-            if (Math.Abs(nextX - tempX) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - tempY) < ConstDefine.DEVIATION)//X轴移动
+            if (tPtr == 0)
             {
-
-                curMoveDirection = nextMoveDirection;
-                nextMoveDirection= MoveDirecion.XDirection;
                 return true;
             }
-            if (Math.Abs(nextX - tempX) < ConstDefine.DEVIATION && Math.Abs(nextY - tempY
+
+            SetCurAndNextDirection(tPtr);
+            if (tPtr > 1)
+            {
+                if (curMoveDirection != nextMoveDirection)
+                {
+                    return false;
+                    if (agvInfo.AgvMotion == AgvMotionState.StopedNode)
+                    {
+                        // curMoveDirection = nextMoveDirection;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            double RealX = agvInfo.CurLocation.CurNode.X / 1000.0;
+            double RealY = agvInfo.CurLocation.CurNode.Y / 1000.0;
+            if (Math.Abs(nextX - RealX) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - RealY) < ConstDefine.DEVIATION)//X轴移动
+            {
+                return true;
+            }
+            if (Math.Abs(nextX - RealX) < ConstDefine.DEVIATION && Math.Abs(nextY - RealY
                 ) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1)//Y轴移动
             {
-                curMoveDirection = nextMoveDirection;
-                nextMoveDirection = MoveDirecion.YDirection;
                 return true;
             }
             return false;
 
         }
-         public void SetCurDirectionEqualNext()
-         {
-             curMoveDirection = nextMoveDirection;
-         }
+        //public  void SetCurDirectionEqualNext(byte serinum)
+        // {
+        //     curMoveDirection = nextMoveDirection;
+
+        // }
+        void SetCurAndNextDirection(int index)
+        {
+            if (Math.Abs(route[index].X - route[index - 1].X) == 0 && Math.Abs(route[index].Y - route[index - 1].Y) == 1)//Y轴方向
+            {
+                curMoveDirection = nextMoveDirection;
+                nextMoveDirection = MoveDirecion.YDirection;
+            }
+            if (Math.Abs(route[index].X - route[index - 1].X) == 1 && Math.Abs(route[index].Y - route[index - 1].Y) == 0)//X轴方向
+            {
+                curMoveDirection = nextMoveDirection;
+                nextMoveDirection = MoveDirecion.XDirection;
+            }
+        }
         public bool EqualWithRealLocation(int srcX, int srcY)
         {
             if (agvInfo == null)

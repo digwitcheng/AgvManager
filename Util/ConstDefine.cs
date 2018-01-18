@@ -18,16 +18,16 @@ namespace AGV_V1._0.Util
 
         public const int UPDATA_SQL_TIME = 50;
 
-        public const int minX =0;
-        public const int maxX =10;
-        public const int minY =0;
+        public const int minX =5;
+        public const int maxX =7;
+        public const int minY =6;
         public const int maxY = 10;
         public const int CELL_UNIT = 1000;//格和毫格的转换单位
 
         public const int REMOTE_PORT = 8081;//远程过程调用端口
         public const string REMOTE_NAME = "RouteSearch";//远程过程调用名称
         public const int VEHICLE_SUM = 10;
-        public const float DEVIATION = 0.05f;//坐标相差在DEVIATION以内就看作在一个点
+        public const float DEVIATION = 0.1f;//坐标相差在DEVIATION以内就看作在一个点
 
 
 

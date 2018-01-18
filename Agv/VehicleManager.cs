@@ -98,10 +98,16 @@ namespace AGV_V1._0
                     //    uint y = Convert.ToUInt32(vehicles[vnum].BeginY);
                     //    uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
                     //    uint endY = Convert.ToUInt32(vehicles[vnum].EndY);
-                    //    RunPacket rp = new RunPacket(1, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(90), TrayMotion.TopLeft));
+                    //    RunPacket rp = new RunPacket(serinum, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.None));
                     //    //asm.Send(rp);
                     //    SendPacketQueue.Instance.Enqueue(rp);
+
+                    //    Console.WriteLine("unloaing resend");
                     //}
+                    continue;
+                }
+                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.unloading)
+                {
                     continue;
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
@@ -111,7 +117,7 @@ namespace AGV_V1._0
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
                     continue;
-                }
+                }               
                 if (vehicles[vnum].StopTime < 0)
                 {
                     if (vehicles[vnum].CurNodeTypy() != MapNodeType.queuingArea && GetDirCount(vehicles[vnum].BeginX, vehicles[vnum].BeginY) > 1)
@@ -170,6 +176,7 @@ namespace AGV_V1._0
             if (vehicles[vnum].agvInfo.Alarm == AlarmState.ScanNone || vehicles[vnum].agvInfo.Alarm == AlarmState.CommunicationFault)
             {
                 Logs.Error("通信故障或没扫到码");
+                MessageBox.Show("通信故障或没扫到码");
             }
         }
         

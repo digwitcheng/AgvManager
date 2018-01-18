@@ -41,10 +41,11 @@ namespace AGVSocket.Network.Packet
               
                VehicleManager.Instance.GetVehicles()[id].CurState = State.Free;
            }
-           if (doneStyle == OprationState.EmergencyStop || doneStyle == OprationState.Swerved)
-           {
-               VehicleManager.Instance.GetVehicles()[id].SetCurDirectionEqualNext();
-           }
+           //if (doneStyle == OprationState.EmergencyStop || doneStyle == OprationState.Swerved)
+           //{
+           //    VehicleManager.Instance.GetVehicles()[id].SetCurDirectionEqualNext(this.SerialNum);
+           //    Console.WriteLine("已在转弯点停止，序列号：" + this.SerialNum);
+           //}
 
         }
 

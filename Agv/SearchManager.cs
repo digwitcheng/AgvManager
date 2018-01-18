@@ -78,7 +78,6 @@ namespace AGV_V1._0
             v.cost = 0;
             v.TPtr = 0;// tFram = 0;
             v.StopTime = ConstDefine.STOP_TIME;
-            v.SetCurDirectionEqualNext();
             if (!checkXY(v))
             {
                 v.CurState = State.cannotToDestination;
@@ -120,22 +119,6 @@ namespace AGV_V1._0
                         v.EndLoc = "ScanArea";
                     }
                 }
-                //
-                // this.vehical_state = State.carried;
-
-                //Route = new ConcurrentDictionary<int, MyLocation>();
-                //List<int> specialPoint = new List<int>();
-                //checkSpecialPoint(routeList, specialPoint);
-
-                //for (int i = 0; i < routeList.Count; i++)
-                //{
-                //    this.Route.TryAdd(i, routeList[i]);
-                //}
-
-                //for (int i = 0; i < specialPoint.Count - 1; i++)
-                //{  
-                //    FormRoute(routeList, specialPoint[i], specialPoint[i + 1]);
-                //}
 
             }
         }
