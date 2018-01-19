@@ -108,6 +108,10 @@ namespace AGV_V1._0
                     //}
                     continue;
                 }
+                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
+                {
+                    continue;
+                }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
                 {
                     Console.WriteLine("下一个目标：");
@@ -145,7 +149,7 @@ namespace AGV_V1._0
                             AgvServerManager.Instance.Send(rp);
 
                             Console.WriteLine("*--------------------------------------------------------------------------*");
-                            Console.WriteLine(vehicles[vnum].TPtr+":"+x + "," + y + "->" + endX + "," + endY + " " + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0+"序列号："+(serinum-1));
+                            Console.WriteLine(vehicles[vnum].TPtr+":"+x + "," + y + "->" + endX + "," + endY + " ,实际位置：" + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0+"序列号："+(serinum-1));
 
                             CheckAlarmState(vnum);
 
