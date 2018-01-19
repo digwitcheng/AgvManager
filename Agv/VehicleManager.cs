@@ -91,6 +91,7 @@ namespace AGV_V1._0
                            // SendPacketQueue.Instance.Enqueue(tp);
                             AgvServerManager.Instance.Send(tp);
                             vehicles[vnum].CurState = State.unloading;
+                            Console.WriteLine("send TrayMotion:"+(serinum-1));
                         }
                     }
                     //else
@@ -109,6 +110,7 @@ namespace AGV_V1._0
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
                 {
+                    Console.WriteLine("下一个目标：");
                     RandomMove(4);
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
