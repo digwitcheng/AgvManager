@@ -41,7 +41,7 @@ namespace AGV_V1._0
                     }
                     if (value < 0)
                     {
-                        value = 0;
+                        value = 0; 
                     }
                 }
                 else
@@ -328,8 +328,13 @@ namespace AGV_V1._0
                 {
                     return false;
                 }
-
-                if (!ShouldMove(route[tPtr].X, route[tPtr].Y))
+                if (tPtr >= route.Count - 1)
+                {
+                    Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
+                    Arrive = true;
+                    return false;
+                }
+                if (ShouldMove(tPtr+1)==false)
                 {
                     return false;
                 }
@@ -365,14 +370,7 @@ namespace AGV_V1._0
 
                 }
                 else if (tPtr > 0)
-                {
-
-                    if (tPtr >= route.Count - 1)
-                    {
-                        Elc.mapnode[route[route.Count - 1].X, route[route.Count - 1].Y].NodeCanUsed = this.Id;
-                        Arrive = true;
-                        return false;
-                    }
+                {                   
 
                     if (VirtualTPtr <= route.Count - 1)
                     {
@@ -438,8 +436,9 @@ namespace AGV_V1._0
         private enum MoveDirecion { XDirection, YDirection }
         private MoveDirecion curMoveDirection;
         private MoveDirecion nextMoveDirection;
+        private bool SwerveStoped = true;
 
-        bool ShouldMove(int nextX, int nextY)
+        bool ShouldMove(int nextTPtr)
         {
             if (agvInfo == null)
             {
@@ -449,31 +448,36 @@ namespace AGV_V1._0
             {
                 return false;
             }
-            if (tPtr >= route.Count)
+            if (nextTPtr >= route.Count)
             {
                 return false;
             }
-            if (tPtr == 0)
+            if (nextTPtr == 0)
             {
                 return true;
             }
-
-            SetCurAndNextDirection(tPtr);
-            if (tPtr > 1)
+            SetCurAndNextDirection(nextTPtr);
+            if (nextTPtr > 1)
             {
                 if (curMoveDirection != nextMoveDirection)
                 {
-                    return false;
                     if (agvInfo.AgvMotion == AgvMotionState.StopedNode)
                     {
-                        // curMoveDirection = nextMoveDirection;
+                        Console.WriteLine("stoped!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+                        SwerveStoped = true;
+                         curMoveDirection = nextMoveDirection;
                     }
                     else
                     {
+                        Console.WriteLine("还没停止...");
+                        SwerveStoped = false;
                         return false;
                     }
                 }
             }
+            
+            int nextX = route[nextTPtr].X;
+            int nextY=route[nextTPtr].Y;
             double RealX = agvInfo.CurLocation.CurNode.X / 1000.0;
             double RealY = agvInfo.CurLocation.CurNode.Y / 1000.0;
             if (Math.Abs(nextX - RealX) < ConstDefine.DEVIATION + ConstDefine.FORWORD_STEP - 1 && Math.Abs(nextY - RealY) < ConstDefine.DEVIATION)//X轴移动
@@ -495,6 +499,10 @@ namespace AGV_V1._0
         // }
         void SetCurAndNextDirection(int index)
         {
+            if (SwerveStoped == false)
+            {
+                return;
+            }
             if (Math.Abs(route[index].X - route[index - 1].X) == 0 && Math.Abs(route[index].Y - route[index - 1].Y) == 1)//Y轴方向
             {
                 curMoveDirection = nextMoveDirection;

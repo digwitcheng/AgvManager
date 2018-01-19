@@ -58,7 +58,7 @@ namespace AGV_V1._0.ThreadCode
                         //uint y = sp.Locations.MidPoint.Y/1000;
                         //uint endX = sp.Locations.DesPoint.X/1000;
                         //uint endY = sp.Locations.DesPoint.Y/1000;
-                        //Console.WriteLine(x + "," + y + "->" + endX + "," + endY+",序列号:"+sp.SerialNum);
+                        Console.WriteLine("send success,序列号:"+sp.SerialNum);
 
                     }
                 }

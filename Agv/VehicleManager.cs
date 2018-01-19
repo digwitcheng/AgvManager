@@ -88,7 +88,8 @@ namespace AGV_V1._0
                         if (vehicles[vnum].agvInfo.AgvMotion == AgvMotionState.StopedNode)
                         {
                             TrayPacket tp = new TrayPacket(serinum++, 4, TrayMotion.TopLeft);
-                            SendPacketQueue.Instance.Enqueue(tp);
+                           // SendPacketQueue.Instance.Enqueue(tp);
+                            AgvServerManager.Instance.Send(tp);
                             vehicles[vnum].CurState = State.unloading;
                         }
                     }
@@ -104,10 +105,6 @@ namespace AGV_V1._0
 
                     //    Console.WriteLine("unloaing resend");
                     //}
-                    continue;
-                }
-                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.unloading)
-                {
                     continue;
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
@@ -143,8 +140,7 @@ namespace AGV_V1._0
                             uint endX = Convert.ToUInt32(vehicles[vnum].EndX);
                             uint endY = Convert.ToUInt32(vehicles[vnum].EndY);                            
                             RunPacket rp = new RunPacket(serinum++, 4, MoveDirection.Forward, 1500, new Destination(new CellPoint(x * ConstDefine.CELL_UNIT, y * ConstDefine.CELL_UNIT), new CellPoint(endX * ConstDefine.CELL_UNIT, endY * ConstDefine.CELL_UNIT), new AgvDriftAngle(0), TrayMotion.None));
-                            //asm.Send(rp);
-                            SendPacketQueue.Instance.Enqueue(rp);
+                            AgvServerManager.Instance.Send(rp);
 
                             Console.WriteLine("*--------------------------------------------------------------------------*");
                             Console.WriteLine(vehicles[vnum].TPtr+":"+x + "," + y + "->" + endX + "," + endY + " " + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0+"序列号："+(serinum-1));
