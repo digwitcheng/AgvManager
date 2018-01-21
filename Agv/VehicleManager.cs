@@ -32,6 +32,7 @@ namespace AGV_V1._0
         private bool vehicleInited = false;
         private double moveCount = 0;//统计移动的格数，当前地图一格1.5米
         public const int REINIT_COUNT = 100;
+        private const int WAIT_TIME = 8;//  等待超时后还没有翻盘完成的消息就重发翻盘报文
 
         private static Random rand = new Random(1);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
@@ -91,6 +92,7 @@ namespace AGV_V1._0
                            // SendPacketQueue.Instance.Enqueue(tp);
                             AgvServerManager.Instance.Send(tp);
                             vehicles[vnum].CurState = State.unloading;
+                            vehicles[vnum].WaitEndTime = DateTime.Now.AddSeconds(WAIT_TIME);
                             Console.WriteLine("send TrayMotion:"+(serinum-1));
                         }
                     }
@@ -107,18 +109,34 @@ namespace AGV_V1._0
                     //    Console.WriteLine("unloaing resend");
                     //}
                     continue;
-                }
-                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.carried)
+                }                
+                if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.unloading)
                 {
+                    if (DateTime.Now > vehicles[vnum].WaitEndTime)
+                    {
+                        if (vehicles[vnum].EqualWithRealLocation(vehicles[vnum].BeginX, vehicles[vnum].BeginY))
+                        {
+                            if (vehicles[vnum].agvInfo.AgvMotion == AgvMotionState.StopedNode)
+                            {
+                                TrayPacket tp = new TrayPacket(serinum++, 4, TrayMotion.TopLeft);
+                                // SendPacketQueue.Instance.Enqueue(tp);
+                                AgvServerManager.Instance.Send(tp);
+                                vehicles[vnum].CurState = State.unloading;
+                                vehicles[vnum].WaitEndTime = DateTime.Now.AddSeconds(WAIT_TIME);
+                                Console.WriteLine("resend TrayMotion**********:" + (serinum - 1));
+                            }
+                        }
+                    }
                     continue;
                 }
                 if (vehicles[vnum].Arrive == true && vehicles[vnum].CurState == State.Free)
-                {
-                    Console.WriteLine("下一个目标：");
-                    RandomMove(4);
+                {                    
                     vFinished.Add(vehicles[vnum]);
                     vehicles[vnum].Route.Clear();
                     vehicles[vnum].LockNode.Clear();
+
+                    Console.WriteLine("下一个目标：");
+                    RandomMove(4);
                     continue;
                 }               
                 if (vehicles[vnum].StopTime < 0)
@@ -152,6 +170,7 @@ namespace AGV_V1._0
                             Console.WriteLine(vehicles[vnum].TPtr+":"+x + "," + y + "->" + endX + "," + endY + " ,实际位置：" + vehicles[vnum].agvInfo.CurLocation.CurNode.X / 1000.0 + "," + vehicles[vnum].agvInfo.CurLocation.CurNode.Y / 1000.0+"序列号："+(serinum-1));
 
                             CheckAlarmState(vnum);
+                            vehicles[vnum].WaitEndTime = DateTime.Now.AddSeconds(WAIT_TIME);
 
                             moveCount++;
                             OnShowMessage(string.Format("{0:N} 公里", (moveCount * 1.5) / 1000.0));

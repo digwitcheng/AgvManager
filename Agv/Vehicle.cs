@@ -82,6 +82,7 @@ namespace AGV_V1._0
             get;
             set;
         }
+        public DateTime WaitEndTime;
 
         //public List<myPoint> route;//起点到终点的路线
         //public ConcurrentDictionary<int, MyLocation> Route { get; set; }//起点到终点的路线, 键表示时钟指针
@@ -336,6 +337,11 @@ namespace AGV_V1._0
                 }
                 if (ShouldMove(tPtr+1)==false)
                 {
+                    if (this.WaitEndTime < DateTime.Now)//超过等待时间还不能走，则重新发送一下当前位置
+                    {
+                        Console.WriteLine("Resend Current location");
+                        return true;
+                    }
                     return false;
                 }
                 bool virtulChange = false;
