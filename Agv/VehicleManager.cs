@@ -29,15 +29,11 @@ namespace AGV_V1._0
         private static Random rand = new Random(1);//5,/4/4 //((int)DateTime.Now.Ticks);//随机数，随机产生坐标
 
 
-        private static VehicleManager instance;
+        private static VehicleManager instance = new VehicleManager();
         public static VehicleManager Instance
         {
             get
             {
-                if (null == instance)
-                {
-                    instance = new VehicleManager();
-                }
                 return instance;
             }
         }
@@ -313,16 +309,16 @@ namespace AGV_V1._0
         {
             for (int i = 0; i < count; i++)
             {
-                //MyPoint mp = RouteUtil.randPoint(ElecMap.Instance);
-                //MyPoint mpEnd = RouteUtil.randPoint(ElecMap.Instance);
-                //SendData sd = new SendData(i, mp.X, mp.Y, mpEnd.X, mpEnd.Y);
-                //sd.Arrive = false;
-                //sd.EndLoc = "rest";
-                //SearchRoute(i, false);
+                MyPoint mp =  RouteUtil.randPoint(ElecMap.Instance);
+                MyPoint mpEnd = RouteUtil.randPoint(ElecMap.Instance);
+                SendData sd = new SendData(i, mp.X, mp.Y, mpEnd.X, mpEnd.Y);
+                sd.Arrive = false;
+                sd.EndLoc = "rest";
+                SearchRoute(i, false);
 
             }
         }
-        void SearchRoute(int num, bool isResarch)
+        public  void SearchRoute(int num, bool isResarch)
         {
             SendData td = new SendData();
             td.Num = num;

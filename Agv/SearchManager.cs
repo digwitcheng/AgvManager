@@ -16,15 +16,11 @@ namespace AGV_V1._0
         AstarSearch astarSearch;
         //private readonly object searchLock = new object();
 
-        private static SearchManager _instance;
+        private static SearchManager _instance = new SearchManager();
         public static SearchManager Instance
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new SearchManager();
-                }
                 return _instance;
             }
         }

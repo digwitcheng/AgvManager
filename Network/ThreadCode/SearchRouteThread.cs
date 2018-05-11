@@ -16,15 +16,11 @@ namespace AGV_V1._0.ThreadCode
 {
     class SearchRouteThread:BaseThread
     {
-        private static SearchRouteThread instance;
+        private static SearchRouteThread instance = new SearchRouteThread();
         public static SearchRouteThread Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new SearchRouteThread();
-                }
                 return instance;
             }
         }

@@ -15,15 +15,11 @@ namespace AGV_V1._0.Network.ThreadCode
     class TaskReceiveThread:BaseThread
     {
         
-        private static TaskReceiveThread instance;
+        private static TaskReceiveThread instance=new TaskReceiveThread();
         public static TaskReceiveThread Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new TaskReceiveThread();
-                }
                 return instance;
             }
         }

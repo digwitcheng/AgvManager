@@ -15,16 +15,12 @@ namespace AGV_V1._0.Network.ThreadCode
     class CheckCongestionThread:BaseThread
     {
         private const int MODEL_LEN = 7;
-        private const int THRESHOLD = 26;//阈值
-        private static CheckCongestionThread instance;
+        private const int THRESHOLD = 20;//阈值
+        private static CheckCongestionThread instance=new CheckCongestionThread();
         public static CheckCongestionThread Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new CheckCongestionThread();
-                }
                 return instance;
             }
         }
@@ -69,7 +65,7 @@ namespace AGV_V1._0.Network.ThreadCode
                         {
                             for (int q = j - MODEL_LEN / 2; q < j + MODEL_LEN / 2; q++)
                             {
-                                ElecMap.Instance.mapnode[p, q].TraCongesIntensity++;
+                                ElecMap.Instance.mapnode[p, q].TraCongesIntensity++;                                
                             }
                         }
                     }

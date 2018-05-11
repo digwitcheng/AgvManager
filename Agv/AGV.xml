@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Info>
   <NO>1</NO>
-  <SUM>450</SUM>
+  <SUM>1</SUM>
   <watch>0</watch>
   <AGV>
     <AGV Num="0" BeginX="42" BeginY="16" StartLoc="" Direction="Up" State="carried" Battery="100" EndX="6" EndY="17" DestX="6" DestY="18" Use="T" />
@@ -506,7 +506,7 @@
     <AGV Num="499" BeginX="53" BeginY="66" StartLoc="道路" Direction="Up" State="free" Battery="100" EndX="" EndY="" DestX="" DestY="" Use="T" />
   </AGV>
   <AGV_info>
-    <AGV Num="0" BeginX="42" BeginY="16" StartLoc="" Direction="Up" State="carried" Battery="100" EndX="6" EndY="17" DestX="6" DestY="18" Use="T" />
+    <AGV Num="0" BeginX="11" BeginY="15" StartLoc="" Direction="Up" State="carried" Battery="100" EndX="6" EndY="17" DestX="6" DestY="18" Use="T" />
     <AGV Num="1" BeginX="22" BeginY="84" StartLoc="道路" Direction="Up" State="free" Battery="100" EndX="" EndY="" DestX="" DestY="" Use="T" />
     <AGV Num="2" BeginX="48" BeginY="10" StartLoc="WaitArea" Direction="Up" State="free" Battery="100" EndX="" EndY="" DestX="" DestY="" Use="T" />
     <AGV Num="3" BeginX="7" BeginY="10" StartLoc="道路" Direction="Up" State="free" Battery="100" EndX="" EndY="" DestX="" DestY="" Use="T" />

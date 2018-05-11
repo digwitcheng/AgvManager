@@ -236,9 +236,6 @@
     <None Include="Resources\Vehicle_Yellow.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\youzheng.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Button_Destination.png" />
     <None Include="Resources\Button_Scanner.png" />
     <None Include="Resources\Button_Obstacle.png" />
@@ -267,7 +264,6 @@
     <None Include="Resources\down.png" />
     <None Include="Resources\left.png" />
     <None Include="Resources\right.png" />
-    <None Include="Resources\empty.png" />
     <None Include="Resources\timg.jpg" />
     <None Include="Resources\all_gray.png" />
     <None Include="Resources\besides_down_gray.png" />
@@ -313,25 +309,31 @@
     <None Include="Resources\up_purple.png" />
     <None Include="Resources\up_right_purple.png" />
     <None Include="Resources\timg %286%29.jpg" />
-    <None Include="Resources\all_white.png" />
-    <None Include="Resources\besides_down_white.png" />
-    <None Include="Resources\besides_left_white.png" />
-    <None Include="Resources\besides_right_white.png" />
-    <None Include="Resources\besides_up_white.png" />
-    <None Include="Resources\down_left_white.png" />
-    <None Include="Resources\down_right_white.png" />
-    <None Include="Resources\down_white.png" />
-    <None Include="Resources\empty_white.png" />
-    <None Include="Resources\left_white.png" />
-    <None Include="Resources\right_white.png" />
-    <None Include="Resources\up_left_white.png" />
-    <None Include="Resources\up_right_white.png" />
-    <None Include="Resources\up_white.png" />
-    <None Include="Resources\obstacle_white.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Agv\AGV.xml" />
     <Content Include="Map\ElcMap.xml" />
+    <None Include="Resources\up_white.png" />
+    <None Include="Resources\up_right_white.png" />
+    <None Include="Resources\up_left_white.png" />
+    <None Include="Resources\up_down_white.png" />
+    <None Include="Resources\obstacle_white.png" />
+    <None Include="Resources\left_white.png" />
+    <None Include="Resources\left_right_white.png" />
+    <None Include="Resources\empty_white.png" />
+    <None Include="Resources\down_white.png" />
+    <None Include="Resources\down_right_white.png" />
+    <None Include="Resources\down_left_white.png" />
+    <None Include="Resources\besides_up_white.png" />
+    <None Include="Resources\besides_right_white.png" />
+    <None Include="Resources\besides_left_white.png" />
+    <None Include="Resources\besides_down_white.png" />
+    <None Include="Resources\all_white.png" />
+    <None Include="Resources\youzheng.ico" />
+    <None Include="Resources\Icon1.ico" />
+    <None Include="Resources\right_white.png" />
+    <None Include="Resources\empty_white1.png" />
+    <None Include="Resources\empty.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

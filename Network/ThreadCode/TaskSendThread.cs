@@ -20,15 +20,11 @@ namespace AGV_V1._0.Network.ThreadCode
         private int per = 0;//时间间隔计数器
 
 
-         private static TaskSendThread instance;
+         private static TaskSendThread instance=new TaskSendThread();
         public static TaskSendThread Instance
         {
             get
-            {
-                if (instance == null)
-                {
-                    instance = new TaskSendThread();
-                }
+            {                
                 return instance;
             }
         }

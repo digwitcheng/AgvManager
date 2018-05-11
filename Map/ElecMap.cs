@@ -211,9 +211,17 @@ namespace AGV_V1._0
                     {
                         mapnode[tdx, tdy].IsAbleCross = false;
                     }
-                    mapnode[tdx, tdy].UpDifficulty    = (dir[0] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
-                    mapnode[tdx, tdy].DownDifficulty  = (dir[1] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
-                    mapnode[tdx, tdy].LeftDifficulty  = (dir[2] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    //else
+                    //{
+                    //    mapnode[tdx, tdy].UpDifficulty      =  MapNode.DEFAULT_DIFFICULTY ;
+                    //    mapnode[tdx, tdy].DownDifficulty    =  MapNode.DEFAULT_DIFFICULTY ;
+                    //    mapnode[tdx, tdy].LeftDifficulty    =  MapNode.DEFAULT_DIFFICULTY ;
+                    //    mapnode[tdx, tdy].RightDifficulty   =  MapNode.DEFAULT_DIFFICULTY ;
+                    //}
+
+                    mapnode[tdx, tdy].UpDifficulty = (dir[0] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    mapnode[tdx, tdy].DownDifficulty = (dir[1] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
+                    mapnode[tdx, tdy].LeftDifficulty = (dir[2] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
                     mapnode[tdx, tdy].RightDifficulty = (dir[3] == '1' ? MapNode.DEFAULT_DIFFICULTY : MapNode.UNABLE_PASS);
 
                     //if ((tdy > 25 && tdy < 29) || (tdy > 44 && tdy < 49) || (tdy > 63 && tdy < 68))

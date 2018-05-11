@@ -286,12 +286,14 @@ namespace AGV_V1._0
 
             lock (RouteLock)
             {
+                int tempX = BeginX + 1;
+                int tempY = BeginY + 1;
 
-                Rectangle rect = new Rectangle(BeginY * ConstDefine.g_NodeLength, (int)BeginX * ConstDefine.g_NodeLength, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
-                DrawUtil.FillRectangle(g,showColor,rect);
+                Rectangle rect = new Rectangle(tempY * ConstDefine.g_NodeLength, (int)tempX * ConstDefine.g_NodeLength, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
+                DrawUtil.FillRectangle(g,Color.FromArgb(180,100,100,100),rect);
 
-                PointF p = new PointF((int)((BeginY) * ConstDefine.g_NodeLength), (int)((BeginX) * ConstDefine.g_NodeLength));
-                DrawUtil.DrawString(g, this.Id, ConstDefine.g_NodeLength / 2, Color.Black, p);
+                PointF p = new PointF((int)((tempY) * ConstDefine.g_NodeLength-3), (int)((tempX) * ConstDefine.g_NodeLength-2));
+                DrawUtil.DrawString(g, RouteIndex++, ConstDefine.g_NodeLength / 2, Color.Red, p);
 
                
             }
@@ -326,6 +328,10 @@ namespace AGV_V1._0
                     {
                         if (tPtr + VirtualTPtr <= route.Count - 1)
                         {
+                            if (this.Id ==197)
+                            {
+                                int a = 0;
+                            }
                             int tx = (int)route[VirtualTPtr].X;
                             int ty = (int)route[VirtualTPtr].Y;
                             // Boolean temp = Elc.canMoveToNode(this, tx, ty);

@@ -180,13 +180,13 @@ namespace AGV_V1._0
             }
             catch (IndexOutOfRangeException ex)
             {
-                MessageBox.Show("小车位置超出了地图范围，初始化小车失败");
+                MessageBox.Show("小车位置超出了地图范围，初始化小车失败"+ex);
                 Logs.Error("小车初始化失败" + ex);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("小车文件加载失败");
-                Logs.Fatal("小车文件加载失败");
+                MessageBox.Show("小车文件加载失败"+ex);
+                Logs.Fatal("小车文件加载失败"+ex);
             }
 
         }
@@ -228,7 +228,7 @@ namespace AGV_V1._0
         {
             Elc.InitialElc();
 
-            this.WindowState = FormWindowState.Maximized;
+             // this.WindowState = FormWindowState.Maximized;
             ConstDefine.g_NodeLength = (int)(ConstDefine.FORM_WIDTH * ConstDefine.PANEL_RADIO) / ConstDefine.g_WidthNum;
             MAX_NODE_LENGTH = ConstDefine.g_NodeLength * 2;
             MIN_NODE_LENGTH = ConstDefine.g_NodeLength / 2;
@@ -262,8 +262,8 @@ namespace AGV_V1._0
         }
         void SetMapView()
         {
-            int w = ConstDefine.g_NodeLength * (ConstDefine.g_WidthNum);
-            int h = ConstDefine.g_NodeLength * (ConstDefine.g_HeightNum);
+            int w = ConstDefine.g_NodeLength * (ConstDefine.g_WidthNum+2);
+            int h = ConstDefine.g_NodeLength * (ConstDefine.g_HeightNum+2);
             //设置pictureBox的尺寸和位置
             pic.Location = Point.Empty;
             pic.Size = new Size(w, h);
@@ -294,11 +294,11 @@ namespace AGV_V1._0
             //节点类型
 
             point_x = 0;
-            point_y = 0;
+            point_y = ConstDefine.g_NodeLength;
 
             for (int i = 0; i < Elc.HeightNum; i++)
             {
-                point_x = 0;
+                point_x = ConstDefine.g_NodeLength;
                 for (int j = 0; j < Elc.WidthNum; j++)
                 {
                     //Elc.mapnode[i, j] = new MapNode(point_x, point_y, Node_number, point_type);
@@ -319,13 +319,13 @@ namespace AGV_V1._0
                     //绘制标尺
                     if (i == 0 || i == Elc.HeightNum - 1)
                     {
-                        DrawUtil.FillRectangle(g, Color.FromArgb(180, 0, 0, 0), Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
-                        DrawUtil.DrawString(g, j, ConstDefine.g_NodeLength / 2, Color.Yellow, Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1);
+                        int Y = (i == 0 ? 0 : Elc.mapnode[i, j].Y + ConstDefine.g_NodeLength);
+                        DrawUtil.DrawString(g, j, ConstDefine.g_NodeLength / 2, Color.Yellow, Elc.mapnode[i, j].X - 1, Y);
                     }
                     if (j == 0 || j == Elc.WidthNum - 1)
                     {
-                        DrawUtil.FillRectangle(g, Color.FromArgb(180, 0, 0, 0), Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2);
-                        DrawUtil.DrawString(g, i, ConstDefine.g_NodeLength / 2, Color.Yellow, Elc.mapnode[i, j].X - 1, Elc.mapnode[i, j].Y - 1);
+                        int X = (j == 0 ? 0 : Elc.mapnode[i, j].X + ConstDefine.g_NodeLength);
+                        DrawUtil.DrawString(g, i, ConstDefine.g_NodeLength / 2, Color.Yellow, X, Elc.mapnode[i, j].Y - 1);
                     }
                 }
             }
@@ -417,32 +417,32 @@ namespace AGV_V1._0
             //    }
             //}
 
-            //绘制拥堵的节点
-            for (int i = 0; i < Elc.mapnode.GetLength(0); i++)
-            {
-                for (int j = 0; j < Elc.mapnode.GetLength(1); j++)
-                {
-                    if (Elc.mapnode[i, j].TraCongesIntensity > 0)
-                    {
-                        gg.FillRectangle(new SolidBrush(Color.Red), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
-                        Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
-                        Brush brush = Brushes.DarkMagenta;
-                        PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
-                        gg.DrawString(Elc.mapnode[i, j].TraCongesIntensity + "", font, brush, pf);
-                    }
-                }
-            }
+            ////绘制拥堵的节点
+            //for (int i = 0; i < Elc.mapnode.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < Elc.mapnode.GetLength(1); j++)
+            //    {
+            //        if (Elc.mapnode[i, j].TraCongesIntensity > 0)
+            //        {
+            //            gg.FillRectangle(new SolidBrush(Color.FromArgb(100,0,100,0)), new Rectangle(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y, ConstDefine.g_NodeLength, ConstDefine.g_NodeLength));
+            //            Font font = new Font(new System.Drawing.FontFamily("宋体"), ConstDefine.g_NodeLength / 2);
+            //            Brush brush = Brushes.DarkMagenta;
+            //            PointF pf = new PointF(Elc.mapnode[i, j].X, Elc.mapnode[i, j].Y);
+            //            gg.DrawString(Elc.mapnode[i, j].TraCongesIntensity + "", font, brush, pf);
+            //        }
+            //    }
+            //}
 
             //绘制小车
             Vehicle[] v = VehicleManager.Instance.GetVehicles();
             if (v != null)
             {
-                for (int i = 0; i < v.Length; i++)
+                for (int i = 0; i <v.Length; i++)
                 {
-                    v[i].Draw(gg);
-                    v[0].X = 1111;
+                    v[i].Draw(g);
                 }
             }
+
             //if (first)
             //{
             //    int index = 2;
@@ -487,19 +487,15 @@ namespace AGV_V1._0
             {
                 dir |= ConstDefine.Up;
             }
-
-            //if (dir == 0)
-            //{
-            //    dir = -1;
-            //}
-            //else
-            //{
-            //    dir = 0;
-            //}
+            if (Elc.mapnode[y, x].IsAbleCross==false)
+            {
+                dir = -1;
+            }
+            
             Image img = ConstDefine.IMAGE_DICT[dir];
             if (img != null)
             {
-                g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 2, ConstDefine.g_NodeLength - 2));
+                g.DrawImage(img, new Rectangle(Elc.mapnode[y, x].X - 1, Elc.mapnode[y, x].Y - 1, ConstDefine.g_NodeLength - 1, ConstDefine.g_NodeLength - 1));
 
             }
         }
@@ -664,6 +660,8 @@ namespace AGV_V1._0
             string ipv4 = GetHostAdress();
             txtServer.Text = ipv4;
 
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         //获得本机ip地址
@@ -769,8 +767,17 @@ namespace AGV_V1._0
         /// <param name="e"></param>
         private void button7_Click_1(object sender, EventArgs e)
         {
-            InitialAgv();
-            VehicleManager.Instance.RandomMove(11);
+            // InitialAgv();
+            // VehicleManager.Instance.RandomMove(1);
+            Vehicle v = VehicleManager.Instance.GetVehicles()[0];
+            v.BeginX = 11;
+            v.BeginY = 15;
+            v.EndX = 21;
+            v.EndY = 51;
+            v.Arrive = false;
+            v.EndLoc = "rest";
+            VehicleManager.Instance.SearchRoute(0, false);
+
         }
 
         private void button6_Click(object sender, EventArgs e)

@@ -413,10 +413,10 @@ namespace Astar
                         int directionCost = (tempDir == curPoint.node.direction) ? 0 : 1;
                         //  curPoint.node.stopTime = 1+directionCost * 2; 
                         int tempTraConges = graph[curX, curY].traCongesIntensity;
-                        
+
 
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + SWERVE_COST * (directionCost + tempTraConges) + tempPassDifficulty;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) +SWERVE_COST * (directionCost + tempTraConges) + tempPassDifficulty;
                         push(open, close, surX, surY, surG);
                     }
                 }

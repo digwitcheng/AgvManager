@@ -5,8 +5,7 @@ using System.Drawing;
 using AGV_V1._0;
 using System.Collections.Generic;
 using Astar;
-
-
+using System.Threading;
 
 namespace AGV_V1
 {
@@ -24,21 +23,36 @@ namespace AGV_V1
 
         private int nodeCanUsed = -1;   //节点是否被占用,值表示被编号为几的小车占用，-1表示没有被占用
         private static readonly object canUseLock = new object();
+
         public int NodeCanUsed
         {
             get
             {
+                int temp = 0;
                 lock (canUseLock)
                 {
-                    return nodeCanUsed;
+                    temp = nodeCanUsed;
+                    if (this.Id==3972)
+                    {
+                        Console.WriteLine(DateTime.Now.ToLongTimeString() + "线程{0}读{1}", Thread.CurrentThread.ManagedThreadId, temp);
+                    }
                 }
+               return temp;
+               
             }
             set
             {
+                int temp = 0;
                 lock (canUseLock)
                 {
-                    nodeCanUsed = value;
+                     temp = value;
+                    if (this.Id == 3972)
+                    {
+                        Console.WriteLine(DateTime.Now.ToLongTimeString() + "线程{0}写了数据{1}", Thread.CurrentThread.ManagedThreadId, temp);
+                    }
                 }
+                nodeCanUsed = temp;
+               
             }
         }
 
@@ -58,6 +72,7 @@ namespace AGV_V1
                 {
                     value = 0;
                 }
+                traCongesIntensity = value;
             }
         }
         // public int PassDifficulty { get { return passDifficulty; } set { passDifficulty = value; } }
