@@ -56,7 +56,7 @@ namespace AGV_V1._0
 
             int nullCount = 0;
             int researchCount = 0;
-            int moveCount = 0;
+            double moveCount = 0;
 
             if (vehicles == null)
             {
@@ -181,6 +181,8 @@ namespace AGV_V1._0
                 {
                     vehicles[vnum].Move(ElecMap.Instance);                    
                     moveCount++;
+
+                    OnShowMessage(string.Format("{0:N} 公里", (moveCount * 0.5) / 1000.0));
                 }
 
                 sw.Stop();

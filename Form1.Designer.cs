@@ -47,11 +47,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label4 = new System.Windows.Forms.Label();
+            this.finishCountLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.picShow = new System.Windows.Forms.PictureBox();
-            this.finishCountLabel = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.distanceTotal = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -69,7 +71,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.BackColor = System.Drawing.Color.Gray;
             this.panel2.Controls.Add(this.button7);
             this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.button5);
@@ -120,7 +122,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.BackColor = System.Drawing.Color.Gray;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label9.ForeColor = System.Drawing.SystemColors.Window;
             this.label9.Location = new System.Drawing.Point(49, 301);
@@ -142,7 +144,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.BackColor = System.Drawing.Color.Gray;
             this.label10.ForeColor = System.Drawing.SystemColors.Window;
             this.label10.Location = new System.Drawing.Point(40, 331);
             this.label10.Name = "label10";
@@ -153,7 +155,7 @@
             // txtServer
             // 
             this.txtServer.AutoSize = true;
-            this.txtServer.BackColor = System.Drawing.Color.Transparent;
+            this.txtServer.BackColor = System.Drawing.Color.Gray;
             this.txtServer.ForeColor = System.Drawing.SystemColors.Window;
             this.txtServer.Location = new System.Drawing.Point(49, 184);
             this.txtServer.Name = "txtServer";
@@ -172,7 +174,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.BackColor = System.Drawing.Color.Gray;
             this.label11.ForeColor = System.Drawing.SystemColors.Window;
             this.label11.Location = new System.Drawing.Point(29, 215);
             this.label11.Name = "label11";
@@ -211,7 +213,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoScroll = true;
-            this.tableLayoutPanel1.BackgroundImage = global::AGV_V1._0.Properties.Resources.timg__6_;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Gray;
             this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
@@ -231,7 +233,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackColor = System.Drawing.Color.Gray;
             this.panel1.Controls.Add(this.pic);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(155, 3);
@@ -248,7 +250,9 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gray;
+            this.splitContainer1.Panel1.Controls.Add(this.distanceTotal);
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
             this.splitContainer1.Panel1.Controls.Add(this.finishCountLabel);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
@@ -260,6 +264,24 @@
             this.splitContainer1.Size = new System.Drawing.Size(147, 555);
             this.splitContainer1.SplitterDistance = 270;
             this.splitContainer1.TabIndex = 36;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "完成任务：";
+            // 
+            // finishCountLabel
+            // 
+            this.finishCountLabel.AutoSize = true;
+            this.finishCountLabel.Location = new System.Drawing.Point(83, 123);
+            this.finishCountLabel.Name = "finishCountLabel";
+            this.finishCountLabel.Size = new System.Drawing.Size(11, 12);
+            this.finishCountLabel.TabIndex = 2;
+            this.finishCountLabel.Text = "0";
             // 
             // label2
             // 
@@ -280,7 +302,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.BackColor = System.Drawing.Color.Gray;
             this.label1.ForeColor = System.Drawing.SystemColors.Window;
             this.label1.Location = new System.Drawing.Point(41, 45);
             this.label1.Name = "label1";
@@ -290,7 +312,7 @@
             // 
             // picShow
             // 
-            this.picShow.BackColor = System.Drawing.Color.Transparent;
+            this.picShow.BackColor = System.Drawing.Color.Gray;
             this.picShow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picShow.Location = new System.Drawing.Point(0, 0);
             this.picShow.Name = "picShow";
@@ -298,23 +320,23 @@
             this.picShow.TabIndex = 0;
             this.picShow.TabStop = false;
             // 
-            // finishCountLabel
+            // label3
             // 
-            this.finishCountLabel.AutoSize = true;
-            this.finishCountLabel.Location = new System.Drawing.Point(83, 123);
-            this.finishCountLabel.Name = "finishCountLabel";
-            this.finishCountLabel.Size = new System.Drawing.Size(11, 12);
-            this.finishCountLabel.TabIndex = 2;
-            this.finishCountLabel.Text = "0";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 150);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "总里程：";
             // 
-            // label4
+            // distanceTotal
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 123);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "完成任务：";
+            this.distanceTotal.AutoSize = true;
+            this.distanceTotal.Location = new System.Drawing.Point(73, 150);
+            this.distanceTotal.Name = "distanceTotal";
+            this.distanceTotal.Size = new System.Drawing.Size(41, 12);
+            this.distanceTotal.TabIndex = 5;
+            this.distanceTotal.Text = "label5";
             // 
             // Form1
             // 
@@ -370,6 +392,8 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label finishCountLabel;
+        private System.Windows.Forms.Label distanceTotal;
+        private System.Windows.Forms.Label label3;
     }
 }
 

@@ -159,7 +159,7 @@ namespace AGV_V1._0
 
                 VehicleManager.Instance.InitialVehicle();
                 VehicleManager.Instance.Start();
-                VehicleManager.Instance.ShowMessage += OnShowMessageWithPicBox;
+                VehicleManager.Instance.ShowMessage += OnShowMessageDistanceCount;
 
 
                 label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
@@ -651,9 +651,27 @@ namespace AGV_V1._0
             }
             return ipStr;
         }
+        public void OnShowMessageDistanceCount(object sender, MessageEventArgs e)
+        {
+            if (finishCountLabel.InvokeRequired)
+            {
+                Action actionDelegate = () => { ShowDistanceCount(e.Message); };
+                this.finishCountLabel.Invoke(actionDelegate, null);
+            }
+            else
+            {
+                ShowDistanceCount(e.Message);
+                // update(e.ShowMessage);
+            }
+        }
+        void ShowDistanceCount(string str)
+        {
+            distanceTotal.Text = str;
+        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisposeServer();
+            Logs.Info("总任务数：" + finishCountLabel.Text + " " + distanceTotal.Text);
             EndThread();
             //Environment.Exit(0); 
 
