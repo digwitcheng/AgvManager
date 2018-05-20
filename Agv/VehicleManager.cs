@@ -49,6 +49,7 @@ namespace AGV_V1._0
         {
             return "VehicleManager";
         }
+        double moveCount = 0;
         protected override void Run()
         {
             Thread.Sleep(ConstDefine.STEP_TIME);
@@ -56,7 +57,7 @@ namespace AGV_V1._0
 
             int nullCount = 0;
             int researchCount = 0;
-            double moveCount = 0;
+           
 
             if (vehicles == null)
             {

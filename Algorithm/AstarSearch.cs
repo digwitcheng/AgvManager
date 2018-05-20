@@ -411,7 +411,9 @@ namespace Astar
                         int crossCost = (elc.mapnode[curX, curY].CrossCount.Count > 0 )? elc.mapnode[curX, curY].CrossCount.Count : 0;
 
                         //curPoint.searchDir = close[surX, surY].searchDir;
-                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + DIR_COST * directionCost+CROSS_COST*crossCost;
+                        //surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + DIR_COST * directionCost+CROSS_COST*crossCost;
+                        //surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + CROSS_COST * crossCost;
+                        surG = curPoint.G + (float)(Math.Abs(curX - surX) + Math.Abs(curY - surY)) + DIR_COST * directionCost;
                         push(open, close, surX, surY, surG);
                     }
                 }

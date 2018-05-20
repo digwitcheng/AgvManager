@@ -301,6 +301,7 @@ namespace AGV_V1._0
         {
             return ElecMap.Instance.mapnode[BeginX, BeginY].Type;
         }
+        int swerveStop = 0;
         public void Move(ElecMap Elc)
         {
             lock (RouteLock)
@@ -315,6 +316,7 @@ namespace AGV_V1._0
                 {
                     return;
                 }
+                
                 if (tPtr == 0)// ConstDefine.FORWORD_STEP)
                 {
 
@@ -345,6 +347,18 @@ namespace AGV_V1._0
                 }
                 else  if (tPtr > 0)
                 {
+                    Direction nextDir = GetNextDirection();
+                    if (Dir != nextDir)
+                    {
+                        swerveStop = 2;
+                        Dir = nextDir;
+                        return;
+                    }
+                    if (swerveStop > 0)
+                    {
+                        swerveStop--;
+                        return;
+                    }
 
                     if (tPtr >= route.Count - 1)
                     {
@@ -394,6 +408,30 @@ namespace AGV_V1._0
                 BeginX = route[tPtr].X;
                 BeginY = route[tPtr].Y;
             }
+        }
+        Direction GetNextDirection()
+        {
+            if (tPtr >= route.Count - 1) return Dir;
+            MyPoint cur = route[tPtr];
+            MyPoint next = route[tPtr+1];
+            if (cur.X - next.X == 1)
+            {
+                return Direction.Up;// 3 North;
+            }
+            if (cur.X - next.X == -1)
+            {
+                return Direction.Down;// 1;//South;
+            }
+            if (cur.Y - next.Y == 1)
+            {
+                return Direction.Left;// 2;//West;
+            }
+            if (cur.Y - next.Y == -1)
+            {
+                return Direction.Right;// 0;// East;
+            }
+            return Dir;
+
         }
 
         public Vehicle CloneDeep() //深clone

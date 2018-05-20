@@ -16,7 +16,7 @@ namespace AGV_V1._0.Network.ThreadCode
     class TaskSendThread:BaseThread
     {
         private int finishCount = 0;
-        private int perCount = 0;//一定时间内的数量
+        private int count = 0;//一定时间内的数量
         private int per = 0;//时间间隔计数器
 
 
@@ -40,6 +40,7 @@ namespace AGV_V1._0.Network.ThreadCode
             return "TaskSend";
         }
         DateTime startTime = DateTime.Now.AddMinutes(10);
+        bool isFirst10Minutes = true;
         protected override void Run()
         {
             try
@@ -53,13 +54,15 @@ namespace AGV_V1._0.Network.ThreadCode
                         if (nowTime > startTime)
                         {
                             per++;
-                            Logs.Info(nowTime.ToString()+" "+per + ":" + perCount);
-                            startTime = DateTime.Now.AddMinutes(10);
-                            perCount = 0;
-                            
+                            Logs.Info(nowTime.ToString()+" "+per + ":" + count);
+                            OnShowMessage("licheng");
+                            startTime = DateTime.Now.AddMinutes(10);   
+                        }                         
+                        if (per>0)
+                        {
+                          finishCount++;
+                          count++;
                         }
-                        perCount++;
-                        finishCount++;
                         OnShowMessage(finishCount + "");
                         Unloading(v);
 

@@ -47,14 +47,17 @@ namespace AGV_V1._0
         private ElecMap Elc = ElecMap.Instance;
 
         private System.Threading.Timer timer;
+        DateTime startTime = DateTime.Now.AddMinutes(62);
 
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();           
+
             InitServer();//初始化服务器
             InitUiView();//绘制界面
             StartThread();//启动发送，接收，搜索等线程
             InitialSystem();//初始化小车
+
 
         }
         void StartThread()
@@ -165,7 +168,7 @@ namespace AGV_V1._0
                 label1.Text = "当前工作小车" + ConstDefine.g_VehicleCount + "辆";
                 label2.Text = "开始运行时间：" + DateTime.Now.ToString();
 
-                Logs.Info("*--------------------------------------------------------------*");
+                Logs.Info("*-----------------------------  改进A*  ---------------------------* 注：全局拥挤度将要经过当前节点的小车数量");
                 Logs.Info("当前工作小车" + ConstDefine.g_VehicleCount + "辆");
                 Logs.Info("开始运行时间：" + DateTime.Now.ToString());
 
@@ -453,11 +456,13 @@ namespace AGV_V1._0
 
             //vehicle[0].Draw(e.Graphics);
             //vehicle[1].Draw(e.Graphics);
-
-
-
-
             pic.Image = newSurface;
+
+            DateTime nowTime = DateTime.Now;
+            if (nowTime > startTime)
+            {
+                this.Close();
+            }
         }
 
         void drawArrow(int y, int x)
@@ -550,6 +555,11 @@ namespace AGV_V1._0
         }
         void ShowFinishCount(string str)
         {
+            if (str.Equals("licheng"))
+            {
+                Logs.Info("总里程：" + distanceTotal.Text);
+                return;
+            }
             finishCountLabel.Text = str;
         }
         public void OnShowMessageWithPicBox(object sender, MessageEventArgs e)
@@ -671,7 +681,9 @@ namespace AGV_V1._0
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisposeServer();
-            Logs.Info("总任务数：" + finishCountLabel.Text + " " + distanceTotal.Text);
+            Logs.Info("总任务数：" + finishCountLabel.Text);
+            Logs.Info("总里程：" + distanceTotal.Text);
+            FileUtil.changeAgvSum();
             EndThread();
             //Environment.Exit(0); 
 

@@ -101,13 +101,39 @@ namespace AGV_V1._0.Algorithm
 
 
         }
-
-
         /// <summary>
         /// 保存agv的信息
         /// </summary>
         /// <returns></returns>
-        public static int SaveAgvInfo(Vehicle[] vehicle)
+        public static void changeAgvSum()
+        {
+            try
+            {
+                //XML1.0:获取xml文件路径
+                string pathAGV = ConstString.AGV_PATH;
+                if (!File.Exists(pathAGV))
+                {
+                    return;
+                }
+                XmlDocument xmlAgv = new XmlDocument();
+                xmlAgv.Load(pathAGV);
+                //XML2.0:获取地图的格子数
+                XmlNode agvsum = xmlAgv.SelectSingleNode("Info/SUM");
+                agvsum.InnerText = (Convert.ToInt32(agvsum.InnerText.ToString().Trim()) + 25)+"";
+                xmlAgv.Save(pathAGV);
+            }
+            catch (System.Xml.XmlException xe)
+            {
+                Logs.Fatal("save avgSum failed:" + xe);
+                return;
+            }
+        }
+
+            /// <summary>
+            /// 保存agv的信息
+            /// </summary>
+            /// <returns></returns>
+            public static int SaveAgvInfo(Vehicle[] vehicle)
         {
             int res = -1;
             try
